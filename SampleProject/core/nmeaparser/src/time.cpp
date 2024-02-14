@@ -10,7 +10,8 @@
 
 /*! \file time.h */
 
-#include "time.h"
+#include "../include/nmeatime.h"
+#include <time.h>
 
 #ifdef NMEA_WIN
 #   pragma warning(disable: 4201)

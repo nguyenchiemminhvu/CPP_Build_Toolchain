@@ -15,7 +15,6 @@ void signalHandler(int signal)
 int main()
 {
     LocationService service;
-    service.startDaemon();
 
     // Set up signal handling
     struct sigaction action;
@@ -27,15 +26,17 @@ int main()
     // Wait for the signal to exit
     while (signalReceived == 0)
     {
-        // You can perform other tasks here while waiting
+        // Now the process is daemonized
+        // Read from stdin and parse NMEA messages
+        std::string input;
+        while (std::getline(std::cin, input))
+        {
+            std::cout << "Receive user input: " << input << std::endl;
+            service.parseNMEAMessage(input);
+        }
     }
 
     std::cout << "Received SIGINT. Cleaning up and exiting." << std::endl;
-
-    // Perform cleanup tasks if needed
-
-    // Terminate the daemon process
-    kill(service.getDaemonPid(), SIGTERM);
 
     return 0;
 }

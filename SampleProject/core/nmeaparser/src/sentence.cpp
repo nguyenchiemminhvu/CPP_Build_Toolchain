@@ -8,7 +8,7 @@
  *
  */
 
-#include "sentence.h"
+#include "../include/sentence.h"
 
 #include <string.h>
 

@@ -10,7 +10,7 @@
 
 #include <string.h>
 
-#include "info.h"
+#include "../include/info.h"
 
 void nmea_zero_INFO(nmeaINFO *info)
 {

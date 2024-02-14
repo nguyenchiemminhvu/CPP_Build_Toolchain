@@ -12,16 +12,14 @@
 class LocationService
 {
 public:
-    void startDaemon();
-    pid_t getDaemonPid() const;
+    LocationService();
+    ~LocationService();
+    void parseNMEAMessage(const std::string& message);
 
 private:
     pid_t daemonPid;
     nmeaINFO info;
     nmeaPARSER parser;
-
-    static void handleDaemonSignal(int signal);
-    void parseNMEAMessage(const std::string& message);
 };
 
 #endif // LOCATIONSERVICE_H

@@ -12,10 +12,10 @@
  * \file parser.h
  */
 
-#include "tok.h"
-#include "parse.h"
-#include "parser.h"
-#include "context.h"
+#include "../include/tok.h"
+#include "../include/parse.h"
+#include "../include/parser.h"
+#include "../include/context.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -48,7 +48,7 @@ int nmea_parser_init(nmeaPARSER *parser)
 
     memset(parser, 0, sizeof(nmeaPARSER));
 
-    if(0 == (parser->buffer = malloc(buff_size)))
+    if(0 == (parser->buffer = (unsigned char*)malloc(buff_size)))
         nmea_error("Insufficient memory!");
     else
     {
@@ -164,7 +164,7 @@ int nmea_parser_real_push(nmeaPARSER *parser, const char *buff, int buff_sz)
                 (const char *)parser->buffer + nparsed + 1,
                 parser->buff_use - nparsed - 1);
 
-            if(0 == (node = malloc(sizeof(nmeaParserNODE))))
+            if(0 == (node = (nmeaParserNODE*)malloc(sizeof(nmeaParserNODE))))
                 goto mem_fail;
 
             node->pack = 0;

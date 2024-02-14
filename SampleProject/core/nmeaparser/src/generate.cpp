@@ -8,10 +8,10 @@
  *
  */
 
-#include "tok.h"
-#include "sentence.h"
-#include "generate.h"
-#include "units.h"
+#include "../include/tok.h"
+#include "../include/sentence.h"
+#include "../include/generate.h"
+#include "../include/units.h"
 
 #include <string.h>
 #include <stdlib.h>
