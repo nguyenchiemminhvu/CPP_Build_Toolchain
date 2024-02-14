@@ -12,10 +12,10 @@
  * \file parser.h
  */
 
-#include "../include/tok.h"
-#include "../include/parse.h"
-#include "../include/parser.h"
-#include "../include/context.h"
+#include "tok.h"
+#include "parse.h"
+#include "parser.h"
+#include "context.h"
 
 #include <string.h>
 #include <stdlib.h>

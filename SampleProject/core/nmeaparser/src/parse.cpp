@@ -54,11 +54,11 @@
  * \endcode
  */
 
-#include "../include/tok.h"
-#include "../include/parse.h"
-#include "../include/context.h"
-#include "../include/gmath.h"
-#include "../include/units.h"
+#include "tok.h"
+#include "parse.h"
+#include "context.h"
+#include "gmath.h"
+#include "units.h"
 
 #include <string.h>
 #include <stdio.h>

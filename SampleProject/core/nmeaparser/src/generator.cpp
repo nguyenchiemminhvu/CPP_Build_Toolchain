@@ -8,10 +8,10 @@
  *
  */
 
-#include "../include/gmath.h"
-#include "../include/generate.h"
-#include "../include/generator.h"
-#include "../include/context.h"
+#include "gmath.h"
+#include "generate.h"
+#include "generator.h"
+#include "context.h"
 
 #include <string.h>
 #include <stdlib.h>

@@ -10,7 +10,7 @@
 
 /*! \file time.h */
 
-#include "../include/nmeatime.h"
+#include "nmeatime.h"
 #include <time.h>
 
 #ifdef NMEA_WIN
