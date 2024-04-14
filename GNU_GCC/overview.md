@@ -38,10 +38,34 @@ The result is main.i file output which contains the source code with all macros 
 The next stage of the process is the actual compilation of preprocessed source code to assembly language.
 
 ```
-g++ -c main.i -o main.o
+g++ -S main.i -o main.s
 ```
 
+```
+g++ -c main.s -o main.o
+```
 
+```
+g++ main.o -o main
+```
+
+```
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+    # No argument provided, compile the C++ program
+    g++ -E main.cpp -o main.i
+    g++ -S main.i -o main.s
+    g++ -c main.s -o main.o
+    g++ main.o -o main
+elif [ "$1" = "clean" ]; then
+    # Argument is "clean", perform clean operation
+    rm -f main.i main.s main.o main
+    echo "Clean operation complete"
+else
+    echo "Unknown argument"
+fi
+```
 
 ### Compiling multiple source files
 
