@@ -14,7 +14,34 @@ GNU GCC is distributed under GNU GPL license (GNU General Public License), which
 
 ## Compiling a C/C++ program
 
-Let's say we have a sample C++ program source code: [https://github.com/nguyenchiemminhvu/CPP_Build_Automation/blob/master/GNU_GCC/SampleProjects/HelloWorld/main.cpp](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/blob/master/GNU_GCC/SampleProjects/HelloWorld/main.cpp)
+Compilation is a multi-stage process involving several tools, including the GNU Compiler itself (through the gcc or g++ frontends), the GNU Assembler as, and the GNU Linker ld. The complete set of tools used in the compilation process is referred to as a toolchain.
+
+![](./GCC_CompilationProcess.png)
+
+The sequence of commands executed by a single invocation of GCC consists of the following
+stages:
+- preprocessing (to expand macros)
+- compilation (from source code to assembly language)
+- assembly (from assembly language to machine code)
+- linking (to create the final executable)
+
+Let's say we have a sample C++ program source code: [https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/01_HelloWorld](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/01_HelloWorld)
+
+To perform the preprocessor stage, execute the following GCC command:
+
+```
+g++ -E main.cpp -o main.i
+```
+
+The result is main.i file output which contains the source code with all macros expanded.
+
+The next stage of the process is the actual compilation of preprocessed source code to assembly language.
+
+```
+g++ -c main.i -o main.o
+```
+
+
 
 ### Compiling multiple source files
 
