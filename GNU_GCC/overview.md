@@ -41,13 +41,25 @@ The next stage of the process is the actual compilation of preprocessed source c
 g++ -S main.i -o main.s
 ```
 
-```
-g++ -c main.s -o main.o
-```
+The resulting assembly language is stored in the main.s file. Here is how assembly language for an ARM64 processor looks like:
+
+![Assembly Output](AssemblyOutput.png)
+
+In the next stage, the assembler tool is used to convert assembly language into machine code and generate object files. When there are calls to external functions in the assembly source file, the assembler tool leaves the address of the external functions undefined, will be filled later in the linking stage.
 
 ```
+as main.s -o main.o
+```
+
+The resulting file main.o contains the machine instructions for the compiled C/C++ program, with undefined reference to the external function calls.
+
+```
+ld main.o -L/usr/lib -lstdc++ -o main
+# or
 g++ main.o -o main
 ```
+
+When using ld command, it knows nothing about C++ or any other programming language. So we must specify the path and library name for it. While it is easier to use GNU GCC linking because it know where the libraries are located in the current system.
 
 ```
 #!/bin/bash
@@ -56,7 +68,8 @@ if [ $# -eq 0 ]; then
     # No argument provided, compile the C++ program
     g++ -E main.cpp -o main.i
     g++ -S main.i -o main.s
-    g++ -c main.s -o main.o
+    as main.s -o main.o
+    #ld main.o -L/usr/lib -lstdc++ -o main
     g++ main.o -o main
 elif [ "$1" = "clean" ]; then
     # Argument is "clean", perform clean operation
@@ -66,6 +79,16 @@ else
     echo "Unknown argument"
 fi
 ```
+
+The bash script above demonstrate the whole compilation process to create the executable file from a C++ source file.
+
+In real life practice, we often rely on the g++ compiler tool to handle the compilation process for us. The g++ compiler is a powerful tool that can simplify the steps involved in compiling and linking C++ programs. When using g++ as a command-line tool, we can compile and link our C++ programs with a single command. For example, instead of going through the individual steps mentioned in the script, we can achieve the same result with a single command:
+
+```
+g++ main.cpp -o main
+```
+
+This command compiles the main.cpp file and links it to create the final executable main. By default, g++ performs the preprocessing, compilation, assembly, and linking steps for us. It also automatically links the necessary standard C++ libraries.
 
 ### Compiling multiple source files
 
