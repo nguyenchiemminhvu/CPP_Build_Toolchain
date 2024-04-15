@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "simple_math.h"
 #include "simple_algo.h"
 

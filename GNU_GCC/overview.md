@@ -137,7 +137,64 @@ In a real C++ project, it is common practice to split the program source code in
 Let's see another simple C++ sample project which split up the program into multiple files:
 [https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles)
 
+In this example, we split up the C++ program into 4 parts:
+- main function defined in main.cpp file
+- some simple math calculation defined in the simple_math.cpp file
+- some simple algorithms defined in the simple_algo.cpp file
+- the predefined library of basic input/output functionalities
 
+The main program includes the header "simple_math.h" and "simple_algo.h" which contain the declaration of user-define functions. The declaration is used to ensure that the types of arguments and return value match up correctly between the function call and the function definition.
+
+To compile these source files with GCC, use the following command:
+
+```
+g++ simple_math.cpp simple_algo.cpp main.cpp -o main
+```
+
+There is some error logs during the compiling process as below:
+
+```
+# g++ simple_math.cpp simple_algo.cpp main.cpp -o main
+
+simple_algo.cpp:43:14: warning: 'auto' type specifier is a C++11 extension [-Wc++11-extensions]
+        for (auto num : numbers)
+             ^
+simple_algo.cpp:43:23: warning: range-based for loop is a C++11 extension [-Wc++11-extensions]
+        for (auto num : numbers)
+                      ^
+2 warnings generated.
+main.cpp:21:22: error: non-aggregate type 'std::vector<int>' cannot be initialized with an initializer list
+    std::vector<int> numbers = {5, 2, 8, 1, 9, 3, 7};
+                     ^         ~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+```
+
+It is because we are using a C++11 feature (initializer list). To resolve this error, we need to ensure that we are compiling the source codes with a version of C++ that supports the initializer lists (from C++11 or above). We can do this by specifying a language version flag during the compilation:
+
+```
+g++ -std=c++11 simple_math.cpp simple_algo.cpp main.cpp -o main
+```
+
+Here is a full script to compile the C++ program in the example 02_MultipleSourceFiles:
+
+```
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+    # No argument provided, compile the C++ program
+    g++ -o main \
+        -std=c++11 \
+        main.cpp \
+        simple_math.cpp \
+        simple_algo.cpp
+elif [ "$1" = "clean" ]; then
+    # Argument is "clean", perform clean operation
+    rm -f simple_math.o simple_algo.o main.o main
+    echo "Clean operation complete"
+else
+    echo "Unknown argument"
+fi
+```
 
 ### Using more compilation options
 #### Adding search paths
