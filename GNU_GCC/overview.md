@@ -132,6 +132,13 @@ This command compiles the main.cpp file and links it to create the final executa
 
 ### Compiling multiple source files
 
+In a real C++ project, it is common practice to split the program source code into multiple files for easier management and maintainability. This approach is known as modular programming.
+
+Let's see another simple C++ sample project which split up the program into multiple files:
+[https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles)
+
+
+
 ### Using more compilation options
 #### Adding search paths
 
