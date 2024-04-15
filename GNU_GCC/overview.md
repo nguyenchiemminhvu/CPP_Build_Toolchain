@@ -154,7 +154,7 @@ g++ simple_math.cpp simple_algo.cpp main.cpp -o main
 There is some error logs during the compiling process as below:
 
 ```
-# g++ simple_math.cpp simple_algo.cpp main.cpp -o main
+% g++ simple_math.cpp simple_algo.cpp main.cpp -o main
 
 simple_algo.cpp:43:14: warning: 'auto' type specifier is a C++11 extension [-Wc++11-extensions]
         for (auto num : numbers)
@@ -174,6 +174,8 @@ It is because we are using a C++11 feature (initializer list). To resolve this e
 ```
 g++ -std=c++11 simple_math.cpp simple_algo.cpp main.cpp -o main
 ```
+
+When only a few files are modified, you don't need to recompile the entire program. By compiling individual files, you can save time during the build process.
 
 Here is a full script to compile the C++ program in the example 02_MultipleSourceFiles:
 
@@ -198,6 +200,144 @@ fi
 
 ### Using more compilation options
 #### Adding search paths
+
+A common problem when compiling a C/C++ program with many include file directories is the error:
+
+```
+FILE.h: No such file or directory
+```
+
+This problem occurs when the header file is not present in the standard include file directories used by GNU GCC.
+
+By default, the compiler searches for header files in the standard include file directories. If the header file is located in a different directory, we need to provide the compiler with the correct path to that directory.
+
+```
+g++ -I/path/to/include FILE.cpp -o FILE
+```
+
+A similar problem occurs when linking libraries is the error:
+
+```
+% ld main.o -o main -lstdc++
+ld: library 'stdc++' not found
+```
+
+This happens when a library used for linking is not present in the standard library directories used by GNU GCC.
+
+To resolve this issue, we can use the -L flag followed by the directory path when linking your code. Additionally, we can use the -l flag followed by the library name to explicitly specify the library to link against.
+
+```
+g++ main.o -o main -L/path/to/lib -lstdc++
+```
+
+Taken the same sample source code:
+
+[https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles)
+
+Now, we create a folder name "opensource" that contains the a include folder and a lib folder:
+
+```
+vu.nguyenchiemminh@NCMVs-MacBook-Pro 02_MultipleSourceFiles % pwd
+/Users/vu.nguyenchiemminh/StudySpace/CPP_Build_Automation/GNU_GCC/SampleProjects/02_MultipleSourceFiles
+vu.nguyenchiemminh@NCMVs-MacBook-Pro 02_MultipleSourceFiles % tree opensource
+opensource
+├── include
+│   └── simplecrypto.h
+└── lib
+    └── libscrypto.a
+```
+
+Those files are prebuilt opensource library, which can be found in the Github: [https://github.com/fumiama/simple-crypto](https://github.com/fumiama/simple-crypto)
+
+To utilize this simple cryto library, we include the simplescrypto.h header to the main file:
+
+```
+#include "simplecrypto.h"
+
+int main()
+{
+    // C++ source codes of the previous example
+    // ...
+
+    // Using opensource prebuilt library
+    const char* data = "Hello, world!";
+    size_t data_len = strlen(data);
+    uint8_t digest[16];
+
+    md5((const uint8_t*)data, data_len, digest);
+
+    printf("MD5 Digest: ");
+    for (int i = 0; i < 16; i++)
+    {
+        printf("%02x", digest[i]);
+    }
+    printf("\n");
+}
+```
+
+Now, when compiling this C++ program with the same GCC command before:
+
+```
+g++ -std=c++11 simple_math.cpp simple_algo.cpp main.cpp -o main
+```
+
+Because the 'simplecryto.h' header file is not present in the standard include directories of GNU GCC, the missing header error pattern appears just as we mentioned above.
+
+```
+% g++ -std=c++11 simple_math.cpp simple_algo.cpp main.cpp -o main
+
+main.cpp:10:10: fatal error: 'simplecrypto.h' file not found
+#include "simplecrypto.h"
+         ^~~~~~~~~~~~~~~~
+1 error generated.
+```
+
+To get over this situation, try to use -I option during compilation process:
+
+```
+g++ -std=c++11 -I./opensource/include simple_math.cpp simple_algo.cpp main.cpp -o main
+```
+
+Now, when the GNU GCC tool can find the header file in the additional folder we just provided, the symbols of the external function calls are undefined.
+
+```
+% g++ -std=c++11 -I./opensource/include simple_math.cpp simple_algo.cpp main.cpp -o main
+
+Undefined symbols for architecture arm64:
+  "md5(unsigned char const*, unsigned long, unsigned char*)", referenced from:
+      _main in main-38ac86.o
+ld: symbol(s) not found for architecture arm64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+```
+
+Once again, we must specify the path of the symbols that would be linked to the C++ program.
+
+```
+g++ -std=c++11 -I./opensource/include simple_math.cpp simple_algo.cpp main.cpp ./opensource/lib/libsimplecrypto.a -o main
+```
+
+Note that we should never place the absolute paths of header files in #include statements in the source code, as this will prevent from compiling on other systems.
+
+```
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+    # No argument provided, compile the C++ program
+    g++ -o main \
+        -std=c++11 \
+        -I./opensource/include \
+        ./opensource/lib/libsimplecrypto.a \
+        simple_math.cpp \
+        simple_algo.cpp \
+        main.cpp
+elif [ "$1" = "clean" ]; then
+    # Argument is "clean", perform clean operation
+    rm -f simple_math.o simple_algo.o main.o main
+    echo "Clean operation complete"
+else
+    echo "Unknown argument"
+fi
+```
 
 #### Adding environment variables
 

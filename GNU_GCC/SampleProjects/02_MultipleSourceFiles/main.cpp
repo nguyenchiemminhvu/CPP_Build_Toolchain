@@ -1,7 +1,13 @@
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
 #include <iostream>
 #include <vector>
 #include "simple_math.h"
 #include "simple_algo.h"
+
+// open source header file
+#include "simplecrypto.h"
 
 int main(int argc, char** argv)
 {
@@ -29,6 +35,20 @@ int main(int argc, char** argv)
     std::cout << "Min: " << min << std::endl;
     std::cout << "Sum of Numbers: " << sumOfNumbers << std::endl;
     std::cout << "Average: " << average << std::endl;
+
+    // Using opensource prebuilt library
+    const char* data = "Hello, world!";
+    size_t data_len = strlen(data);
+    uint8_t digest[16];
+
+    md5((const uint8_t*)data, data_len, digest);
+
+    printf("MD5 Digest: ");
+    for (int i = 0; i < 16; i++)
+    {
+        printf("%02x", digest[i]);
+    }
+    printf("\n");
 
     return 0;
 }
