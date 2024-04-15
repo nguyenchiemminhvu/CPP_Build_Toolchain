@@ -314,13 +314,13 @@ Once again, we must specify the path of the symbols that would be linked to the 
 
 ```
 g++ -o main \
-        -std=c++11 \
-        -I./opensource/include \
-        -L./opensource/lib \
-        -lsimplecrypto \
-        simple_math.cpp \
-        simple_algo.cpp \
-        main.cpp
+    -std=c++11 \
+    -I./opensource/include \
+    -L./opensource/lib \
+    -lsimplecrypto \
+    simple_math.cpp \
+    simple_algo.cpp \
+    main.cpp
 ```
 
 Note that we should never place the absolute paths of header files in #include statements in the source code, as this will prevent from compiling on other systems.
