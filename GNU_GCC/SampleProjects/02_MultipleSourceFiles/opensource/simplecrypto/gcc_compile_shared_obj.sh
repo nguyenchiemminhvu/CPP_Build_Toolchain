@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ $# -eq 0 ]; then
-    g++ -c md5.c tea.c
-    
+    g++ -c -fPIC md5.c tea.c
+
     # Check the operating system
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         # Linux
