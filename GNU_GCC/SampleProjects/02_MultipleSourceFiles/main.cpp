@@ -6,8 +6,9 @@
 #include "simple_math.h"
 #include "simple_algo.h"
 
-// open source header file
+#ifdef USE_SIMPLE_CRYPTO_LIB
 #include "simplecrypto.h"
+#endif
 
 int main(int argc, char** argv)
 {
@@ -36,6 +37,7 @@ int main(int argc, char** argv)
     std::cout << "Sum of Numbers: " << sumOfNumbers << std::endl;
     std::cout << "Average: " << average << std::endl;
 
+#ifdef USE_SIMPLE_CRYPTO_LIB
     // Using opensource prebuilt library
     const char* data = "Hello, world!";
     size_t data_len = strlen(data);
@@ -49,6 +51,7 @@ int main(int argc, char** argv)
         printf("%02x", digest[i]);
     }
     printf("\n");
+#endif
 
     return 0;
 }
