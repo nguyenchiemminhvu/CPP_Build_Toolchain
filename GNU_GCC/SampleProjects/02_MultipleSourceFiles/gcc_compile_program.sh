@@ -8,14 +8,17 @@ if [ $# -eq 0 ]; then
     source gcc_compile_shared_obj.sh clean
     cd ./../../
 
-    g++ -o main \
-        -std=c++11 \
-        -I./opensource/include \
-        -L./opensource/lib \
-        -lsimplecrypto \
-        simple_math.cpp \
-        simple_algo.cpp \
-        main.cpp
+    g++ \
+	-std=c++11 \
+	main.cpp \
+	simple_math.cpp \
+	simple_algo.cpp \
+	-I./opensource/include \
+	-L./opensource/lib \
+	-lsimplecrypto \
+	-o main
+
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./opensource/lib
 elif [ "$1" = "clean" ]; then
     # Argument is "clean", perform clean operation
     rm -f simple_math.o simple_algo.o main.o main
