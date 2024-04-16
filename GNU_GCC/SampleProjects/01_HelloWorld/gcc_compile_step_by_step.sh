@@ -5,7 +5,7 @@ if [ $# -eq 0 ]; then
     g++ -E main.cpp -o main.i
     g++ -S main.i -o main.s
     as main.s -o main.o
-    #ld main.o -L/usr/lib -lstdc++ -o main
+    #ld main.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -lstdc++ -o main
     g++ main.o -o main
 elif [ "$1" = "clean" ]; then
     # Argument is "clean", perform clean operation
