@@ -9,14 +9,14 @@ if [ $# -eq 0 ]; then
     cd ./../../
 
     g++ \
-	-std=c++11 \
-	main.cpp \
-	simple_math.cpp \
-	simple_algo.cpp \
-	-I./opensource/include \
-	-L./opensource/lib \
-	-lsimplecrypto \
-	-o main
+        -std=c++11 \
+        main.cpp \
+        simple_math.cpp \
+        simple_algo.cpp \
+        -I./opensource/include \
+        -L./opensource/lib \
+        -lsimplecrypto \
+        -o main
 
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./opensource/lib
 elif [ "$1" = "clean" ]; then

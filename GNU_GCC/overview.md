@@ -244,7 +244,7 @@ opensource
 ├── include
 │   └── simplecrypto.h
 └── lib
-    └── libscrypto.a
+    └── libsimplecrypto.so
 ```
 
 Those files are prebuilt opensource library, which can be found in the Github: [https://github.com/fumiama/simple-crypto](https://github.com/fumiama/simple-crypto)
@@ -313,14 +313,15 @@ clang: error: linker command failed with exit code 1 (use -v to see invocation)
 Once again, we must specify the path of the symbols that would be linked to the C++ program.
 
 ```
-g++ -o main \
+g++ \
     -std=c++11 \
+    main.cpp \
+    simple_math.cpp \
+    simple_algo.cpp \
     -I./opensource/include \
     -L./opensource/lib \
     -lsimplecrypto \
-    simple_math.cpp \
-    simple_algo.cpp \
-    main.cpp
+    -o main
 ```
 
 Note that we should never place the absolute paths of header files in #include statements in the source code, as this will prevent from compiling on other systems.
@@ -330,20 +331,17 @@ Note that we should never place the absolute paths of header files in #include s
 
 if [ $# -eq 0 ]; then
     # No argument provided, compile the C++ program
-    cd ./opensource/simplecrypto
-    source gcc_compile_shared_obj.sh
-    source gcc_compile_shared_obj.sh install
-    source gcc_compile_shared_obj.sh clean
-    cd ./../../
-
-    g++ -o main \
+    g++ \
         -std=c++11 \
+        main.cpp \
+        simple_math.cpp \
+        simple_algo.cpp \
         -I./opensource/include \
         -L./opensource/lib \
         -lsimplecrypto \
-        simple_math.cpp \
-        simple_algo.cpp \
-        main.cpp
+        -o main
+
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./opensource/lib
 elif [ "$1" = "clean" ]; then
     # Argument is "clean", perform clean operation
     rm -f simple_math.o simple_algo.o main.o main
@@ -354,6 +352,8 @@ fi
 ```
 
 #### Adding environment variables
+
+
 
 #### Using preprocessors
 
