@@ -135,7 +135,7 @@ This command compiles the main.cpp file and links it to create the final executa
 In a real C++ project, it is common practice to split the program source code into multiple files for easier management and maintainability. This approach is known as modular programming.
 
 Let's see another simple C++ sample project which split up the program into multiple files:
-[https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles)
+[02_MultipleSourceFile](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles)
 
 In this example, we split up the C++ program into 4 parts:
 - main function defined in main.cpp file
@@ -230,9 +230,7 @@ To resolve this issue, we can use the -L flag followed by the directory path whe
 g++ main.o -o main -L/path/to/lib -lstdc++
 ```
 
-Taken the same sample source code:
-
-[https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles)
+Taken the same sample source code: [02_MultipleSourceFile](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles)
 
 Now, we create a folder name "opensource" that contains the a include folder and a lib folder:
 
@@ -353,7 +351,45 @@ fi
 
 #### Adding environment variables
 
+By default, GNU GCC compiler search for the header and library files in the standard directories specified in its configuration. However, we can also configure the search paths for header and library files using environment variable in the shell.
 
+```
+export C_INCLUDE_PATH=/path/to/c_headers
+export CPLUS_INCLUDE_PATH=/path/to/cpp_headers
+export LIBRARY_PATH=/path/to/find_at_link_time_libraries
+export LD_LIBRARY_PATH=/path/to/find_at_run_time_libraries
+```
+
+These paths specified by environment variables will be searched by GNU GCC Compiler after any directories specified on the command line with option '-I', and before the standard default directories (such as /usr/include or /usr/local/include). The shell command 'export' is required to make the environment variable available to programs outside the shell itself.
+
+Using the same sample source codes [02_MultipleSourceFile](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles)
+
+Now, because the additional header and library directories are specified using environment varialbles, we can compile the C++ program without adding search paths into the compilation command line:
+
+```
+export CPLUS_INCLUDE_PATH=./opensource/include
+export LIBRARY_PATH=./opensource/lib
+
+g++ -std=c++11 main.cpp simple_math.cpp simple_algo.cpp -lsimplecrypto -o main
+```
+
+Following the standard Unix convention for search paths, multiple directories can be specified together in an environment variable:
+
+```
+DIR1:DIR2:DIR3:...
+```
+
+For example:
+
+```
+CPLUS_INCLUDE_PATH=./opensource/include:./boost/include:./gnss/include
+```
+
+This works the same way using the option '-I' multiple times:
+
+```
+g++ -I./opensource/include -I./boost/include -I./gnss/include
+```
 
 #### Using preprocessors
 
