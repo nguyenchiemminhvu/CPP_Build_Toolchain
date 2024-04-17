@@ -495,6 +495,42 @@ g++ -std=c++11 -DUSE_SIMPLE_CRYPTO_LIB main.cpp simple_math.cpp simple_algo.cpp 
 
 #### Compiling for debugging
 
+Normally, an executable file after compiling does not contains any references to the original source codes, such as variable names, function names, and line numbers,... Only machine codes are sometimes insufficient for debugging.
+
+In most of all cases, we only need to add the option '-g' to the compilation command, then the compiler includes debugging symbols into the executables. This debugging symbols allow the error to be traced back from a specific machine instruction to the corresponding line in the original source file.
+
+Debug symbols are typically stored in a format called DWARF (Debugging With Attributed Record Formats). Reference: [https://dwarfstd.org/](https://dwarfstd.org/)
+
+- **-g** Produce debugging information in the operating system’s native format (stabs, COFF, XCOFF, or DWARF). GDB can work with this debugging information.
+- **-gdwarf -gdwarf-version** Produce debugging information in DWARF format (if that is supported). The value of version may be either 2, 3, 4 or 5; the default version for most targets is 5.
+
+Another benefit of storing debugging symbols to the executable is the ability to examine the cause of crash program from "core dump" file.
+When a program suddenly exit by a crash, the operating system may write a core file which contains the in-memory state of the program at the time it crashed, as known as "core dump". Combined with the information produced by '-g' option, developers are able to find the line where the program stopped, and the values of the variables at that point.
+
+Below is a simple program which will produce a core file during run time:
+
+```
+// main.cpp
+void makeCrash(int* p)
+{
+    p = nullptr;
+    int val = *p;
+}
+
+int main(int argc, char** argv)
+{
+    makeCrash(nullptr);
+    return 0;
+}
+```
+
+```
+g++ -g main.cpp -o main
+./main
+```
+
+#### Compiling with optimization
+
 ## Compiling a C/C++ library
 
 ### Compiling static library and link to C/C++ program
