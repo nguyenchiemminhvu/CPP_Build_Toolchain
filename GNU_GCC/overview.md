@@ -568,9 +568,13 @@ Program terminated with signal SIGSEGV, Segmentation fault.
 #0  0x0000556530e0060e in makeCrash (p=0x0) at main.cpp:6
 6           int val = *p;
 (gdb) bt full
-#0  0x0000556530e0060e in makeCrash (p=0x0) at main.cpp:6
+#0  0x000056433860060e in makeCrash (p=0x0) at main.cpp:4
         val = 0
-#1  0x0000556530e0062f in main (argc=1, argv=0x7ffc49141b08) at main.cpp:11
+#1  0x000056433860062f in main (argc=1, argv=0x7ffea8750d58) at main.cpp:9
+No locals.
+(gdb) backtrace 
+#0  0x000056433860060e in makeCrash (p=0x0) at main.cpp:4
+#1  0x000056433860062f in main (argc=1, argv=0x7ffea8750d58) at main.cpp:9
 No locals.
 ```
 
