@@ -586,6 +586,8 @@ Some systems are configured not to write core files by default, since the files 
 ulimit -c unlimited
 ```
 
+Reading further about GNU GDB debugging here: [Debugging with GDB](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_toc.html)
+
 #### Compiling with optimization
 
 ## Compiling a C/C++ library
