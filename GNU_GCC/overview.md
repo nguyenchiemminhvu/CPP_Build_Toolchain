@@ -154,7 +154,7 @@ g++ simple_math.cpp simple_algo.cpp main.cpp -o main
 There is some error logs during the compiling process as below:
 
 ```
-% g++ simple_math.cpp simple_algo.cpp main.cpp -o main
+# g++ simple_math.cpp simple_algo.cpp main.cpp -o main
 
 simple_algo.cpp:43:14: warning: 'auto' type specifier is a C++11 extension [-Wc++11-extensions]
         for (auto num : numbers)
@@ -218,7 +218,7 @@ g++ -I/path/to/include FILE.cpp -o FILE
 A similar problem occurs when linking libraries is the error:
 
 ```
-% ld main.o -o main -lstdc++
+# ld main.o -o main -lstdc++
 ld: library 'stdc++' not found
 ```
 
@@ -235,9 +235,9 @@ Taken the same sample source code: [02_MultipleSourceFile](https://github.com/ng
 Now, we create a folder name "opensource" that contains the a include folder and a lib folder:
 
 ```
-vu.nguyenchiemminh@NCMVs-MacBook-Pro 02_MultipleSourceFiles % pwd
+vu.nguyenchiemminh@NCMVs-MacBook-Pro 02_MultipleSourceFiles# pwd
 /Users/vu.nguyenchiemminh/StudySpace/CPP_Build_Automation/GNU_GCC/SampleProjects/02_MultipleSourceFiles
-vu.nguyenchiemminh@NCMVs-MacBook-Pro 02_MultipleSourceFiles % tree opensource
+vu.nguyenchiemminh@NCMVs-MacBook-Pro 02_MultipleSourceFiles# tree opensource
 opensource
 ├── include
 │   └── simplecrypto.h
@@ -282,7 +282,7 @@ g++ -std=c++11 simple_math.cpp simple_algo.cpp main.cpp -o main
 Because the 'simplecryto.h' header file is not present in the standard include directories of GNU GCC, the missing header error pattern appears just as we mentioned above.
 
 ```
-% g++ -std=c++11 simple_math.cpp simple_algo.cpp main.cpp -o main
+# g++ -std=c++11 simple_math.cpp simple_algo.cpp main.cpp -o main
 
 main.cpp:10:10: fatal error: 'simplecrypto.h' file not found
 #include "simplecrypto.h"
@@ -299,7 +299,7 @@ g++ -std=c++11 -I./opensource/include simple_math.cpp simple_algo.cpp main.cpp -
 Now, when the GNU GCC tool can find the header file in the additional folder we just provided, the symbols of the external function calls are undefined.
 
 ```
-% g++ -std=c++11 -I./opensource/include simple_math.cpp simple_algo.cpp main.cpp -o main
+# g++ -std=c++11 -I./opensource/include simple_math.cpp simple_algo.cpp main.cpp -o main
 
 Undefined symbols for architecture arm64:
   "md5(unsigned char const*, unsigned long, unsigned char*)", referenced from:
