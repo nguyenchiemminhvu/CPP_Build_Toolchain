@@ -465,7 +465,33 @@ int main(int argc, char** argv)
 }
 ```
 
-By default, there is no macro definition of USE_SIMPLE_CRYPTO_LIB.
+By default, there is no macro definition of USE_SIMPLE_CRYPTO_LIB. When the macro USE_SIMPLE_CRYPTO_LIB is defined, the preprocessor includes the corresponding code up to the closing '#endif' directives.
+
+There are a few basic GCC options to control preprocessor:
+
+- **-D <name>** predefine *name* as macro, with definition 1.
+- **-D <name>=<definition>** The contents of *definition* are tokenized and processed as if they appeared during translation phase three in a '#define' directive.
+- **-include file** Process file as if #include "file" appeared as the first line of the primary source file. However, the first directory searched for file is the preprocessor’s working directory instead of the directory containing the main source file. If not found there, it is searched for in the remainder of the #include "..." search chain as normal.
+
+This command below is compiled normally with no USE_SIMPLE_CRYPTO_LIB macro define:
+
+```
+g++ -std=c++11 main.cpp simple_math.cpp simple_algo.cpp -o main
+```
+
+But, this command below is failed to compile because the macro USE_SIMPLE_CRYPTO_LIB is defined:
+
+```
+g++ -std=c++11 -DUSE_SIMPLE_CRYPTO_LIB main.cpp simple_math.cpp simple_algo.cpp -lsimplecrypto -o main
+```
+
+To ensure successful compilation with the USE_SIMPLE_CRYPTO_LIB macro defined, we need to specify the header and library directories of the opensource crypto module again.
+
+```
+export CPLUS_INCLUDE_PATH=./opensource/include
+export LIBRARY_PATH=./opensource/lib
+g++ -std=c++11 -DUSE_SIMPLE_CRYPTO_LIB main.cpp simple_math.cpp simple_algo.cpp -lsimplecrypto -o main
+```
 
 #### Compiling for debugging
 

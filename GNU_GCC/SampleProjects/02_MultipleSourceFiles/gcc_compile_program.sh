@@ -10,6 +10,7 @@ if [ $# -eq 0 ]; then
 
     g++ \
         -std=c++11 \
+        -DUSE_SIMPLE_CRYPTO_LIB \
         main.cpp \
         simple_math.cpp \
         simple_algo.cpp \
