@@ -393,6 +393,80 @@ g++ -I./opensource/include -I./boost/include -I./gnss/include
 
 #### Using preprocessors
 
+There are options to control the C/C++ preprocessor, which is run on each C/C++ source file before actual compilation. The GNU C/C++ preprocessor expands the macros in the source files before they are compiled.
+
+Notes that if we use '-E' option in the compilation command, nothing is done except preprocessing.
+
+```
+g++ -E main.cpp -o main.i
+```
+
+Keep focusing on the sample source codes: [02_MultipleSourceFile](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles)
+
+At this time, we cover the 'opensource' related codes with a macro:
+
+```
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+#include <iostream>
+#include <vector>
+#include "simple_math.h"
+#include "simple_algo.h"
+
+#ifdef USE_SIMPLE_CRYPTO_LIB
+#include "simplecrypto.h"
+#endif
+
+int main(int argc, char** argv)
+{
+    // Using utility functions from simple_math library
+    int a = 10;
+    int b = 5;
+
+    int sum = simple_math::add(a, b);
+    int product = simple_math::multiply(a, b);
+    double quotient = simple_math::divide(a, b);
+
+    std::cout << "Sum: " << sum << std::endl;
+    std::cout << "Product: " << product << std::endl;
+    std::cout << "Quotient: " << quotient << std::endl;
+
+    // Using utility functions from simple_algorithm library
+    std::vector<int> numbers = {5, 2, 8, 1, 9, 3, 7};
+
+    int max = simple_algorithm::findMax(numbers);
+    int min = simple_algorithm::findMin(numbers);
+    int sumOfNumbers = simple_algorithm::sum(numbers);
+    double average = simple_algorithm::average(numbers);
+
+    std::cout << "Max: " << max << std::endl;
+    std::cout << "Min: " << min << std::endl;
+    std::cout << "Sum of Numbers: " << sumOfNumbers << std::endl;
+    std::cout << "Average: " << average << std::endl;
+
+#ifdef USE_SIMPLE_CRYPTO_LIB
+    // Using opensource prebuilt library
+    const char* data = "Hello, world!";
+    size_t data_len = strlen(data);
+    uint8_t digest[16];
+
+    md5((const uint8_t*)data, data_len, digest);
+
+    printf("MD5 Digest: ");
+    for (int i = 0; i < 16; i++)
+    {
+        printf("%02x", digest[i]);
+    }
+    printf("\n");
+#endif
+
+    return 0;
+}
+```
+
+By default, there is no macro definition of USE_SIMPLE_CRYPTO_LIB.
+
 #### Compiling for debugging
 
 ## Compiling a C/C++ library
