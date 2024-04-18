@@ -888,7 +888,13 @@ We don't focus much on the specifics of GNU GCC optimization in this topic. If y
 
 ### Compiling static library and link to C/C++ program
 
+```
+```
+
 ### Compiling shared object (dynamic library) and link to C/C++ program
+
+```
+```
 
 ## A sample project
 
