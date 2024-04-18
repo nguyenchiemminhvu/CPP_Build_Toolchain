@@ -706,8 +706,61 @@ For the details of each optimization flags, refer to the home page of GNU GCC: [
 
 Let's consider several examples of GNU GCC optimization:
 
+**(1) An empty main function**
+
+```
+int main(int argc, char** argv)
+{
+    return 0;
+}
 ```
 
+Assembly output of no optimization option:
+
+```
+	.section	__TEXT,__text,regular,pure_instructions
+	.build_version macos, 14, 0	sdk_version 14, 4
+	.globl	_main                           ; -- Begin function main
+	.p2align	2
+_main:                                  ; @main
+	.cfi_startproc
+; %bb.0:
+	sub	sp, sp, #16
+	.cfi_def_cfa_offset 16
+	mov	x8, x0
+	mov	w0, #0
+	str	wzr, [sp, #12]
+	str	w8, [sp, #8]
+	str	x1, [sp]
+	add	sp, sp, #16
+	ret
+	.cfi_endproc
+                                        ; -- End function
+.subsections_via_symbols
+```
+
+Assembly output of '-O3' optimization option:
+
+```
+	.section	__TEXT,__text,regular,pure_instructions
+	.build_version macos, 14, 0	sdk_version 14, 4
+	.globl	_main                           ; -- Begin function main
+	.p2align	2
+_main:                                  ; @main
+	.cfi_startproc
+; %bb.0:
+	mov	w0, #0
+	ret
+	.cfi_endproc
+                                        ; -- End function
+.subsections_via_symbols
+```
+
+We can observe that the assembly code output without optimization includes some additional instructions and stack manipulation compared to the optimized code (-O3 option).
+
+**(2) ** 
+
+```
 ```
 
 ## Compiling a C/C++ library
