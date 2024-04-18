@@ -590,6 +590,124 @@ Reading further about GNU GDB debugging here: [Debugging with GDB](https://ftp.g
 
 #### Compiling with optimization
 
+One feature makes GNU GCC powerfull is the source code optimization. The optimized source codes achieve the same result as the original source codes but with improved performance. This mean the optimizing source codes have smaller size, increased execution speed. GNU GCC offers different optimization levels to achieve this.
+
+- **-O0** The lowest level of optimization, no optimization is applied. Using this option, GCC Compiler produces codes that closely reflects to the original source codes. Each command in the source codes is converted directly to the corresponding machine instructions in the executable file. However, it may result in slower and less efficient performance.
+- **-O1 or -O** Enable basic level of optimization: constant folding, common subexpression elimination, and dead code elimination. These flags are enabled at -O0 optimization level:
+```
+-fauto-inc-dec
+-fbranch-count-reg
+-fcombine-stack-adjustments
+-fcompare-elim
+-fcprop-registers
+-fdce
+-fdefer-pop
+-fdelayed-branch
+-fdse
+-fforward-propagate
+-fguess-branch-probability
+-fif-conversion
+-fif-conversion2
+-finline-functions-called-once
+-fipa-modref
+-fipa-profile
+-fipa-pure-const
+-fipa-reference
+-fipa-reference-addressable
+-fmerge-constants
+-fmove-loop-invariants
+-fmove-loop-stores
+-fomit-frame-pointer
+-freorder-blocks
+-fshrink-wrap
+-fshrink-wrap-separate
+-fsplit-wide-types
+-fssa-backprop
+-fssa-phiopt
+-ftree-bit-ccp
+-ftree-ccp
+-ftree-ch
+-ftree-coalesce-vars
+-ftree-copy-prop
+-ftree-dce
+-ftree-dominator-opts
+-ftree-dse
+-ftree-forwprop
+-ftree-fre
+-ftree-phiprop
+-ftree-pta
+-ftree-scev-cprop
+-ftree-sink
+-ftree-slsr
+-ftree-sra
+-ftree-ter
+-funit-at-a-time
+```
+- **-O2** Enable a higher level of optimization than -O1, including additional optimization strategy like: loop unrolling, function inlining, and instruction scheduling without involving the space-speed tradeoff. The compiler will take longer to compile programs and requires more memory than -O1, but result better run-time performance. These flags are enabled at this optimization level:
+```
+-falign-functions -falign-jumps
+-falign-labels -falign-loops
+-fcaller-saves
+-fcode-hoisting
+-fcrossjumping
+-fcse-follow-jumps -fcse-skip-blocks
+-fdelete-null-pointer-checks
+-fdevirtualize -fdevirtualize-speculatively
+-fexpensive-optimizations
+-ffinite-loops
+-fgcse -fgcse-lm
+-fhoist-adjacent-loads
+-finline-functions
+-finline-small-functions
+-findirect-inlining
+-fipa-bit-cp -fipa-cp -fipa-icf
+-fipa-ra -fipa-sra -fipa-vrp
+-fisolate-erroneous-paths-dereference
+-flra-remat
+-foptimize-sibling-calls
+-foptimize-strlen
+-fpartial-inlining
+-fpeephole2
+-freorder-blocks-algorithm=stc
+-freorder-blocks-and-partition -freorder-functions
+-frerun-cse-after-loop
+-fschedule-insns -fschedule-insns2
+-fsched-interblock -fsched-spec
+-fstore-merging
+-fstrict-aliasing
+-fthread-jumps
+-ftree-builtin-call-dce
+-ftree-loop-vectorize
+-ftree-pre
+-ftree-slp-vectorize
+-ftree-switch-conversion -ftree-tail-merge
+-ftree-vrp
+-fvect-cost-model=very-cheap
+```
+- **-O3** Enable even more optimizations compared to -O2, including advanced techniques like loop fusion, loop vectorization, and profile-guided optimization. This option produces a significant enhance performance codes at run time, but may also increase compilation time and code size. These flags are enabled at this optimization level:
+```
+-fgcse-after-reload
+-fipa-cp-clone
+-floop-interchange
+-floop-unroll-and-jam
+-fpeel-loops
+-fpredictive-commoning
+-fsplit-loops
+-fsplit-paths
+-ftree-loop-distribution
+-ftree-partial-pre
+-funswitch-loops
+-fvect-cost-model=dynamic
+-fversion-loops-for-strides
+```
+- **-Os** This option optimizes for code size rather than performance, suitable for systems constrained by memory or disk space like embedded systems. This option includes all -O2 optimization flags except those that increase code size: ```-falign-functions -falign-jumps -falign-labels -falign-loops -fprefetch-loop-arrays -freorder-blocks-algorithm=stc```
+
+For the details of each optimization flags, refer to the home page of GNU GCC: [https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html)
+
+Let's consider several examples of GNU GCC optimization:
+
+
+
 ## Compiling a C/C++ library
 
 ### Compiling static library and link to C/C++ program
