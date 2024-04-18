@@ -235,9 +235,9 @@ Taken the same sample source code: [02_MultipleSourceFile](https://github.com/ng
 Now, we create a folder name "opensource" that contains the a include folder and a lib folder:
 
 ```
-vu.nguyenchiemminh@NCMVs-MacBook-Pro 02_MultipleSourceFiles# pwd
+vu.nguyenchiemminh@localhost 02_MultipleSourceFiles# pwd
 /Users/vu.nguyenchiemminh/StudySpace/CPP_Build_Automation/GNU_GCC/SampleProjects/02_MultipleSourceFiles
-vu.nguyenchiemminh@NCMVs-MacBook-Pro 02_MultipleSourceFiles# tree opensource
+vu.nguyenchiemminh@localhost 02_MultipleSourceFiles# tree opensource
 opensource
 ├── include
 │   └── simplecrypto.h
