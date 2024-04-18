@@ -718,45 +718,42 @@ int main(int argc, char** argv)
 Assembly output of no optimization option:
 
 ```
-	.section	__TEXT,__text,regular,pure_instructions
-	.build_version macos, 14, 0	sdk_version 14, 4
-	.globl	_main                           ; -- Begin function main
-	.p2align	2
-_main:                                  ; @main
-	.cfi_startproc
-; %bb.0:
-	sub	sp, sp, #16
-	.cfi_def_cfa_offset 16
-	mov	x8, x0
-	mov	w0, #0
-	str	wzr, [sp, #12]
-	str	w8, [sp, #8]
-	str	x1, [sp]
-	add	sp, sp, #16
-	ret
-	.cfi_endproc
-                                        ; -- End function
-.subsections_via_symbols
+vu.nguyenchiemminh@localhost 05_OptimziationExamples % g++ main.cpp -o main
+vu.nguyenchiemminh@localhost 05_OptimziationExamples % objdump -d main
+
+main:	file format mach-o arm64
+
+Disassembly of section __TEXT,__text:
+
+0000000100003f88 <_main>:
+100003f88: d10043ff    	sub	sp, sp, #16
+100003f8c: aa0003e8    	mov	x8, x0
+100003f90: 52800000    	mov	w0, #0
+100003f94: b9000fff    	str	wzr, [sp, #12]
+100003f98: b9000be8    	str	w8, [sp, #8]
+100003f9c: f90003e1    	str	x1, [sp]
+100003fa0: 910043ff    	add	sp, sp, #16
+100003fa4: d65f03c0    	ret
 ```
 
 Assembly output of '-O3' optimization option:
 
 ```
-	.section	__TEXT,__text,regular,pure_instructions
-	.build_version macos, 14, 0	sdk_version 14, 4
-	.globl	_main                           ; -- Begin function main
-	.p2align	2
-_main:                                  ; @main
-	.cfi_startproc
-; %bb.0:
-	mov	w0, #0
-	ret
-	.cfi_endproc
-                                        ; -- End function
-.subsections_via_symbols
+vu.nguyenchiemminh@localhost 05_OptimziationExamples % g++ main.cpp -O3 -o main
+vu.nguyenchiemminh@localhost 05_OptimziationExamples % objdump -d main
+
+main:	file format mach-o arm64
+
+Disassembly of section __TEXT,__text:
+
+0000000100003fa0 <_main>:
+100003fa0: 52800000    	mov	w0, #0
+100003fa4: d65f03c0    	ret
 ```
 
 We can observe that the assembly code output without optimization includes some additional instructions and stack manipulation compared to the optimized code (-O3 option).
+
+As the source code becomes more complex, it becomes harder to understand the assembly code. In these cases, it's best to rely on the expertise of experts who have researched this area. Let me provide you with more examples of how GNU GCC optimization can help
 
 **(2) ** 
 
