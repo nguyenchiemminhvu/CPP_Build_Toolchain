@@ -586,7 +586,10 @@ Some systems are configured not to write core files by default, since the files 
 ulimit -c unlimited
 ```
 
-Reading further about GNU GDB debugging here: [Debugging with GDB](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_toc.html)
+Reading further about GNU GDB debugging here:
+[Debugging with GDB](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_toc.html)
+[Debugging C++ core file](https://www.cse.unsw.edu.au/~learn/debugging/modules/gdb_coredumps/)
+[Load shared object debugging symbols](https://stackoverflow.com/questions/30281766/need-to-load-debugging-symbols-for-shared-library-in-gdb)
 
 #### Compiling with optimization
 
