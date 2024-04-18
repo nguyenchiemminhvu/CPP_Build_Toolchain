@@ -706,7 +706,9 @@ For the details of each optimization flags, refer to the home page of GNU GCC: [
 
 Let's consider several examples of GNU GCC optimization:
 
+```
 
+```
 
 ## Compiling a C/C++ library
 
