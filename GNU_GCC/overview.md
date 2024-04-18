@@ -755,10 +755,131 @@ We can observe that the assembly code output without optimization includes some 
 
 As the source code becomes more complex, it becomes harder to understand the assembly code. In these cases, it's best to rely on the expertise of experts who have researched this area. Let me provide you with more examples of how GNU GCC optimization can help
 
-**(2) ** 
+**(2) Common subexpression elimination**
+
+Common subexpression elimination is a compiler optimization technique that reduces redundant computations by identifying and eliminating repeated computations of the same subexpression within an expression.
 
 ```
+x = cos(v) * (1 + sin(u / 2)) + sin(w) * (1 - sin(u / 2))
 ```
+
+Facing the expression of x above, GNU GCC may identify the duplicate sin(u / 2) subexpression and make it a common subexpression:
+
+```
+temp = sin(u / 2)
+x = cos(v) * (1 + temp) + sin(w) * (1 - temp)
+```
+
+**(3) Pre-evaluate constant expression**
+
+```
+constexpr double TO_MILLIARCSECONDS = 3600000;
+double minLatMs = -90.0 * TO_MILLIARCSECONDS;
+double maxLatMs = 90.0 * TO_MILLIARCSECONDS;
+```
+
+Because TO_MILLIARCSECONDS is a constant expression, during the compilation, GNU GCC Compiler can evaluate the expression of minLatMs and maxLatMs and replace them with pre-computed value:
+
+```
+constexpr double TO_MILLIARCSECONDS = 3600000;
+double minLatMs = -324000000.0;
+double maxLatMs = 324000000.0;
+```
+
+**(4) Loop unrolling**
+
+Loop unrolling is a compilation technique used to improve the performance of loops. It involves replicating and expanding the loop code, effectively reducing the number of loop iterations.
+
+For example, the following loop iterates from 0 to 6, examine the condition "i < 7" 8 times.
+
+```
+for (int i = 0; i < 7; i++)
+{
+    arr[i] = i;
+}
+```
+
+A more efficient way to write the same code is simply unroll the loop and execute direct assignments:
+
+```
+arr[0] = 0;
+arr[1] = 1;
+arr[2] = 2;
+arr[3] = 3;
+arr[4] = 4;
+arr[5] = 5;
+arr[6] = 6;
+```
+
+This improvement does not requires any checking condition, and executes at maximum speed. However, loop unrolling usually increases the code size of the executable file.
+
+Another typical loop unroll example:
+
+```
+for (int i = 0; i < 100; i++)
+{
+    delete arr[i];
+}
+```
+
+The compiler may consider unrolling this loop in this way:
+
+```
+for (int i = 0; i < 100; i += 5)
+{
+    delete arr[i];
+    delete arr[i + 1];
+    delete arr[i + 2];
+    delete arr[i + 3];
+    delete arr[i + 4];
+}
+```
+
+As the result of this modification, the optimized executable file only requires 20 iterations, instead of 100. It reduces 20 percents of the jump and conditional checking.
+
+**(5) Loop unswitching**
+
+```
+void doSomething(int flags)
+{
+    for (int i = 0; i < 1000; i++)
+    {
+        if (flags == THIRD_PARTY_FEATURE)
+        {
+            third_party_func();
+        }
+        else
+        {
+            internal_func();
+        }
+    }
+}
+```
+
+Consider the function doSomething above, without optimization, the program must check the flags condition a thousand times within the loop. But the value of flags is not changed indeed. GNU GCC Compiler could utilize this detail to perform optimization:
+
+```
+void doSomething(int flags)
+{
+    if (flags == THIRD_PARTY_FEATURE)
+    {
+        for (int i = 0; i < 1000; i++)
+        {
+            third_party_func();
+        }
+    }
+    else
+    {
+        for (int i = 0; i < 1000; i++)
+        {
+            internal_func();
+        }
+    }
+}
+```
+
+We don't focus much on the specifics of GNU GCC optimization in this topic. If you want more examples of how GNU GCC optimization works, you can refer to this article for reference:
+[https://medium.com/@guannan.shen.ai/compiler-optimizations-46db19221947](https://medium.com/@guannan.shen.ai/compiler-optimizations-46db19221947)
 
 ## Compiling a C/C++ library
 
