@@ -1,2 +1,4 @@
-g++ -c -I./include src/json_reader.cpp src/json_value.cpp src/json_writer.cpp
+g++ -c -w -std=c++11 ./src/*.cpp ./src/*.inl -I./include
 ar rcs libjsoncpp.a json_reader.o json_value.o json_writer.o
+mv libjsoncpp.a ./build
+rm -rf *.o

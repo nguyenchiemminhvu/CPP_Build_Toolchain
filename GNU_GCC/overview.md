@@ -910,9 +910,80 @@ We don't focus much on the specifics of GNU GCC optimization in this topic. If y
 
 A static library is an archive of collection of reusable codes, stored in compiled object files. These files contains pre-compiled codes that can be linked directly into the C++ program at compile-time.
 
-![](Executable_With_Static_Lib.png)
+![](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/blob/master/GNU_GCC/Executable_With_Static_Lib.png?raw=true)
+
+Remember the example [01_HelloWorld](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/01_HelloWorld)? Just right before the linking step, the C/C++ codes of the 'main.cpp' file are compiled to an object file 'main.o'. And before the GNU GCC Compiler can build up a C/C++ executable file, it must understand the definition of all external function calls (or external variables). The assembler tool will leave the address of those external functions undefined, will be filled later in the linking stage.
+
+In that example, the GNU GCC Compiler know where to find the 'operator<<' in standard library directories. However, there could be many other user-define libraries containing useful codes we want to use. And we can also build some static libraries for ourself.
+
+Let's consider another sample source code folder: [https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib)
+
+This codes I copied from the master branch of [jsoncpp](https://github.com/open-source-parsers/jsoncpp/tree/master) project. This project has MIT license which means free to use, copy, modify, merge, publish, distribute,... Here in this article, we will only use its source code files to make an example of how to compile a static library and link it to a C++ program.
+
+Take a look at the source code structure:
 
 ```
+vu.nguyenchiemminh@localhost 03_jsoncpp_lib % tree
+.
+├── build
+├── include
+│   └── json
+│       ├── allocator.h
+│       ├── assertions.h
+│       ├── config.h
+│       ├── forwards.h
+│       ├── json.h
+│       ├── json_features.h
+│       ├── reader.h
+│       ├── value.h
+│       ├── version.h
+│       └── writer.h
+└── src
+    ├── json_reader.cpp
+    ├── json_tool.h
+    ├── json_value.cpp
+    ├── json_valueiterator.inl
+    └── json_writer.cpp
+```
+
+All the header files are located in the './include/json' directory. But the json.h header is actually the main header that includes all other headers needed for the JSON Library. In compilation process, we only need to deal with finding json.h header file problem, and it will automatically bring in all the other necessary headers. This approach simplifies the usage of JSON Library because we don't have to worry about manually including each individual header file.
+
+The './src' directory contains the implemenation files for the JSON Library, and that are our target of making object files.
+
+An empty '/build' directory where we can easily locate the output library file.
+
+```
+vu.nguyenchiemminh@localhost 03_jsoncpp_lib % pwd
+/Users/vu.nguyenchiemminh/StudySpace/CPP_Build_Automation/GNU_GCC/SampleProjects/03_jsoncpp_lib
+
+vu.nguyenchiemminh@localhost 03_jsoncpp_lib % g++ -c -w -std=c++11 ./src/*.cpp ./src/*.inl -I./include
+
+vu.nguyenchiemminh@localhost 03_jsoncpp_lib % ls -la
+total 1680
+drwxr-xr-x  10 vu.nguyenchiemminh  staff     320 Apr 20 00:22 .
+drwxr-xr-x   6 vu.nguyenchiemminh  staff     192 Apr 18 21:01 ..
+drwxr-xr-x   2 vu.nguyenchiemminh  staff      64 Apr 19 23:59 build
+drwxr-xr-x   3 vu.nguyenchiemminh  staff      96 Apr 20 00:11 include
+-rw-r--r--   1 vu.nguyenchiemminh  staff  397264 Apr 20 00:22 json_reader.o
+-rw-r--r--   1 vu.nguyenchiemminh  staff  289184 Apr 20 00:22 json_value.o
+-rw-r--r--   1 vu.nguyenchiemminh  staff  163600 Apr 20 00:22 json_writer.o
+drwxr-xr-x   7 vu.nguyenchiemminh  staff     224 Apr 20 00:11 src
+```
+
+```
+ar rcs libjsoncpp.a json_reader.o json_value.o json_writer.o
+```
+
+```
+mv libjsoncpp.a ./build
+rm -rf *.o
+```
+
+```
+g++ -c -w -std=c++11 ./src/*.cpp ./src/*.inl -I./include
+ar rcs libjsoncpp.a json_reader.o json_value.o json_writer.o
+mv libjsoncpp.a ./build
+rm -rf *.o
 ```
 
 ### Compiling shared object (dynamic library) and link to C/C++ program
