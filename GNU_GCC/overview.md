@@ -1000,6 +1000,33 @@ ranlib ./build/libjsoncpp.a
 rm -rf *.o
 ```
 
+Let's take a look at the symbols stored in the compiled jsoncpp static library:
+
+```
+vu.nguyenchiemminh@localhost 03_jsoncpp_lib % nm ./build/libjsoncpp.a | head -n 200 | tail -20
+error: write on a pipe with no reader
+000000000000aa70 T __ZN4Json17CharReaderBuilderD1Ev
+000000000000aa28 T __ZN4Json17CharReaderBuilderD2Ev
+000000000000b394 T __ZN4Json17CharReaderBuilderixERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE
+                 U __ZN4Json17ValueIteratorBase9incrementEv
+                 U __ZN4Json17throwRuntimeErrorERKNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEE
+000000000000b368 T __ZN4Json18ValueConstIteratorppEv
+                 U __ZN4Json5Value10setCommentENSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEENS_16CommentPlacementE
+                 U __ZN4Json5Value11swapPayloadERS0_
+                 U __ZN4Json5Value14setOffsetLimitEl
+                 U __ZN4Json5Value14setOffsetStartEl
+                 U __ZN4Json5ValueC1ENS_9ValueTypeE
+                 U __ZN4Json5ValueC1ERKNSt3__112basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEE
+                 U __ZN4Json5ValueC1Eb
+                 U __ZN4Json5ValueC1Ed
+                 U __ZN4Json5ValueC1Ei
+                 U __ZN4Json5ValueC1Ex
+                 U __ZN4Json5ValueC1Ey
+                 U __ZN4Json5ValueD1Ev
+                 U __ZN4Json5ValueaSEOS0_
+                 U __ZN4Json5ValueaSERKS0_
+```
+
 ### Compiling shared object (dynamic library) and link to C/C++ program
 
 ```
