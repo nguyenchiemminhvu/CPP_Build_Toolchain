@@ -884,6 +884,26 @@ void doSomething(int flags)
 We don't focus much on the specifics of GNU GCC optimization in this topic. If you want more examples of how GNU GCC optimization works, you can refer to this article for reference:
 [https://medium.com/@guannan.shen.ai/compiler-optimizations-46db19221947](https://medium.com/@guannan.shen.ai/compiler-optimizations-46db19221947)
 
+#### Other common use options
+
+- **-std=** Specifies the version of the programming language standard to be used. For example, -std=c++11 specifies the C++11 standard.
+- **-Wall** Enables additional warning messages during compilation.
+- **-Werror** Treats all warnings as errors.
+- **-Wno-unused-parameter** Disables warnings for unused function parameters.
+- **-fpermissive** Relaxes some of the strictness of the compiler, allowing certain non-standard or potentially unsafe code constructs to compile without errors. Thus, using -fpermissive allows some nonconforming code to compile.
+- **-fstack-protector-all** Enables stack protection mechanisms for all functions, adding extra checks to detect and prevent stack-based buffer overflows.
+- **-fPIE** Generates position-independent executables (PIE), which can be loaded at any memory address, enhancing security by making it harder for attackers to exploit certain vulnerabilities.
+- **-pie** Produce a dynamically linked position independent executable on targets that support it. Similar to -fPIE, but with additional linker options to ensure that all code and data references are resolved correctly.
+
+```
+-fPIC + -fpic = -fpic
+-fPIC + -fno-pic = -fno-pic
+-fpic/-fPIC + (no option) = (no option)
+-fPIC + -fPIE = -fPIE
+-fpic + -fPIE = -fpie
+-fPIC/-fpic + -fpie = -fpie
+```
+
 ## Compiling a C/C++ library
 
 ### Compiling static library and link to C/C++ program
