@@ -970,14 +970,20 @@ drwxr-xr-x   3 vu.nguyenchiemminh  staff      96 Apr 20 00:11 include
 drwxr-xr-x   7 vu.nguyenchiemminh  staff     224 Apr 20 00:11 src
 ```
 
+After creating the object files, we need one more step: store them all together in an archive file.
+
 ```
 ar rcs libjsoncpp.a json_reader.o json_value.o json_writer.o
 ```
+
+Finally, move the library libjsoncpp.a to the './build' directory as we target before. Don't forget to clean up the object files since it has no use from here.
 
 ```
 mv libjsoncpp.a ./build
 rm -rf *.o
 ```
+
+Here is a full version of static jsoncpp library compilation script:
 
 ```
 g++ -c -w -std=c++11 ./src/*.cpp ./src/*.inl -I./include
