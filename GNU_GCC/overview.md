@@ -983,12 +983,20 @@ mv libjsoncpp.a ./build
 rm -rf *.o
 ```
 
+Each time the static library is created or recompiled, the ranlib command is used to generate an index of the archive. This later will speed up symbol-lookup inside the library. It also ensures that the symbol table is up to date, making it easier for programs to link against the library.
+
+```
+ranlib ./build/libjsoncpp.a
+```
+
 Here is a full version of static jsoncpp library compilation script:
 
 ```
+cd /path/to/03_jsoncpp_lib
 g++ -c -w -std=c++11 ./src/*.cpp ./src/*.inl -I./include
 ar rcs libjsoncpp.a json_reader.o json_value.o json_writer.o
 mv libjsoncpp.a ./build
+ranlib ./build/libjsoncpp.a
 rm -rf *.o
 ```
 
