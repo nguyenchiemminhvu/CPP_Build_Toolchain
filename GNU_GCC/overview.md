@@ -908,6 +908,10 @@ We don't focus much on the specifics of GNU GCC optimization in this topic. If y
 
 ### Compiling static library and link to C/C++ program
 
+A static library is an archive of collection of reusable codes, stored in compiled object files. These files contains pre-compiled codes that can be linked directly into the C++ program at compile-time.
+
+![](Executable_With_Static_Lib.png)
+
 ```
 ```
 
