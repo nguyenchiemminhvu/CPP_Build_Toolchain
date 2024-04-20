@@ -4,7 +4,8 @@ if [ $# -eq 0 ]; then
     # No argument provided, compile the C++ program
     g++ \
         -std=c++11 \
-        -static main.cpp \
+        -static \
+        main.cpp \
         -I./../include \
         -L./../build \
         -ljsoncpp \

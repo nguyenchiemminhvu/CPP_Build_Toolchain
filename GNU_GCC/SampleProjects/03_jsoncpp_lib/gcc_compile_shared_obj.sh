@@ -1,3 +1,6 @@
 #!/bin/bash
 
-g++ -fPIC -shared -I./include -o libjsoncpp.so src/json_reader.cpp src/json_value.cpp src/json_writer.cpp
+g++ -c -w -std=c++11 -fPIC ./src/*.cpp -I./include
+g++ -shared json_reader.o json_value.o json_writer.o -o libjsoncpp.so
+mv libjsoncpp.* ./build
+rm -rf *.o

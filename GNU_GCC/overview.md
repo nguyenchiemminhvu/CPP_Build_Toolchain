@@ -956,7 +956,7 @@ An empty '/build' directory where we can easily locate the output library file.
 vu.nguyenchiemminh@localhost 03_jsoncpp_lib % pwd
 /Users/vu.nguyenchiemminh/StudySpace/CPP_Build_Automation/GNU_GCC/SampleProjects/03_jsoncpp_lib
 
-vu.nguyenchiemminh@localhost 03_jsoncpp_lib % g++ -c -w -std=c++11 ./src/*.cpp ./src/*.inl -I./include
+vu.nguyenchiemminh@localhost 03_jsoncpp_lib % g++ -c -w -std=c++11 ./src/*.cpp -I./include
 
 vu.nguyenchiemminh@localhost 03_jsoncpp_lib % ls -la
 total 1680
@@ -993,7 +993,7 @@ Here is a full version of static jsoncpp library compilation script:
 
 ```
 cd /path/to/03_jsoncpp_lib
-g++ -c -w -std=c++11 ./src/*.cpp ./src/*.inl -I./include
+g++ -c -w -std=c++11 ./src/*.cpp -I./include
 ar rcs libjsoncpp.a json_reader.o json_value.o json_writer.o
 mv libjsoncpp.a ./build
 ranlib ./build/libjsoncpp.a
@@ -1060,12 +1060,12 @@ int main(int argc, char** argv)
 }
 ```
 
-I locate this test source codes in the ./test folder of [03_jsoncpp_lib](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib/test) example. Now, let's compile and run the program:
+I locate this test source codes in the ./test folder of [03_jsoncpp_lib/test](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib/test) example. Now, let's compile and run the program:
 
 ```
-vu.nguyenchiemminh@localhost 03_jsoncpp_lib/test % g++ -std=c++11 -static main.cpp -I./../include -L./../build -ljsoncpp -o main
+ncmv@localhost 03_jsoncpp_lib/test % g++ -std=c++11 -static main.cpp -I./../include -L./../build -ljsoncpp -o main
 
-vu.nguyenchiemminh@localhost 03_jsoncpp_lib/test % ./main
+ncmv@localhost 03_jsoncpp_lib/test % ./main
 colin
 20
 ```
@@ -1077,13 +1077,105 @@ colin
 We can specify the absolute name and path of the static library and achieve the same result, because the static library is just a combination of the symbols of object files.
 
 ```
-vu.nguyenchiemminh@localhost 03_jsoncpp_lib/test % g++ -std=c++11 -static main.cpp -I./../include ./../build/libjsoncpp.a -o main
+ncmv@localhost 03_jsoncpp_lib/test % g++ -std=c++11 -static main.cpp -I./../include ./../build/libjsoncpp.a -o main
 ```
+
+Let's note this point, the 'main' executable file is approximately 2.8MB size, which contains all the symbols of the jsoncpp library.
+
+```
+ncmv@localhost 03_jsoncpp_lib/test % ls -la
+total 2880
+drwxrwxr-x 2 ncmv ncmv    4096 Apr 20 10:34 .
+drwxrwxr-x 6 ncmv ncmv    4096 Apr 20 10:11 ..
+-rwxrwxr-x 1 ncmv ncmv     396 Apr 20 10:33 gcc_compile_with_shared_obj.sh
+-rwxrwxr-x 1 ncmv ncmv     414 Apr 20 10:33 gcc_compile_with_static_lib.sh
+-rwxrwxr-x 1 ncmv ncmv 2927824 Apr 20 10:34 main
+-rw-rw-r-- 1 ncmv ncmv     751 Apr 20 10:00 main.cpp
+```
+
+In the next part of this article, when we compile the test problem with dynamic linking, we will compare the output size of the executable file and see the difference.
 
 ### Compiling shared object (dynamic library) and link to C/C++ program
 
+Using the same jsoncpp source codes in the static library compilation example: [https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib)
+
+To compile a shared object from this source codes, we need to follow a few steps. At first, compile the source codes into object files.
+
 ```
+g++ -c -w -std=c++11 -fPIC ./src/*.cpp -I./include
 ```
+
+- **-fPIC** stands for "Position-Independent Code". Using this flag, GNU GCC Compiler generates machine code that can be loaded and executed at any memory address, suitable for use in a shared library.
+
+Now, we need to link the PIC object files into the shared object.
+
+```
+g++ -shared json_reader.o json_value.o json_writer.o -o libjsoncpp.so
+```
+
+- **-shared** Produces a shared object which can then be linked with other objects to form an executable. A shared object is a library that can be dynamically loaded and linked at runtime by multiple programs.
+
+Finally, move the library libjsoncpp.so to the './build' directory as we target before. Don't forget to clean up the object files since it has no use from here.
+
+```
+mv libjsoncpp.* ./build
+rm -rf *.o
+```
+
+Here is a full version of jsoncpp shared object (dynamic library) compilation script:
+
+```
+cd /path/to/03_jsoncpp_lib
+g++ -c -w -std=c++11 -fPIC ./src/*.cpp -I./include
+g++ -shared json_reader.o json_value.o json_writer.o -o libjsoncpp.so
+mv libjsoncpp.* ./build
+rm -rf *.o
+```
+
+Once the shared object is created, we can use it in our program: [03_jsoncpp_lib/test](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib/test)
+
+```
+g++ -std=c++11 -rdynamic main.cpp -I./../include -L./../build -ljsoncpp -o main
+```
+
+- **-rdynamic** This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table. This option is needed for some uses of dlopen or to allow obtaining backtraces from within a program.
+
+As we can observe, the 'main' executable file is now approximately 0.02MB size. This size indicates the total size of the compiled program, including both your code and any libraries it depends on, such as the jsoncpp library.
+
+```
+ncmv@localhost 03_jsoncpp_lib/test % ls -la
+total 48
+drwxrwxr-x 2 ncmv ncmv  4096 Apr 20 11:10 .
+drwxrwxr-x 6 ncmv ncmv  4096 Apr 20 10:44 ..
+-rwxrwxr-x 1 ncmv ncmv   416 Apr 20 11:10 gcc_compile_with_shared_obj.sh
+-rwxrwxr-x 1 ncmv ncmv   414 Apr 20 10:33 gcc_compile_with_static_lib.sh
+-rwxrwxr-x 1 ncmv ncmv 30336 Apr 20 11:10 main
+```
+
+It's time to run the executable file for testing, and ... oops!
+
+```
+ncmv@localhost 03_jsoncpp_lib/test % ./main
+./main: error while loading shared libraries: libjsoncpp.so: cannot open shared object file: No such file or directory
+```
+
+This error usually occurs when the required shared library is not installed or not in the expected location. There is a few ways to resolve this issue. The easiest what is to install the compiled shared object files to the GNU GCC standard library lookup directories:
+
+```
+sudo mv libjsoncpp.so /usr/local/lib
+sudo ldconfig
+```
+
+Another way is to expand the library search path using LD_LIBRARY_PATH environment variable.
+
+```
+ncmv@localhost 03_jsoncpp_lib/test % export LD_LIBRARY_PATH=./../build
+ncmv@localhost 03_jsoncpp_lib/test % ./main
+colin
+20
+```
+
+In this way, we tell the GNU GCC Compiler the additional paths to find the necessary libraries.
 
 ## A sample project
 
