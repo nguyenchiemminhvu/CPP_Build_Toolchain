@@ -1027,6 +1027,71 @@ error: write on a pipe with no reader
                  U __ZN4Json5ValueaSERKS0_
 ```
 
+[https://github.com/open-source-parsers/jsoncpp/blob/master/example/readFromString/readFromString.cpp](https://github.com/open-source-parsers/jsoncpp/blob/master/example/readFromString/readFromString.cpp)
+
+```
+#include <json/json.h>
+#include <iostream>
+#include <string>
+#include <memory>
+
+int main(int argc, char** argv)
+{
+    const std::string rawJson = R"({"Age": 20, "Name": "colin"})";
+    const int rawJsonLength = static_cast<int>(rawJson.length());
+    JSONCPP_STRING err;
+    Json::Value root;
+
+    Json::CharReaderBuilder builder;
+    const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
+    if (!reader->parse(rawJson.c_str(), rawJson.c_str() + rawJsonLength, &root, &err))
+    {
+        std::cout << "error" << std::endl;
+        return -1;
+    }
+
+    const std::string name = root["Name"].asString();
+    const int age = root["Age"].asInt();
+    std::cout << name << std::endl;
+    std::cout << age << std::endl;
+    return 0;
+}
+```
+
+```
+vu.nguyenchiemminh@localhost 03_jsoncpp_lib/test % g++ -std=c++11 main.cpp -I./../include -o main
+
+/usr/bin/ld: /tmp/cckqai71.o: in function `main':
+main.cpp:(.text+0x9f): undefined reference to `Json::Value::Value(Json::ValueType)'
+/usr/bin/ld: main.cpp:(.text+0xae): undefined reference to `Json::CharReaderBuilder::CharReaderBuilder()'
+/usr/bin/ld: main.cpp:(.text+0xbd): undefined reference to `Json::CharReaderBuilder::newCharReader() const'
+/usr/bin/ld: main.cpp:(.text+0x18d): undefined reference to `Json::Value::operator[](char const*)'
+/usr/bin/ld: main.cpp:(.text+0x19f): undefined reference to `Json::Value::asString[abi:cxx11]() const'
+/usr/bin/ld: main.cpp:(.text+0x1b8): undefined reference to `Json::Value::operator[](char const*)'
+/usr/bin/ld: main.cpp:(.text+0x1c0): undefined reference to `Json::Value::asInt() const'
+/usr/bin/ld: main.cpp:(.text+0x246): undefined reference to `Json::CharReaderBuilder::~CharReaderBuilder()'
+/usr/bin/ld: main.cpp:(.text+0x255): undefined reference to `Json::Value::~Value()'
+/usr/bin/ld: main.cpp:(.text+0x2ee): undefined reference to `Json::CharReaderBuilder::~CharReaderBuilder()'
+/usr/bin/ld: main.cpp:(.text+0x306): undefined reference to `Json::Value::~Value()'
+collect2: error: ld returned 1 exit status
+```
+
+```
+vu.nguyenchiemminh@localhost 03_jsoncpp_lib/test % g++ -std=c++11 -static main.cpp -I./../include -L./../build -ljsoncpp -o main
+
+vu.nguyenchiemminh@localhost 03_jsoncpp_lib/test % ./main
+colin
+20
+```
+
+In the previous sample compile and link command, '-ljsoncpp' flag tells the linker to find the object files present in the file 'libjsoncpp.a' to create the executable file.
+
+We can specify the absolute name and path of the static library and achieve the same result, because the static library is just a combination of the symbols of object files.
+
+```
+vu.nguyenchiemminh@localhost 03_jsoncpp_lib/test % g++ -std=c++11 -static main.cpp -I./../include ./../build/libjsoncpp.a -o main
+```
+
 ### Compiling shared object (dynamic library) and link to C/C++ program
 
 ```
