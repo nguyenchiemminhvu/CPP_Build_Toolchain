@@ -1174,4 +1174,4 @@ It is also a good time for practice.
 
 [https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/04_LocationService](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/04_LocationService)
 
-Try to compile a sample project by yourself before looking for a solution: [https://github.com/nguyenchiemminhvu/CPP_Build_Automation/blob/master/GNU_GCC/SampleProjects/04_LocationService/gcc_compile_project.sh](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/blob/master/GNU_GCC/SampleProjects/04_LocationService/gcc_compile_project.sh)
+Try to compile a sample project by yourself before looking for a solution: [gcc_compile_project.sh](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/blob/master/GNU_GCC/SampleProjects/04_LocationService/gcc_compile_project.sh)
