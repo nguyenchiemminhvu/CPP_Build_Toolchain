@@ -1080,8 +1080,6 @@ We can specify the absolute name and path of the static library and achieve the 
 vu.nguyenchiemminh@localhost 03_jsoncpp_lib/test % g++ -std=c++11 -static main.cpp -I./../include ./../build/libjsoncpp.a -o main
 ```
 
-
-
 ### Compiling shared object (dynamic library) and link to C/C++ program
 
 ```
