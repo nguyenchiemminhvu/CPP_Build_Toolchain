@@ -1084,13 +1084,7 @@ Let's note this point, the 'main' executable file is approximately 2.8MB size, w
 
 ```
 ncmv@localhost 03_jsoncpp_lib/test % ls -la
-total 2880
-drwxrwxr-x 2 ncmv ncmv    4096 Apr 20 10:34 .
-drwxrwxr-x 6 ncmv ncmv    4096 Apr 20 10:11 ..
--rwxrwxr-x 1 ncmv ncmv     396 Apr 20 10:33 gcc_compile_with_shared_obj.sh
--rwxrwxr-x 1 ncmv ncmv     414 Apr 20 10:33 gcc_compile_with_static_lib.sh
 -rwxrwxr-x 1 ncmv ncmv 2927824 Apr 20 10:34 main
--rw-rw-r-- 1 ncmv ncmv     751 Apr 20 10:00 main.cpp
 ```
 
 In the next part of this article, when we compile the test problem with dynamic linking, we will compare the output size of the executable file and see the difference.
@@ -1144,11 +1138,6 @@ As we can observe, the 'main' executable file is now approximately 0.02MB size. 
 
 ```
 ncmv@localhost 03_jsoncpp_lib/test % ls -la
-total 48
-drwxrwxr-x 2 ncmv ncmv  4096 Apr 20 11:10 .
-drwxrwxr-x 6 ncmv ncmv  4096 Apr 20 10:44 ..
--rwxrwxr-x 1 ncmv ncmv   416 Apr 20 11:10 gcc_compile_with_shared_obj.sh
--rwxrwxr-x 1 ncmv ncmv   414 Apr 20 10:33 gcc_compile_with_static_lib.sh
 -rwxrwxr-x 1 ncmv ncmv 30336 Apr 20 11:10 main
 ```
 
@@ -1179,3 +1168,10 @@ In this way, we tell the GNU GCC Compiler the additional paths to find the neces
 
 ## A sample project
 
+After going through the document called "Using the GNU Compiler Collection," we now have a good understanding of the basics of GNU GCC Compilation. It's time to practice:
+
+[https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/04_LocationService](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/04_LocationService)
+
+Try it yourself before looking for the solution: [gcc_compile_project.sh](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/blob/master/GNU_GCC/SampleProjects/04_LocationService/gcc_compile_project.sh)
+
+If you want to learn more advanced topics about GNU GCC, check it out the detailed publication by GNU at [https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc.pdf](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc.pdf). This document has additional information to help you learn more and improve your skills in using GNU GCC.
