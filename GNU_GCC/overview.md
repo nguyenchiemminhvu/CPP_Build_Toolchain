@@ -1166,12 +1166,12 @@ colin
 
 In this way, we tell the GNU GCC Compiler the additional paths to find the necessary libraries.
 
-## A sample project
+## Conclusion
 
-After going through the document called "Using the GNU Compiler Collection," we now have a good understanding of the basics of GNU GCC Compilation. It's time to practice:
+After going through this article, we now have a good understanding of the basics of GNU GCC Compilation. If you want to learn more advanced topics about GNU GCC, check it out the detailed publication by GNU at [https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc.pdf](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc.pdf). This document has additional information to help you learn more and improve your skills in using GNU GCC.
+
+It is also a good time for practice.
 
 [https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/04_LocationService](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/04_LocationService)
 
-Try it yourself before looking for the solution: [gcc_compile_project.sh](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/blob/master/GNU_GCC/SampleProjects/04_LocationService/gcc_compile_project.sh)
-
-If you want to learn more advanced topics about GNU GCC, check it out the detailed publication by GNU at [https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc.pdf](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc.pdf). This document has additional information to help you learn more and improve your skills in using GNU GCC.
+Try to compile a sample project by yourself before looking for a solution: [https://github.com/nguyenchiemminhvu/CPP_Build_Automation/blob/master/GNU_GCC/SampleProjects/04_LocationService/gcc_compile_project.sh](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/blob/master/GNU_GCC/SampleProjects/04_LocationService/gcc_compile_project.sh)
