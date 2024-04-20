@@ -1027,6 +1027,8 @@ error: write on a pipe with no reader
                  U __ZN4Json5ValueaSERKS0_
 ```
 
+Now, when the JSON static library is available, we want to create an example CPP file to compile with it. Let's pick a simple example source code from the same jsoncpp git repository:
+
 [https://github.com/open-source-parsers/jsoncpp/blob/master/example/readFromString/readFromString.cpp](https://github.com/open-source-parsers/jsoncpp/blob/master/example/readFromString/readFromString.cpp)
 
 ```
@@ -1058,7 +1060,7 @@ int main(int argc, char** argv)
 }
 ```
 
-
+I locate this test source codes in the ./test folder of [03_jsoncpp_lib](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib/test) example. Now, let's compile and run the program:
 
 ```
 vu.nguyenchiemminh@localhost 03_jsoncpp_lib/test % g++ -std=c++11 -static main.cpp -I./../include -L./../build -ljsoncpp -o main
@@ -1068,13 +1070,17 @@ colin
 20
 ```
 
-In the previous sample compile and link command, '-ljsoncpp' flag tells the linker to find the object files present in the file 'libjsoncpp.a' to create the executable file.
+- **-L** Specify the directory where the linker should look for the libraries during the linking phase.
+- **-l** Specify the name of the library that should be linked with your program during the linking phase.
+- **-static** When the linker encounters both a static library (.a file) and a shared library (.so file) with the same name in the same directory, it follows a specific order of preference. By default, the linker will prioritize the shared library (.so file) over the static library (.a file). The -static flag instructs the linker to prefer static libraries over shared libraries. 
 
 We can specify the absolute name and path of the static library and achieve the same result, because the static library is just a combination of the symbols of object files.
 
 ```
 vu.nguyenchiemminh@localhost 03_jsoncpp_lib/test % g++ -std=c++11 -static main.cpp -I./../include ./../build/libjsoncpp.a -o main
 ```
+
+
 
 ### Compiling shared object (dynamic library) and link to C/C++ program
 
