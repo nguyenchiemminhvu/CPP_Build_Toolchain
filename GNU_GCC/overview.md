@@ -1058,23 +1058,7 @@ int main(int argc, char** argv)
 }
 ```
 
-```
-vu.nguyenchiemminh@localhost 03_jsoncpp_lib/test % g++ -std=c++11 main.cpp -I./../include -o main
 
-/usr/bin/ld: /tmp/cckqai71.o: in function `main':
-main.cpp:(.text+0x9f): undefined reference to `Json::Value::Value(Json::ValueType)'
-/usr/bin/ld: main.cpp:(.text+0xae): undefined reference to `Json::CharReaderBuilder::CharReaderBuilder()'
-/usr/bin/ld: main.cpp:(.text+0xbd): undefined reference to `Json::CharReaderBuilder::newCharReader() const'
-/usr/bin/ld: main.cpp:(.text+0x18d): undefined reference to `Json::Value::operator[](char const*)'
-/usr/bin/ld: main.cpp:(.text+0x19f): undefined reference to `Json::Value::asString[abi:cxx11]() const'
-/usr/bin/ld: main.cpp:(.text+0x1b8): undefined reference to `Json::Value::operator[](char const*)'
-/usr/bin/ld: main.cpp:(.text+0x1c0): undefined reference to `Json::Value::asInt() const'
-/usr/bin/ld: main.cpp:(.text+0x246): undefined reference to `Json::CharReaderBuilder::~CharReaderBuilder()'
-/usr/bin/ld: main.cpp:(.text+0x255): undefined reference to `Json::Value::~Value()'
-/usr/bin/ld: main.cpp:(.text+0x2ee): undefined reference to `Json::CharReaderBuilder::~CharReaderBuilder()'
-/usr/bin/ld: main.cpp:(.text+0x306): undefined reference to `Json::Value::~Value()'
-collect2: error: ld returned 1 exit status
-```
 
 ```
 vu.nguyenchiemminh@localhost 03_jsoncpp_lib/test % g++ -std=c++11 -static main.cpp -I./../include -L./../build -ljsoncpp -o main
