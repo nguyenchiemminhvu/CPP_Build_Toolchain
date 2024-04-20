@@ -232,7 +232,7 @@ g++ main.o -o main -L/path/to/lib -lstdc++
 
 Taken the same sample source code: [02_MultipleSourceFile](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/02_MultipleSourceFiles)
 
-Now, we create a folder name "opensource" that contains the a include folder and a lib folder:
+Now, we create a new directory name "opensource" that contains the include and lib folders:
 
 ```
 vu.nguyenchiemminh@localhost 02_MultipleSourceFiles# pwd
@@ -296,7 +296,7 @@ To get over this situation, try to use -I option during compilation process:
 g++ -std=c++11 -I./opensource/include simple_math.cpp simple_algo.cpp main.cpp -o main
 ```
 
-Now, when the GNU GCC tool can find the header file in the additional folder we just provided, the symbols of the external function calls are undefined.
+Now, when the GNU GCC tool can find the header file in the additional directory we just provided, the symbols of the external function calls are undefined.
 
 ```
 # g++ -std=c++11 -I./opensource/include simple_math.cpp simple_algo.cpp main.cpp -o main
@@ -916,7 +916,7 @@ Remember the example [01_HelloWorld](https://github.com/nguyenchiemminhvu/CPP_Bu
 
 In that example, the GNU GCC Compiler know where to find the 'operator<<' in standard library directories. However, there could be many other user-define libraries containing useful codes we want to use. And we can also build some static libraries for ourself.
 
-Let's consider another sample source code folder: [https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib)
+Let's consider another sample source code directory: [https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib)
 
 This codes I copied from the master branch of [jsoncpp](https://github.com/open-source-parsers/jsoncpp/tree/master) project. This project has MIT license which means free to use, copy, modify, merge, publish, distribute,... Here in this article, we will only use its source code files to make an example of how to compile a static library and link it to a C++ program.
 
@@ -1060,7 +1060,7 @@ int main(int argc, char** argv)
 }
 ```
 
-I locate this test source codes in the ./test folder of [03_jsoncpp_lib/test](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib/test) example. Now, let's compile and run the program:
+I locate this test source codes in the './test' directory of [03_jsoncpp_lib/test](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib/test) example. Now, let's compile and run the program:
 
 ```
 ncmv@localhost 03_jsoncpp_lib/test % g++ -std=c++11 -static main.cpp -I./../include -L./../build -ljsoncpp -o main
@@ -1173,5 +1173,43 @@ After going through this article, we now have a good understanding of the basics
 It is also a good time for practice.
 
 [https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/04_LocationService](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/04_LocationService)
+
+```
+ncmv@localhost 04_LocationService % tree
+.
+├── core
+│   └── nmeaparser
+│       ├── include
+│       │   ├── config.h
+│       │   ├── context.h
+│       │   ├── generate.h
+│       │   ├── generator.h
+│       │   ├── gmath.h
+│       │   ├── info.h
+│       │   ├── nmea.h
+│       │   ├── nmeatime.h
+│       │   ├── parse.h
+│       │   ├── parser.h
+│       │   ├── sentence.h
+│       │   ├── tok.h
+│       │   └── units.h
+│       └── src
+│           ├── context.cpp
+│           ├── generate.cpp
+│           ├── generator.cpp
+│           ├── gmath.cpp
+│           ├── info.cpp
+│           ├── parse.cpp
+│           ├── parser.cpp
+│           ├── sentence.cpp
+│           ├── time.cpp
+│           └── tok.cpp
+├── main.cpp
+└── service
+    ├── LocationService.cpp
+    └── LocationService.h
+```
+
+Consider to make at least one shared object from the source code inside './core' directory which will be linked to the main executable file.
 
 Try to compile a sample project by yourself before looking for a solution: [gcc_compile_project.sh](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/blob/master/GNU_GCC/SampleProjects/04_LocationService/gcc_compile_project.sh)
