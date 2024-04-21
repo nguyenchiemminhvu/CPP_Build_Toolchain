@@ -1166,6 +1166,31 @@ colin
 
 In this way, we tell the GNU GCC Compiler the additional paths to find the necessary libraries.
 
+When a program has been compiled using shared libraries, it needs to load those libraries dynamically at run time in order to call external functions. We can trace from the executable file to see which shared libraries are linked.
+
+```
+ncmv@localhost 03_jsoncpp_lib/test % ldd main
+        linux-vdso.so.1 (0x00007fff0f5db000)
+        libjsoncpp.so => ./../build/libjsoncpp.so (0x00007fb1f1327000)
+        libstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007fb1f10f4000)
+        libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007fb1f10d4000)
+        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fb1f0eab000)
+        libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007fb1f0dc4000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007fb1f13bf000)
+```
+
+'ldd' command can also be used to examine the shared object itself, in order to trace the chain of share object dependencies.
+
+```
+ncmv@localhost 03_jsoncpp_lib/test % ldd ./../build/libjsoncpp.so
+        linux-vdso.so.1 (0x00007ffd9c5da000)
+        libstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f51ec7be000)
+        libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f51ec6d7000)
+        libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f51ec6b7000)
+        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f51ec48e000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007f51eca82000)
+```
+
 ## Conclusion
 
 After going through this article, we now have a good understanding of the basics of GNU GCC Compilation. If you want to learn more advanced topics about GNU GCC, check it out the detailed publication by GNU at [https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc.pdf](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc.pdf). This document has additional information to help you learn more and improve your skills in using GNU GCC.
