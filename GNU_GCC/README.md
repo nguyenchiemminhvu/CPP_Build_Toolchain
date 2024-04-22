@@ -15,7 +15,7 @@ GNU GCC is a key component of "GNU Toolchain", a collection of programming tools
 - GNU Compiler Collection (GCC): A compiler suite that supports many languages, such as C/C++ and Objective-C/C++.
 - GNU Make: An automation tool for compiling and building applications.
 - GNU Binutils: A suite of binary utility tools, including linker and assembler.
-- GNU Autotools: A build system including Autoconf, Autoheader, Automake, and Libtool.- 
+- GNU Autotools: A build system including Autoconf, Autoheader, Automake, and Libtool.
 - GNU C Library (glibc): The C library for the GNU system and most Linux systems.
 - GNU Debugger (GDB): A powerful debugger for C, C++, and other languages.
 
