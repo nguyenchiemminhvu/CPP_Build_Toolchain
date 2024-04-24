@@ -1,6 +1,11 @@
 ## Introduction
 
-A year after GNU GCC Compiler was created, GNU Project released GNU Make. GNU Make is a build automation tool that automatically builds executable programs and libraries from source code by reading files called Makefiles. These Makefiles specify how to derive the target program from the source files.
+In the vision of creating a complete free and open-source software ecosystem, led by Richard Stallman, after the creation of the GNU GCC Compiler in 1987, the GNU Project released GNU Make in 1988.
 
-GNU Make generalizes the common parts of the GNU GCC compiling process by allowing users to specify the rules for compiling their programs in a common format using makefiles. These makefiles contain instructions for how to build the program, including the dependencies between different source files and the commands needed to compile them. This enables users to input the arguments and customize the build process according to their specific needs.
+The GNU GCC Compiler was a great accomplishment as it provided a free and powerful tool to compile code. However, GNU Project realized that building software is not just all about compiling code.
 
+Imagine you have a big project that consists of multiple files, like source code files, libraries, and other resources.
+
+![](MultipleDependencies.png)
+
+Now, building that project means taking all these pieces and putting them together in the right order to create the final product.
