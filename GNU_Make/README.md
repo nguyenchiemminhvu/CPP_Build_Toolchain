@@ -6,6 +6,6 @@ The GNU GCC Compiler was a great accomplishment as it provided a free and powerf
 
 Imagine you have a big project that consists of multiple files, like source code files, libraries, and other resources.
 
-![](MultipleDependencies.png)
+![](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Make/MultipleDependencies.png?raw=true)
 
-Now, building that project means taking all these pieces and putting them together in the right order to create the final product.
+Now, building that project means taking all these pieces and putting them together in the right order to create the final executable file.
