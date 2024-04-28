@@ -28,8 +28,6 @@ A Make file for a project writen in Go programming language:
 
 However, in this series of CPP build toolchain tutorials, we only concentrate on using the toolchain to compile C/C++ programs.
 
-Using GNU Make is quite simple. When you run the command "make", it looks for a file called "Makefile" in the current directory, it reads the instructions from the makefile and carries out the necessary steps to build your project.
-
 We first need to install GNU Make. If you have Linux OS installed on your PC, try the following shell commands:
 
 ```
@@ -51,6 +49,21 @@ There is NO WARRANTY, to the extent permitted by law.
 
 The latest stable version is 4.3, released January 19, 2020.
 Explore and download different releases of Make here: https://ftp.gnu.org/gnu/make/
+
+Using GNU Make is quite simple. When you run the command "make", it looks for a file called "Makefile" in the current directory, it reads the instructions from the makefile and carries out the necessary steps to build your project.
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain$ pwd
+/home/ncmv/study_workspace/CPP_Build_Toolchain
+
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain$ cat Makefile 
+hello:
+    echo "Hello GNU Make"
+
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain$ make
+echo "Hello GNU Make"
+Hello GNU Make
+```
 
 Now, all we need to know is the syntax or other details for writing the content of a Makefile.
 
