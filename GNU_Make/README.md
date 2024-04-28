@@ -67,13 +67,9 @@ Hello GNU Make
 
 Now, all we need to know is the syntax or other details for writing the content of a Makefile.
 
-### Basic concepts: targets, dependencies, and rules
+### Makefile syntax
 
-#### Targets
 
-#### Dependencies
-
-#### Rules
 
 ## Writing Makefiles
 
