@@ -78,7 +78,29 @@ target: prerequisites
 
 - The target is the file or component that you want to build. It can be an executable, an object file, or any other type of output we desire.
 - Prerequisites are the files or components that the target depends on. If any of the prerequisites are newer than the target, Make will execute the commands to update the target.
-- Commands are the actions that need to be performed in order to build the target. They are are typically shell commands.
+- Commands are the actions that need to be performed in order to build the target. They are are typically shell commands, and are indented by a tab character, not spaces.
+
+[https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/01_HelloWorld](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/01_HelloWorld)
+
+```
+main: main.o
+	g++ main.o -o main
+
+main.o: main.cpp
+	g++ -c -Wall -g -std=c++11 main.cpp
+```
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ make
+g++ -c -Wall -g -std=c++11 main.cpp
+g++ main.o -o main
+
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ ls
+main  main.cpp  main.o  Makefile
+
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ ./main 
+Hello World
+```
 
 ## Writing Makefiles
 

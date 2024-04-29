@@ -3,6 +3,3 @@ main: main.o
 
 main.o: main.cpp
 	g++ -c -Wall -g -std=c++11 main.cpp
-
-clean:
-	rm -rf *.o main
