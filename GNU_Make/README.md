@@ -67,7 +67,7 @@ Hello GNU Make
 
 Now, all we need to know is the syntax or other details for writing the content of a Makefile.
 
-### Makefile syntax
+### Makefile Syntax
 
 In a Makefile, we define a set of rules that specify how to build different parts of your project. Each rule consists of a target, prerequisites, and commands. Here's the basic structure:
 
@@ -81,6 +81,8 @@ target : prerequisites ...
 - The target is the file or component that you want to build. It can be an executable, an object file, or any other type of output we desire.
 - Prerequisites are the files or components that the target depends on. If any of the prerequisites are newer than the target, Make will execute the commands to update the target.
 - A recipe usually contains more than one command, either on the same line or on each line. Commands of a recipe are the actions that need to be performed in order to build the target. They are are typically shell commands, and are indented by a tab character, not spaces.
+
+## Basic Makefile Concepts
 
 ### Hello Makefile
 
@@ -164,7 +166,7 @@ However, it is not mandatory for a target to create a file with the same name. T
 
 GNU Make determines if a source file has changed by comparing its timestamp with the timestamp of the target file. If the source file's timestamp is more recent than the target file's timestamp, Make knows that the source file has been modified and triggers the recompilation of the associated target.
 
-### clean target
+### The clean target
 
 The 'clean' target is a common convention in Makefiles. It is used to remove any files generated during the build process. The purpose of the 'clean' target is to ensure a clean and consistent state of the project.
 
@@ -220,13 +222,6 @@ ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/02_
 └── simple_math.h
 ```
 
-In this example, we split up the C++ program into 4 parts:
-
-- main function defined in main.cpp file
-- some simple math calculation defined in the simple_math.cpp file
-- some simple algorithms defined in the simple_algo.cpp file
-- the predefined library of basic input/output functionalities
-
 This Makefile below is a set of instructions for building an executable file called 'main'. It specifies that 'main' depends on three object files: 'main.o', 'simple_algo.o', and 'simple_math.o'.
 
 ```
@@ -269,8 +264,6 @@ Average: 5
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/02_MultipleSourceFiles$ make clean
 ```
 
-### How Make processes a Makefile?
-
 By default, Make starts with the first target, it is called "default target".
 
 In the simple example of the previous section, the default target is 'main'. The default goal is to update the executable program called 'main'; therefore, we put that rule at first.
@@ -279,25 +272,49 @@ But before Make can fulfill the rule for 'main' target, it must process the rule
 
 It is not mandatory to put the default target on top of other targets in the Makefile, but it is a common convention and a good practice to do so. When run ```make``` without specifying a target, Make will build the default target.
 
+### Splitting Recipe Lines
+
 ### Variables
 
+## Advanced Makefile Concepts
 
+### The all target
+
+### Multiple targets for a rule
+
+### Automatic Variables
+
+### Wildcards
+
+### Pattern rules
+
+### Phony targets
+
+### Implicit rules
+
+### Conditional statements
+
+## Advanced Makefile Techniques
+
+### Implicit rules
+
+### Include other Makefile
+
+### Recursive Make
+
+### Advanced variable manipulation
+
+### Functions
 
 ## Conclusion
 
 After exploring the GNU Make tool, It is clear that GNU Make is a powerful tool for automating the process of building software projects. With GNU Make, managing large projects with multiple files becomes more efficient and less time-consuming.
 
-To truly grasp the concepts behind GNU Make and how it is used in C/C++ programming, it is crucial to gain practical experience with sample projects:
-
-[GNU_Make/SampleProjects/03_jsoncpp_lib](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/03_jsoncpp_lib)
+To truly grasp the concepts behind GNU Make and how it is used in C/C++ programming, it is crucial to gain practical experience with a sample project:
 
 [GNU_Make/SampleProjects/04_LocationService](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/04_LocationService)
 
-Try to create your Makefiles first, before looking for a solution:
-
-[GNU_Make/SampleProjects/03_jsoncpp_lib/Makefile](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Make/SampleProjects/03_jsoncpp_lib/Makefile)
-
-[GNU_Make/SampleProjects/04_LocationService/Makefile](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Make/SampleProjects/04_LocationService/Makefile)
+Try to create your Makefiles first, before looking for a solution: [GNU_Make/SampleProjects/04_LocationService/Makefile](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Make/SampleProjects/04_LocationService/Makefile)
 
 ----
 **References:**
