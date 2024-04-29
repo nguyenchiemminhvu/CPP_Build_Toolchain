@@ -115,9 +115,9 @@ ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_
 make: 'main' is up to date.
 ```
 
-One question here, what if there is no prerequisite is supplied to the target?
+**One question here, what if there is no prerequisite is supplied to the target?**
 
-=> It means that the target of that rule does not depend on any other files or rules. This can be useful when we have a target that needs to be updated unconditionally, regardless of the state of any other files.
+> It means that the target of that rule does not depend on any other files or rules. This can be useful when we have a target that needs to be updated unconditionally, regardless of the state of any other files.
 
 ```
 main: main.o
@@ -156,11 +156,33 @@ So, the dump target and the existence of the "dump" file are directly linked. Ty
 
 However, it is not mandatory for a target to create a file with the same name. Targets can also be used to execute certain actions or perform tasks without generating files. In the case of 'dump' target, its purpose is to display the object files created in the build process, rather than creating a 'dump' file.
 
+**How can GNU Make determine a source file has changed to recompile the associated target?**
+
+> GNU Make determines if a source file has changed by comparing its timestamp with the timestamp of the target file. If the source file's timestamp is more recent than the target file's timestamp, Make knows that the source file has been modified and triggers the recompilation of the associated target.
+
 ## Conclusion
 
+After exploring the GNU Make tool, It is clear that GNU Make is a powerful tool for automating the process of building software projects. With GNU Make, managing large projects with multiple files becomes more efficient and less time-consuming.
 
-References:
+To truly grasp the concepts behind GNU Make and how it is used in C/C++ programming, it is crucial to gain practical experience with sample projects:
+
+[GNU_Make/SampleProjects/03_jsoncpp_lib](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/03_jsoncpp_lib)
+
+[GNU_Make/SampleProjects/04_LocationService](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/04_LocationService)
+
+Try to create your Makefiles first, before looking for a solution:
+
+[GNU_Make/SampleProjects/03_jsoncpp_lib/Makefile](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Make/SampleProjects/03_jsoncpp_lib/Makefile)
+
+[GNU_Make/SampleProjects/04_LocationService/Makefile](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Make/SampleProjects/04_LocationService/Makefile)
+
+----
+**References:**
+
 https://www.gnu.org/software/make/manual/make.html
+
 https://makefiletutorial.com/
+
 https://stackoverflow.com/questions/2481269/how-to-make-a-simple-c-makefile
+
 https://blog.jgc.org/2013/02/updated-list-of-my-gnu-make-articles.html
