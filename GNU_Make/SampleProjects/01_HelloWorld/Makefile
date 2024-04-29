@@ -3,3 +3,6 @@ main: main.o
 
 main.o: main.cpp
 	g++ -c -Wall -g -std=c++11 main.cpp
+
+dump:
+	@echo "Object files in the current directory:"; ls -1 *.o

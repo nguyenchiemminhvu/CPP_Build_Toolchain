@@ -115,7 +115,42 @@ ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_
 make: 'main' is up to date.
 ```
 
+One question here, what if there is no prerequisite is supplied to the target?
 
+=> It means that the target of that rule does not depend on any other files or rules. This can be useful when we have a target that needs to be updated unconditionally, regardless of the state of any other files.
+
+```
+main: main.o
+	g++ main.o -o main
+
+main.o: main.cpp
+	g++ -c -Wall -g -std=c++11 main.cpp
+
+dump:
+	@echo "Object files in the current directory:"; ls -1 *.o
+```
+
+In this case, dump target has no prerequisite. Whenever we run ```make dump``` command (to achieve only dump target), the commands associated with this rule will be executed.
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ make
+g++ -c -Wall -g -std=c++11 main.cpp
+g++ main.o -o main
+
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ make dump
+Object files in the current directory:
+main.o
+```
+
+As long as the file 'dump' does not exist in the current make directory, the command for dump target will be executed. If the file 'dump' does exist, the commands associated with 'dump' target is no longer executed.
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ touch dump
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ ls
+dump  main.cpp  Makefile
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ make dump
+make: 'dump' is up to date.
+```
 
 ## Conclusion
 
