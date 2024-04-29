@@ -1,28 +1,14 @@
-#!/bin/bash
+main : main.o simple_algo.o simple_math.o
+g++ main.o simple_algo.o simple_math.o -o main
 
-if [ $# -eq 0 ]; then
-    # No argument provided, compile the C++ program
-    cd ./opensource/simplecrypto
-    source gcc_compile_shared_obj.sh
-    source gcc_compile_shared_obj.sh install
-    source gcc_compile_shared_obj.sh clean
-    cd ./../../
+main.o : main.cpp
+g++ -c -std=c++11 main.cpp
 
-    g++ \
-        -std=c++11 \
-        main.cpp \
-        simple_math.cpp \
-        simple_algo.cpp \
-        -I./opensource/include \
-        -L./opensource/lib \
-        -lsimplecrypto \
-        -o main
+simple_algo.o : simple_algo.cpp
+g++ -c -std=c++11 simple_algo.cpp
 
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./opensource/lib
-elif [ "$1" = "clean" ]; then
-    # Argument is "clean", perform clean operation
-    rm -f simple_math.o simple_algo.o main.o main
-    echo "Clean operation complete"
-else
-    echo "Unknown argument"
-fi
+simple_math.o : simple_math.cpp
+g++ -c -std=c++11 simple_math.cpp
+
+clean :
+rm -f simple_math.o simple_algo.o main.o main

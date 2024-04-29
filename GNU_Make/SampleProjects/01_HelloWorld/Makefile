@@ -6,3 +6,6 @@ main.o: main.cpp
 
 dump:
 	@echo "Object files in the current directory:"; ls -1 *.o
+
+clean:
+	@rm -rf *.o main

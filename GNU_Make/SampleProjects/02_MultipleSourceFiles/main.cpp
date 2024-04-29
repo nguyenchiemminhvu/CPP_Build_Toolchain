@@ -6,10 +6,6 @@
 #include "simple_math.h"
 #include "simple_algo.h"
 
-#ifdef USE_SIMPLE_CRYPTO_LIB
-#include "simplecrypto.h"
-#endif
-
 int main(int argc, char** argv)
 {
     // Using utility functions from simple_math library
@@ -36,22 +32,6 @@ int main(int argc, char** argv)
     std::cout << "Min: " << min << std::endl;
     std::cout << "Sum of Numbers: " << sumOfNumbers << std::endl;
     std::cout << "Average: " << average << std::endl;
-
-#ifdef USE_SIMPLE_CRYPTO_LIB
-    // Using opensource prebuilt library
-    const char* data = "Hello, world!";
-    size_t data_len = strlen(data);
-    uint8_t digest[16];
-
-    md5((const uint8_t*)data, data_len, digest);
-
-    printf("MD5 Digest: ");
-    for (int i = 0; i < 16; i++)
-    {
-        printf("%02x", digest[i]);
-    }
-    printf("\n");
-#endif
 
     return 0;
 }

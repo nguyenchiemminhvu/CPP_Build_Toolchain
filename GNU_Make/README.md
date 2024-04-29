@@ -72,13 +72,17 @@ Now, all we need to know is the syntax or other details for writing the content 
 In a Makefile, we define a set of rules that specify how to build different parts of your project. Each rule consists of a target, prerequisites, and commands. Here's the basic structure:
 
 ```
-target: prerequisites
-    commands
+target : prerequisites ...
+    recipe
+	...
+	...
 ```
 
 - The target is the file or component that you want to build. It can be an executable, an object file, or any other type of output we desire.
 - Prerequisites are the files or components that the target depends on. If any of the prerequisites are newer than the target, Make will execute the commands to update the target.
-- Commands are the actions that need to be performed in order to build the target. They are are typically shell commands, and are indented by a tab character, not spaces.
+- A recipe usually contains more than one command, either on the same line or on each line. Commands of a recipe are the actions that need to be performed in order to build the target. They are are typically shell commands, and are indented by a tab character, not spaces.
+
+### Hello Makefile
 
 For example, let's take a look at a simple HelloWorld program:
 
@@ -117,7 +121,7 @@ make: 'main' is up to date.
 
 **One question here, what if there is no prerequisite is supplied to the target?**
 
-> It means that the target of that rule does not depend on any other files or rules. This can be useful when we have a target that needs to be updated unconditionally, regardless of the state of any other files.
+It means that the target of that rule does not depend on any other files or rules. This can be useful when we have a target that needs to be updated unconditionally, regardless of the state of any other files.
 
 ```
 main: main.o
@@ -158,7 +162,60 @@ However, it is not mandatory for a target to create a file with the same name. T
 
 **How can GNU Make determine a source file has changed to recompile the associated target?**
 
-> GNU Make determines if a source file has changed by comparing its timestamp with the timestamp of the target file. If the source file's timestamp is more recent than the target file's timestamp, Make knows that the source file has been modified and triggers the recompilation of the associated target.
+GNU Make determines if a source file has changed by comparing its timestamp with the timestamp of the target file. If the source file's timestamp is more recent than the target file's timestamp, Make knows that the source file has been modified and triggers the recompilation of the associated target.
+
+### clean target
+
+The 'clean' target is a common convention in Makefiles. It is used to remove any files generated during the build process. The purpose of the 'clean' target is to ensure a clean and consistent state of the project.
+
+The 'clean' target does not have any prerequisites, and it does not depend on any other targets. Its recipe consists of commands to delete files or directories that are generated during build process.
+
+```
+main: main.o
+	g++ main.o -o main
+
+main.o: main.cpp
+	g++ -c -Wall -g -std=c++11 main.cpp
+
+dump:
+	@echo "Object files in the current directory:"; ls -1 *.o
+
+clean:
+	@rm -rf *.o main
+```
+
+Adding clean target to the [GNU_Make/SampleProjects/01_HelloWorld](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/01_HelloWorld) sample above, let's see how Make really does:
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ ls
+main.cpp  Makefile
+
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ make
+g++ -c -Wall -g -std=c++11 main.cpp
+g++ main.o -o main
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ ls
+main  main.cpp  main.o  Makefile
+
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ make clean
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ ls
+main.cpp  Makefile
+```
+
+Including a clean target to the Makefile is a good practice we should remember.
+
+### Write a Makefile for multiple source files compiling
+
+[https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/02_MultipleSourceFiles](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/02_MultipleSourceFiles)
+
+```
+
+```
+
+### How Make processes a Makefile?
+
+By default, Make starts with the first target, it is called "default target".
+
+In the simple example in the previous section, the default target is 'main'.
 
 ## Conclusion
 
