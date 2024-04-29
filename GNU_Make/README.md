@@ -10,7 +10,7 @@ Imagine you have a big project that consists of multiple files, like source code
 
 ![](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Make/MultipleDependencies.png?raw=true)
 
-Now, building that project means taking all these pieces and putting them together in the right order to create the final executable file.
+Now, building that project means taking all these pieces and putting them together in the right order to create the final executable file. For a large project with  thousand source code files, it becomes difficult to maintain the build process.
 
 In the early days of software development, programmers had to manually compile and link their code every time they made a change. It cost even more time and effort when the source code structure of their project has changed.
 
@@ -18,7 +18,7 @@ This is where GNU Make steps in. GNU Make was created with the primary purpose t
 
 With GNU Make, we can define a set of rules that describe how to build the project. These rules specify the dependencies between files, and the commands needed to compile them. When the source codes have changed, GNU Make is smart enough to figure out which files need to be recompiled based on their dependencies.
 
-GNU Make can be used for building projects in various programming languages, not just limited to C/C++. To demonstrate this, let's take a look at a simple Makefile that is not related to C/C++ programming:
+GNU Make can be used for building projects in various programming languages, not just limited to C/C++, whenever you need a series of instructions to run depending on what files have changed. To demonstrate this, let's take a look at a simple Makefile that is not related to C/C++ programming:
 
 A Makefile for a project writen in Python programming language:
 [https://github.com/TezRomacH/python-package-template/blob/master/Makefile](https://github.com/TezRomacH/python-package-template/blob/master/Makefile)
@@ -69,7 +69,16 @@ Now, all we need to know is the syntax or other details for writing the content 
 
 ### Makefile syntax
 
+In a Makefile, we define a set of rules that specify how to build different parts of your project. Each rule consists of a target, prerequisites, and commands. Here's the basic structure:
 
+```
+target: prerequisites
+    commands
+```
+
+- The target is the file or component that you want to build. It can be an executable, an object file, or any other type of output we desire.
+- Prerequisites are the files or components that the target depends on. If any of the prerequisites are newer than the target, Make will execute the commands to update the target.
+- Commands are the actions that need to be performed in order to build the target. They are are typically shell commands.
 
 ## Writing Makefiles
 
@@ -112,3 +121,4 @@ References:
 https://www.gnu.org/software/make/manual/make.html
 https://makefiletutorial.com/
 https://stackoverflow.com/questions/2481269/how-to-make-a-simple-c-makefile
+https://blog.jgc.org/2013/02/updated-list-of-my-gnu-make-articles.html
