@@ -115,39 +115,7 @@ ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_
 make: 'main' is up to date.
 ```
 
-## Writing Makefiles
 
-### Syntax and structure of a Makefile
-
-### Variables: defining and using them
-
-### Rules: creating rules and specifying dependencies
-
-### Phony targets: when and how to use them
-
-## Advanced Makefile Features
-
-### Pattern rules: automating build processes.
-
-### Conditional statements: controlling the flow of execution
-
-### Functions: using built-in functions for advanced operations
-
-### Including other Makefiles: organizing your build system
-
-## Makefile demos
-
-### Simple Compilation
-
-Target: To demonstrate a basic Makefile for compiling a C program with multiple source files.
-
-### Dependency Management
-
-Target: To show how Make handles dependencies by creating a Makefile for a project with multiple source files and headers.
-
-### Build Optimization
-
-Target: To show some techniques for optimizing build processes, such as parallel execution and incremental builds.
 
 ## Conclusion
 
