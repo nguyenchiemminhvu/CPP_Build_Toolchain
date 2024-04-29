@@ -152,6 +152,10 @@ ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_
 make: 'dump' is up to date.
 ```
 
+So, the dump target and the existence of the "dump" file are directly linked. Typically, targets are used to represent files that need to be built. We usually expect that the commands associated with a target will create a file with the same name as the target, either by compiling source code or performing some other action.
+
+However, it is not mandatory for a target to create a file with the same name. Targets can also be used to execute certain actions or perform tasks without generating files. In the case of 'dump' target, its purpose is to display the object files created in the build process, rather than creating a 'dump' file.
+
 ## Conclusion
 
 
