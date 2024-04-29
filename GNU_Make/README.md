@@ -80,7 +80,11 @@ target: prerequisites
 - Prerequisites are the files or components that the target depends on. If any of the prerequisites are newer than the target, Make will execute the commands to update the target.
 - Commands are the actions that need to be performed in order to build the target. They are are typically shell commands, and are indented by a tab character, not spaces.
 
+For example, let's take a look at a simple HelloWorld program:
+
 [https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/01_HelloWorld](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/01_HelloWorld)
+
+And with the content of Makefile below, GNU Make has enough information to compile the main executable file:
 
 ```
 main: main.o
@@ -89,6 +93,8 @@ main: main.o
 main.o: main.cpp
 	g++ -c -Wall -g -std=c++11 main.cpp
 ```
+
+In this Makefile, the final target we expect is 'main', which is the output executable file. It depends on the prerequisite 'main.o', which is an object file generated from the source file 'main.cpp'. Let's see the make result:
 
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ make
@@ -100,6 +106,13 @@ main  main.cpp  main.o  Makefile
 
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ ./main 
 Hello World
+```
+
+Any time the main.cpp file is updated, GNU Make will execute this command ```g++ -c -Wall -g -std=c++11 main.cpp``` to update the main executable file. Running make command once again, the result below indicates that the target file 'main' is already up to date and does not need to be rebuilt.
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/01_HelloWorld$ make
+make: 'main' is up to date.
 ```
 
 ## Writing Makefiles
