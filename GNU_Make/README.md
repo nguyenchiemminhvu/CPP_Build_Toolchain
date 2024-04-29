@@ -203,19 +203,85 @@ main.cpp  Makefile
 
 Including a clean target to the Makefile is a good practice we should remember.
 
-### Write a Makefile for multiple source files compiling
+### Write a Makefile to compile multiple source files
+
+Using all the GNU Make knowledge from the previous sections is enough the write a simple Makefile to compile this small C++ project:
 
 [https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/02_MultipleSourceFiles](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/02_MultipleSourceFiles)
 
 ```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/02_MultipleSourceFiles$ tree
+.
+├── main.cpp
+├── Makefile
+├── simple_algo.cpp
+├── simple_algo.h
+├── simple_math.cpp
+└── simple_math.h
+```
 
+In this example, we split up the C++ program into 4 parts:
+
+- main function defined in main.cpp file
+- some simple math calculation defined in the simple_math.cpp file
+- some simple algorithms defined in the simple_algo.cpp file
+- the predefined library of basic input/output functionalities
+
+This Makefile below is a set of instructions for building an executable file called 'main'. It specifies that 'main' depends on three object files: 'main.o', 'simple_algo.o', and 'simple_math.o'.
+
+```
+main : main.o simple_algo.o simple_math.o
+	g++ main.o simple_algo.o simple_math.o -o main
+
+main.o : main.cpp
+	g++ -c -std=c++11 main.cpp
+
+simple_algo.o : simple_algo.cpp
+	g++ -c -std=c++11 simple_algo.cpp
+
+simple_math.o : simple_math.cpp
+	g++ -c -std=c++11 simple_math.cpp
+
+clean :
+	@rm -f simple_math.o simple_algo.o main.o main
+```
+
+Each object file has its own rule, specifying how to compile the corresponding source file ('main.cpp', 'simple_algo.cpp', 'simple_math.cpp').
+
+There is also a 'clean' rule, which removes the object files and the 'main' executable when executed.
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/02_MultipleSourceFiles$ make
+g++ -c -std=c++11 main.cpp
+g++ -c -std=c++11 simple_algo.cpp
+g++ -c -std=c++11 simple_math.cpp
+g++ main.o simple_algo.o simple_math.o -o main
+
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/02_MultipleSourceFiles$ ./main 
+Sum: 15
+Product: 50
+Quotient: 2
+Max: 9
+Min: 1
+Sum of Numbers: 35
+Average: 5
+
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/02_MultipleSourceFiles$ make clean
 ```
 
 ### How Make processes a Makefile?
 
 By default, Make starts with the first target, it is called "default target".
 
-In the simple example in the previous section, the default target is 'main'.
+In the simple example of the previous section, the default target is 'main'. The default goal is to update the executable program called 'main'; therefore, we put that rule at first.
+
+But before Make can fulfill the rule for 'main' target, it must process the rules that 'main' target depends on, which are the object files. Each object file 'main.o', 'simple_algo.o', and 'simple_math.o' are processed according to its own rule. These rules say to update each of object file by compiling its source files.
+
+It is not mandatory to put the default target on top of other targets in the Makefile, but it is a common convention and a good practice to do so. When run ```make``` without specifying a target, Make will build the default target.
+
+### Variables
+
+
 
 ## Conclusion
 
