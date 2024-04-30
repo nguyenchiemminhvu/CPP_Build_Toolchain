@@ -274,7 +274,7 @@ It is not mandatory to put the default target on top of other targets in the Mak
 
 ### Splitting Recipe Lines
 
-GNU Make has no limit on the length of the recipe. But for better readability, GNU Make allows us to break long lines in Makefile into multiple lines. We can do this by putting backslash(\) character in the middle of the command/statement, then Make will treat the next line of the command as a continuation of the previous line.
+GNU Make has no limit on the length of the recipe. But for better readability, GNU Make allows us to break long lines in Makefile into multiple lines. We can do this by putting backslash (\) character in the middle of the command/statement, then Make will treat the next line of the command as a continuation of the previous line.
 
 ```
 main : main.o simple_algo.o simple_math.o
