@@ -312,9 +312,9 @@ After exploring the GNU Make tool, It is clear that GNU Make is a powerful tool 
 
 To truly grasp the concepts behind GNU Make and how it is used in C/C++ programming, it is crucial to gain practical experience with a sample project:
 
-[GNU_Make/SampleProjects/04_LocationService](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/04_LocationService)
+[GNU_Make/SampleProjects/04_LocationService](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/03_LocationService)
 
-Try to create your Makefiles first, before looking for a solution: [GNU_Make/SampleProjects/04_LocationService/Makefile](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Make/SampleProjects/04_LocationService/Makefile)
+Try to create your Makefiles first, before looking for a [Solution](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Make/SampleProjects/03_LocationService/Makefile). This solution utilizes most of the Make techniques found in the [Basic Makefile Concepts](#basic-makefile-concepts) section.
 
 ----
 **References:**
