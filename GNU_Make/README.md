@@ -274,6 +274,47 @@ It is not mandatory to put the default target on top of other targets in the Mak
 
 ### Splitting Recipe Lines
 
+GNU Make has no limit on the length of the recipe. But for better readability, GNU Make allows us to break long lines in Makefile into multiple lines. We can do this by putting backslash(\) character in the middle of the command/statement, then Make will treat the next line of the command as a continuation of the previous line.
+
+```
+main : main.o simple_algo.o simple_math.o
+	g++ main.o \
+		simple_algo.o \
+		simple_math.o \
+		-o main
+
+main.o : main.cpp
+	g++ \
+		-c \
+		-g \
+		-Wall \
+		-std=c++11 \
+		main.cpp
+
+simple_algo.o : simple_algo.cpp
+	g++ \
+		-c \
+		-g \
+		-Wall \
+		-std=c++11 \
+		simple_algo.cpp
+
+simple_math.o : simple_math.cpp
+	g++ \
+		-c \
+		-g \
+		-Wall \
+		-std=c++11 \
+		simple_math.cpp
+
+clean :
+	@rm -f \
+		simple_math.o \
+		simple_algo.o \
+		main.o \
+		main
+```
+
 ### Variables
 
 ## Advanced Makefile Concepts
@@ -312,7 +353,7 @@ After exploring the GNU Make tool, It is clear that GNU Make is a powerful tool 
 
 To truly grasp the concepts behind GNU Make and how it is used in C/C++ programming, it is crucial to gain practical experience with a sample project:
 
-[GNU_Make/SampleProjects/04_LocationService](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/03_LocationService)
+[GNU_Make/SampleProjects/03_LocationService](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/03_LocationService)
 
 Try to create your Makefiles first, before looking for a [Solution](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Make/SampleProjects/03_LocationService/Makefile). This solution utilizes most of the Make techniques found in the [Basic Makefile Concepts](#basic-makefile-concepts) section.
 
