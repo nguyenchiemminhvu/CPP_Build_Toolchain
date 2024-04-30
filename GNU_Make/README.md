@@ -408,6 +408,28 @@ CPP_FILES = $(CPP_FILES) \
 	./service/source_b.cpp
 ```
 
+It is important to note that when a variable is set using a command argument, any subsequent assignments to that variable in the Makefile are usually ignored. But sometimes, we might want to set the variable in the Makefile itself, regardless of whether it was set with a command argument. We can do this with ```override``` directive:
+
+```
+# redefine
+override var_name = values
+
+# append more text
+override var_name += values
+```
+
+After finish using a variable and if we want to clear its value, usually assign it to an empty string is sufficient. Expanding the variable of empty string has no meaning. But, to make it more flavor in our Makefile, it is preferred to use ```undefine``` directive:
+
+```
+undefine var_name
+```
+
+In case the variable is set by a command line, we can use ```override``` together with ```undefine```
+
+```
+override undefine CPP_FILES
+```
+
 Let's try to use variable to simplify the Makefile of previous section:
 
 ```
@@ -446,6 +468,33 @@ prog.o : prog.$(foo)
 ```
 
 can be used to compile prog.c source file.
+
+One question here:
+
+**Can GNU Make reference the Variables from Environment?**
+
+According to GNU documentation:
+
+> Variables in ```make``` can come from the environment in which ```make``` is run. Every environment variable that make sees when it starts up is transformed into a ```make``` variable with the same name and value. However, an explicit assignment in the makefile, or with a command argument, overrides the environment.
+
+For example:
+
+```
+# In shell environment
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make$ export MY_USER_NAME=$(whoami)
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make$ echo $MY_USER_NAME
+ncmv
+
+# In Makefile
+my_target : 
+	@echo $(MY_USER_NAME)
+
+# Make execution
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make$ make
+ncmv
+```
+
+Remember that when using environment variables, they should be exported in the shell before invoking GNU Make.
 
 ## Advanced Makefile Concepts
 
