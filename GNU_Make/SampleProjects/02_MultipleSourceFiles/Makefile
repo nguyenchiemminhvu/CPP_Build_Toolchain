@@ -1,6 +1,6 @@
 CXX := g++
-CXXFLAGS := -g -Wall -std=c++11
-OBJECTS := main.o simple_algo.o simple_math.o
+CXXFLAGS = -g -Wall -std=c++11
+OBJECTS = main.o simple_algo.o simple_math.o
 
 main : $(OBJECTS)
 	$(CXX) $(OBJECTS) -o main

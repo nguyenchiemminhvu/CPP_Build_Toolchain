@@ -325,38 +325,95 @@ Variables are like containers that hold information or values. This way, we only
 
 Variable names are case-sensitive. So, 'foo', 'FOO', and 'Foo' would indeed be treated as separate variables.
 
-There is two basic assignment syntaxes in Makefile:
+There is two common used assignment syntax in Makefile:
 
-Immediate assignment ```:=```
+**Simply Expanded Variable Assignment**
 
 ```
 var_name := values
 ```
 
-When using immediate assignment ```:=``` to assign values to a variable in Makefile, it means the right-hand side of the assignment is expanded immediately, and the resulting values are stored in the variable. Using immediate assignment when we want to guarantee that the variable is expanded only once.
+When using Simply Expanded Variable Assignment ```:=``` to assign values to a variable in Makefile, it means the right-hand side of the assignment is expanded immediately, and the resulting values are stored in the variable. Using Simply Expanded Variable Assignment when we want to guarantee that the variable is expanded only once.
+
+Therefore, 
 
 ```
-CXX := g++
-CXXFLAGS := -Wall -Werror -std=c++11
-CXXMACROS := -DALLOW_OPENSOURCE_LIBS -DSUPPORT_LINUX_OS -DSUPPORT_MAC_OS
+x := foo
+y := $(x) bar
+x := later
 ```
 
-Or deferred assignment ```=```
+is equivalent to
+
+```
+y := foo bar
+x := later
+```
+
+Using Simply Expanded variables generally make complicated Makefile more predictable because they work like variables in most programming languages.
+
+**Recursively Expanded Variable Assignment**
 
 ```
 var_name = values
 ```
 
-When using deferred assignment ```=``` to assign values to a variable in Makefile, it means the right-hand side of the assignment is not expanded immediately. Instead, it is stored as it is, and the expansion happens whenever the variable is referenced.
+When using Recursively Expanded Variable Assignment ```=``` to assign values to a variable in Makefile, it means the right-hand side of the assignment is not expanded immediately. Instead, it is stored as it is, and the expansion happens whenever the variable is referenced.
 
 This way is useful when we want the variable to be dynamically evaluated or when the value of the variable depends on other variables that might change during the Makefile execution.
 
-Let's try it out with previous Makefile sample:
+One advantage of using Recursively Expanded Variable is that it allows us to combine multiple values or options into a single variable.
+
+```
+CXXFLAGS = $(INCLUDE_DIRS) -Wall -Werror -g
+INCLUDE_DIRS = -Ipath/to/libA/include -Ipath/to/libB/include
+```
+
+However, there is a major disadvantage. 
+
+We cannot directly append something to the end of a flavor variable. For instance, if we try to define
+
+```
+CXXFLAGS = $(CXXFLAGS) -O
+```
+
+It will cause an infinite loop in the variable expansion process. Actually, Make is smart enough to detect this and report an error.
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make/SampleProjects/02_MultipleSourceFiles$ make
+Makefile:7: *** Recursive variable 'CXXFLAGS' references itself (eventually).  Stop.
+```
+
+GNU Make allows us to append more text to variables just like ```+=``` operator apply on ```std::string``` in C++ programming language.
+
+```
+var_name += values
+```
+
+In this example below, we have a variable named 'CPP_FILES' contains the source code files to be compiled, starting with only 'main.cpp'. But we append more CPP files to the list by using ```+=``` operator.
+
+```
+CPP_FILES = ./service/main.cpp
+CPP_FILES += \
+	./service/source_a.cpp \
+	./service/source_b.cpp
+```
+
+It works the same way with:
+
+```
+CPP_FILES = ./service/main.cpp
+CPP_FILES = $(CPP_FILES) \
+	./service/source_a.cpp \
+	./service/source_b.cpp
+```
+
+Let's try to use variable to simplify the Makefile of previous section:
 
 ```
 CXX := g++
-CXXFLAGS := -g -Wall -std=c++11
-OBJECTS := main.o simple_algo.o simple_math.o
+CXXFLAGS = -g -Wall -std=c++11
+OBJECTS = main.o simple_algo.o simple_math.o
 
 main : $(OBJECTS)
 	$(CXX) $(OBJECTS) -o main
@@ -375,6 +432,20 @@ clean :
 ```
 
 By using variables, we not only make our Makefile more readable and concise, but also ensure consistency.
+
+The syntax ```$(var)``` or ```${var}``` is used to reference a variable. Make would substitute the variable reference by its values evaluated by that time.
+
+Variable references can be used in any context: targets, prerequisites, recipes, most directives, and new variable values.
+
+Like MACRO substitution in C/C++ programming language, Make substitutes the variable references just the same way, a strict textual substitution. So, the rule below:
+
+```
+foo = c
+prog.o : prog.$(foo)
+	$(foo)$(foo) -$(foo) prog.$(foo)
+```
+
+can be used to compile prog.c source file.
 
 ## Advanced Makefile Concepts
 
