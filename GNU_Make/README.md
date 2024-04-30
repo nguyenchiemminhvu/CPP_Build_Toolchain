@@ -315,6 +315,8 @@ clean :
 		main
 ```
 
+It's important to note that when using this feature, the backslash character must be the last character on the line, and there shouldn't be any trailing spaces after it.
+
 ### Variables
 
 ## Advanced Makefile Concepts
