@@ -319,6 +319,63 @@ It's important to note that when using this feature, the backslash character mus
 
 ### Variables
 
+In the sample Makefile of the [previous section](#splitting-recipe-lines), we can observe several duplication like object files declaration, GCC Compilation flags,... Such duplication is error-prone. When a new object file is added into the project, we might add it to one list and forget another one. Instead of repeating the compiler command and flags in each target rule, we can use the variables.
+
+Variables are like containers that hold information or values. This way, we only need to specify the value once, and it can be easily substituted wherever needed. 
+
+Variable names are case-sensitive. So, 'foo', 'FOO', and 'Foo' would indeed be treated as separate variables.
+
+There is two basic assignment syntaxes in Makefile:
+
+Immediate assignment ```:=```
+
+```
+var_name := values
+```
+
+When using immediate assignment ```:=``` to assign values to a variable in Makefile, it means the right-hand side of the assignment is expanded immediately, and the resulting values are stored in the variable. Using immediate assignment when we want to guarantee that the variable is expanded only once.
+
+```
+CXX := g++
+CXXFLAGS := -Wall -Werror -std=c++11
+CXXMACROS := -DALLOW_OPENSOURCE_LIBS -DSUPPORT_LINUX_OS -DSUPPORT_MAC_OS
+```
+
+Or deferred assignment ```=```
+
+```
+var_name = values
+```
+
+When using deferred assignment ```=``` to assign values to a variable in Makefile, it means the right-hand side of the assignment is not expanded immediately. Instead, it is stored as it is, and the expansion happens whenever the variable is referenced.
+
+This way is useful when we want the variable to be dynamically evaluated or when the value of the variable depends on other variables that might change during the Makefile execution.
+
+Let's try it out with previous Makefile sample:
+
+```
+CXX := g++
+CXXFLAGS := -g -Wall -std=c++11
+OBJECTS := main.o simple_algo.o simple_math.o
+
+main : $(OBJECTS)
+	$(CXX) $(OBJECTS) -o main
+
+main.o : main.cpp
+	$(CXX) -c $(CXXFLAGS) main.cpp
+
+simple_algo.o : simple_algo.cpp
+	$(CXX) -c $(CXXFLAGS) simple_algo.cpp
+
+simple_math.o : simple_math.cpp
+	$(CXX) -c $(CXXFLAGS) simple_math.cpp
+
+clean :
+	@rm -f main $(OBJECTS)
+```
+
+By using variables, we not only make our Makefile more readable and concise, but also ensure consistency.
+
 ## Advanced Makefile Concepts
 
 ### The all target
