@@ -207,11 +207,30 @@ Including a clean target to the Makefile is a good practice we should remember.
 
 ### The all target
 
+The ```all``` target is typically used to specify the default target that should be built when you execute the make command without any arguments. The target ```all``` is not a built-in target in Makefile, but a convention that many developers follow.
 
+```
+all : target1 target2 target3
+
+target1 : prerequisite_1
+	recipe_1
+
+target2 : prerequisite_2
+	recipe_2
+
+target3 : prerequisite_3
+	recipe_3
+```
+
+Here, the **target1**, **target2** and **target3** represent the actual targets we want to build when executing ```make``` or ```make all``` command.
 
 ### Phony targets
 
 
+
+```
+
+```
 
 ### Write a Makefile to compile multiple source files
 
@@ -532,7 +551,7 @@ To truly grasp the concepts behind GNU Make and how it is used in C/C++ programm
 
 [GNU_Make/SampleProjects/03_LocationService](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/03_LocationService)
 
-Try to create your Makefiles first, before looking for a [Solution](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Make/SampleProjects/03_LocationService/Makefile). This solution utilizes most of the Make techniques found in the [Basic Makefile Concepts](#basic-makefile-concepts) section.
+Consider compiling the jsoncpp and nmeaparser libraries as shared objects, and link them to the main binary. Try to create your Makefiles first, before looking for a [Solution](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Make/SampleProjects/03_LocationService/Makefile). This solution utilizes most of the Make techniques found in the [Basic Makefile Concepts](#basic-makefile-concepts) section.
 
 ----
 **References:**
