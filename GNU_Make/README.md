@@ -205,6 +205,14 @@ main.cpp  Makefile
 
 Including a clean target to the Makefile is a good practice we should remember.
 
+### The all target
+
+
+
+### Phony targets
+
+
+
 ### Write a Makefile to compile multiple source files
 
 Using all the GNU Make knowledge from the previous sections is enough the write a simple Makefile to compile this small C++ project:
@@ -498,31 +506,21 @@ Remember that when using environment variables, they should be exported in the s
 
 ## Advanced Makefile Concepts
 
-### The all target
-
-### Multiple targets for a rule
-
 ### Automatic Variables
 
 ### Wildcards
 
-### Pattern rules
-
-### Phony targets
-
 ### Implicit rules
+
+### Pattern rules
 
 ### Conditional statements
 
 ## Advanced Makefile Techniques
 
-### Implicit rules
-
 ### Include other Makefile
 
 ### Recursive Make
-
-### Advanced variable manipulation
 
 ### Functions
 
