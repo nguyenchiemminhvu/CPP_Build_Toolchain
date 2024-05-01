@@ -357,13 +357,47 @@ clean :
 
 It's important to note that when using this feature, the backslash character must be the last character on the line, and there shouldn't be any trailing spaces after it.
 
-### Include other Makefile
+### Include Other Makefile
 
+When working in a large project or complex build systems, It is often necessary to split the Makefile into multiple smaller, more manageable pieces. By using ```include``` directive in Makefile, we can bring in the contents of another Makefile and incorporate it into the current one. This feature is useful when we have some common rules or variables that we wish to reuse across multiple Makefiles.
+
+```
+include path/to/another/Makefile
+```
+
+**What Make will do when encountering an include directive?**
+
+When ```make``` processes an ```include``` directive, it temporarily stops reading the current file and starts reading the files that are listed in the include directive, one by one. Once it finishes reading all the included files, it goes back to reading the original file where the ```include``` directive was found.
+
+In case the another Makefile is not found, an error is generated. If we want Make to ignore a Makefile which does not exist (with no error message), use the ```-include``` directive instead. Make will simply continue processing the rest of Makefile without including the missing Makefile.
+
+```
+-include path/to/another/Makefile
+```
+
+Here is an example to demonstrate the include feature of Make:
+
+```
+# ./common/common_cpp.mk
+CXXFLAGS += -std=c++11 -Wall -Werror
 ```
 
 ```
+# ./common/security_enhancement.mk
+CXXFLAGS += -fstack-protector-strong -Wformat -Wformat-security
+```
 
-### Recursive use of Make
+```
+-include ./common/common_cpp.mk
+-include ./common/security_enhancement.mk
+
+all : main
+
+main : main.cpp
+	g++ $(CXXFLAGS) main.cpp -o main
+```
+
+### Recursive Use of Make
 
 ```
 
