@@ -606,7 +606,7 @@ To truly grasp the concepts behind GNU Make and how it is used in C/C++ programm
 
 [GNU_Make/SampleProjects/03_LocationService](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/03_LocationService)
 
-Consider compiling the jsoncpp and nmeaparser libraries as shared objects, and link them to the main binary. Try to create your Makefiles first, before looking for a [Solution](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Make/SampleProjects/03_LocationService/Makefile). This solution utilizes most of the Make techniques found in the [Basic Makefile Concepts](#basic-makefile-concepts) section.
+Consider compiling the jsoncpp and nmeaparser libraries as shared objects, and link them to the main binary. Try to create your Makefiles first, before looking for a [Solution](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Make/SampleProjects/03_LocationService/Makefile).
 
 ----
 **References:**
