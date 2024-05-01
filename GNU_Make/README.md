@@ -633,6 +633,12 @@ Remember that when using environment variables, they should be exported in the s
 
 ### Automatic Variables
 
+
+
+```
+
+```
+
 ### Wildcards
 
 ### Implicit rules
@@ -642,6 +648,16 @@ Remember that when using environment variables, they should be exported in the s
 ### Conditional statements
 
 ### Functions
+
+#### Function call syntax
+
+#### Functions for String Substitution
+
+#### The foreach Function
+
+#### The eval Function
+
+#### The call Function
 
 ## Conclusion
 
