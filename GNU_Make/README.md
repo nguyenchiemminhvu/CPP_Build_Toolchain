@@ -357,6 +357,18 @@ clean :
 
 It's important to note that when using this feature, the backslash character must be the last character on the line, and there shouldn't be any trailing spaces after it.
 
+### Include other Makefile
+
+```
+
+```
+
+### Recursive use of Make
+
+```
+
+```
+
 ### Variables
 
 In the sample Makefile of the [previous section](#splitting-recipe-lines), we can observe several duplication like object files declaration, GCC Compilation flags,... Such duplication is error-prone. When a new object file is added into the project, we might add it to one list and forget another one. Instead of repeating the compiler command and flags in each target rule, we can use the variables.
@@ -470,7 +482,7 @@ In case the variable is set by a command line, we can use ```override``` togethe
 override undefine CPP_FILES
 ```
 
-Let's try to use variable to simplify the Makefile of previous section:
+Let's try to use variable to simplify the Makefile of [previous section](#write-a-makefile-to-compile-multiple-source-files):
 
 ```
 CXX := g++
@@ -547,12 +559,6 @@ Remember that when using environment variables, they should be exported in the s
 ### Pattern rules
 
 ### Conditional statements
-
-## Advanced Makefile Techniques
-
-### Include other Makefile
-
-### Recursive Make
 
 ### Functions
 
