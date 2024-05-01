@@ -399,10 +399,55 @@ main : main.cpp
 
 ### Recursive Use of Make
 
+**Recursive Use of Make** feature definition is simple:
+>Recursive use of ```make``` means using ```make``` as a command in a Makefile.
 
+This feature is particularly useful when we have a complex project with multiple directories and subdirectories, each containing their own set of rules and dependencies.
+
+For example, supposed we have a sub-directory named 'subdir' which has its own Makefile, we would like to access this 'subdir' and execute its Makefile, it can be done this way:
 
 ```
+subdir :
+	cd subdir && $(MAKE)
+```
 
+It is equivalent to the below way if we use Recursive Make feature:
+
+```
+subdir : 
+	$(MAKE) -C subdir
+```
+
+**Why we use $(MAKE) instead of calling ```make``` command?**
+
+When you use $(MAKE) variable in a target recipe, it expands to the appropriate command for invoking make. (Learn about [Variable](#variables) in the next section). If the ```make``` binary file name was /bin/make, then the recipe executed is ‘cd subdir && /bin/make’.
+
+In the example below, we supposed to have a program that depends on 3 prerequisites: libcurl.so, libsqlite.so and libqt.so. Those libraries are located in the corresponding sub-directories and having their own Makefile.
+
+```
+all: main
+
+main: main.cpp lib_curl lib_sqlite lib_qt
+	g++ -rdynamic \
+		-L./lib_curl/build \
+		-L./lib_sqlite/build \
+		-L./lib_qt/build \
+		main.cpp \
+		-lcurl \
+		-lsqlite \
+		-lqt \
+		-o main
+
+lib_curl:
+	$(MAKE) -C lib_curl
+
+lib_sqlite:
+	$(MAKE) -C lib_sqlite
+
+lib_qt:
+	$(MAKE) -C lib_qt
+
+.PHONY: all lib_curl lib_sqlite lib_qt
 ```
 
 ### Variables
