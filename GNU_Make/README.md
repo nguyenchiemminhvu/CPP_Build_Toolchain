@@ -226,11 +226,24 @@ Here, the **target1**, **target2** and **target3** represent the actual targets 
 
 ### Phony targets
 
+Usually, when we define a target in Makefile, GNU Make expects that target to be a file existing after executing the recipe. Sometimes, we have targets that don't correspond to any files. These targets are called **PHONY targets**.
 
+To declare a target as phony, here is the syntax:
 
 ```
+.PHONY : target_1 target_2 ...
+```
+
+For example:
 
 ```
+clean :
+	rm -rf *.o main
+
+.PHONY: clean
+```
+
+By doing this, we tells GNU Make that the 'clean' target is not an actual file expected to exist after running the clean commands. Therefore, even a file named 'clean' is created, Make still executes the 'clean' recipe. 
 
 ### Write a Makefile to compile multiple source files
 
