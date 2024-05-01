@@ -680,7 +680,21 @@ echo "To-be-rebuilt prerequisites: ", a.so b.so c.so
 To-be-rebuilt prerequisites: , a.so b.so c.so
 ```
 
-These automatic variables make our Makefile rules more flexible and easier to manage by letting us refer to the correct file names and prerequisites dynamically.
+These automatic variables make our Makefile rules more flexible and easier to manage by letting us refer to the correct file names and prerequisites dynamically. For example:
+
+```
+program : main.o simple_math.o simple_algo.o
+	g++ $^ -o $@
+
+main.o : main.cpp utils.h
+	g++ -c $<
+
+simple_math.o : simple_math.cpp
+	g++ -c $^
+
+simple_algo.o : simple_algo.cpp
+	g++ -c $^
+```
 
 ## Advanced Makefile Concepts
 
