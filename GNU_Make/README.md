@@ -696,19 +696,89 @@ simple_algo.o : simple_algo.cpp
 	g++ -c $^
 ```
 
-### Wildcards
-
-The characters ```*``` and ```%``` are called wildcards in Make, but they have different meaning. Let's talk about the ```*``` wildcards first.
-
-
-
-```
-
-```
-
 ## Advanced Makefile Concepts
 
+### Wildcards
+
+In a Makefile, wildcards are special characters used to represent a pattern of string or filenames. They are particularly useful for tasks like file manipulation. 
+
+The two most commonly used wildcards in Makefiles are ```*``` (asterisk) and ```%``` (percent sign).
+
+You already saw the use of ```*``` wildcards in the previous sections, remember that? It is often used in the target 'clean'.
+
+```
+clean:
+	rm -rf *.o
+```
+
+The asterisk wildcards matches any sequence of characters (including none) within a filename. For example, ```*.cpp``` matches any CPP file in the directory.
+
+The wildcards are automatically expanded by Make when they are being used in targets and prerequisites. In the recipes, the wildcards are handled by the Shell. In other contexts, wildcards expansion only work with the ```wildcard``` function. (See more details about [Functions](#functions) in later topic)
+
+The example below shows that using wildcards in prerequisites are quite useful.
+
+```
+dump: *.h
+    echo "dump target manages all the header files: $^"
+```
+
+Now, try to use wildcards expansion in variable declaration:
+
+```
+OBJS = *.o
+
+program : $(OBJS)
+	echo "All object files: $^"
+
+*.o : 
+	@touch a.o b.o c.o
+```
+
+And it does not work. We expect all the object files output on console, but the actual result shows just the exact string '*.o', the wildcards is not expanded.
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make$ make
+touch a.o b.o c.o
+echo "All object files: *.o"
+All object files: *.o
+```
+
+As I mention above, it is suggested using ```wildcard``` function in this context.
+
+```
+OBJS = $(wildcard *.o)
+
+program : $(OBJS)
+	echo "All object files: $^"
+
+*.o : 
+	@touch a.o b.o c.o
+```
+
+And here it is:
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Make$ make
+echo "All object files: a.o b.o c.o"
+All object files: a.o b.o c.o
+```
+
+See more details about [The wildcard Function](#the-wildcard-function).
+
+The wildcard ```%``` is particularly used as a placeholder for matching multiple characters. When we use ```%``` in a rule, it tells Make to match any string of characters.
+
+```
+%.o : %.cpp
+	g++ -c $< -o $@
+```
+
+Here, the wildcards ```%``` could represent any string of characters. Therefore, if there are CPP files like 'foo.cpp', 'bar.cpp', 'baz.cpp', ... in the current directory, this rule will match all of them. When Make needs to build 'foo.o', it will look for the 'foo.cpp' file, same for other '.o' files.
+
+This wildcard character is useful for creating generic rules that can be applied to multiple targets or dependencies with similar patterns. (See [Static Pattern rules](#static-pattern-rules) and [Pattern rules](#pattern-rules))
+
 ### Implicit rules
+
+### Static Pattern rules
 
 ### Pattern rules
 
@@ -719,6 +789,46 @@ The characters ```*``` and ```%``` are called wildcards in Make, but they have d
 #### Function call syntax
 
 #### Functions for String Substitution
+
+#### The wildcard Function
+
+Even when Make automatically deals with wildcards at several places in Makefile, it is suggested that always wrap them in the ```wildcard``` function.
+
+```
+$(wildcard <string_contains_wildcards>)
+```
+
+We can use wildcard function for wildcards expansion anywhere in a Makefile. If no existing file name matches a pattern, ```wildcard``` function returns an empty result.
+
+Some of the common use case of wildcards:
+
+```
+# Capture all .cpp files
+CXXFILES := $(wildcard *.cpp)
+
+# Convert .cpp filenames to .o filenames
+OBJS := $(patsubst %.cpp,%.o,$(CXXFILES))
+
+# Compiler options
+CXX := g++
+CXXFLAGS := -Wall -Wextra -std=c++11
+
+# Target executable
+TARGET := my_program
+
+# Rule to build the target executable
+$(TARGET): $(OBJS)
+    $(CXX) $(CXXFLAGS) $^ -o $@
+
+# Rule to compile each .cpp file into a .o file
+%.o: %.cpp
+    $(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Phony target to clean up generated files
+.PHONY: clean
+clean:
+    rm -f $(OBJS) $(TARGET)
+```
 
 #### The foreach Function
 
