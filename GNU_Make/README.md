@@ -696,9 +696,17 @@ simple_algo.o : simple_algo.cpp
 	g++ -c $^
 ```
 
-## Advanced Makefile Concepts
-
 ### Wildcards
+
+The characters ```*``` and ```%``` are called wildcards in Make, but they have different meaning. Let's talk about the ```*``` wildcards first.
+
+
+
+```
+
+```
+
+## Advanced Makefile Concepts
 
 ### Implicit rules
 
