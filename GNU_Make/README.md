@@ -797,6 +797,35 @@ The ```%``` is particularly used as placeholders in the targets or prerequisites
 
 ### Implicit rules
 
+Implicit rules make things complex and confusing, but we need to know them because they are standards in Makefile.
+
+Implicit rules are predefined rules that helps to write shorter Makefiles, we don't need to specify all the details but Make will understand them implicitly. To allow Make to apply an implicit rule to build a target, all we need is to refrain from supplying the details of the recipe. By that, Make will automatically determine the most suitable way to update the target.
+
+For example, in C compilation, files with the .c extension are typically compiled into object files with the .o extension. Consider the following Makefile:
+
+```
+program : foo.o bar.o
+	gcc $(CFLAGS) foo.o bar.o $(LDFLAGS) -o program
+```
+
+In this Makefile, we mention foo.o as a prerequisite but don't provide a specific rule for it. Make will automatically look for a proper implicit rule to update it. What implicit rule could be?
+
+Here, Make might say: "If I have a file named foo.c, I can build a foo.o object file." And then looking for the file foo.c in the current directory. If foo.c file exists, a basic and common recipe to compile .c file is applied.
+
+```
+gcc -c $(CFLAGS) foo.c -o foo.o
+```
+
+Of course, when we write a Makefile using Implicit rules, we must known which implicit rule we want Make to use, and known exactly it will choose the correct one. Let me provide a catalogue of built-in implicit rules in the next section.
+
+#### Built-in Implicit Rules
+
+
+
+#### Variables used by Implicit Rules
+
+
+
 ### Static Pattern rules
 
 ### Pattern rules
