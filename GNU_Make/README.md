@@ -765,16 +765,35 @@ All object files: a.o b.o c.o
 
 See more details about [The wildcard Function](#the-wildcard-function).
 
-The wildcard ```%``` is particularly used as a placeholder for matching multiple characters. When we use ```%``` in a rule, it tells Make to match any string of characters.
+The wildcard ```%``` is known as a pattern rule wildcard. It is particularly used as a placeholder for matching multiple characters within a target or prerequisite.
 
 ```
 %.o : %.cpp
 	g++ -c $< -o $@
 ```
 
-Here, the wildcards ```%``` could represent any string of characters. Therefore, if there are CPP files like 'foo.cpp', 'bar.cpp', 'baz.cpp', ... in the current directory, this rule will match all of them. When Make needs to build 'foo.o', it will look for the 'foo.cpp' file, same for other '.o' files.
+In this rule, when Make needs to build a '.o' file, it will search for a corresponding '.cpp' file based on the pattern. Here, the wildcards ```%``` could represent any string of characters. Therefore, if there are CPP files like 'foo.cpp', 'bar.cpp', 'baz.cpp', ... in the current directory, this rule will match all of them. When Make needs to build 'foo.o', it will look for the 'foo.cpp' file, same for other '.o' files. The above pattern after expanding by Make is equivalent to:
+
+```
+foo.o : foo.cpp
+	g++ -c foo.cpp -o foo.o
+
+bar.o : bar.cpp
+	g++ -c bar.cpp -o bar.o
+
+baz.o : baz.cpp
+	g++ -c baz.cpp -o baz.o
+```
+
+Each file matching with the placeholder pattern will be substituted in the same rule, they all have a common build recipe.
 
 This wildcard character is useful for creating generic rules that can be applied to multiple targets or dependencies with similar patterns. (See [Static Pattern rules](#static-pattern-rules) and [Pattern rules](#pattern-rules))
+
+**What is the difference between ```*``` and ```%``` wildcards again?**
+
+The ```*``` (asterisk) is a Shell wildcard character, not specific to Makefile. This means that the wildcard ```*``` is typically used when invoking shell commands within Makefile recipe. For other context, it requires to use ```wildcard``` function to expand the match result.
+
+The ```%``` is particularly used as placeholders in the targets or prerequisites to create Pattern rules.
 
 ### Implicit rules
 
