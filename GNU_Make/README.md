@@ -822,9 +822,22 @@ Of course, when we write a Makefile using Implicit rules, we must known which im
 
 Here are a few common built-in implicit rules that can save you time and effort in writing Makefile:
 
+**Compiling C programs**
 
+```
+```
 
-These rules are already there and are automatically used by Make for targets that don't have a recipe or prerequisites that are not targeted by any rule, unless they are explicitly overridden or disabled in the Makefile.
+**Compiling C++ programs**
+
+```
+```
+
+**Linking a single object file**
+
+```
+```
+
+Note that these rules are available in the POSIX-based operating systems. We may have different implicit rules in other operating systems like Windows, OS/2,... These rules are already there and are automatically used by Make for targets that don't have a recipe or prerequisites that are not targeted by any rule, unless they are explicitly overridden or disabled in the Makefile.
 
 We can override the built-in implicit rules by defining a new pattern rule (see [Pattern Rules](#pattern-rules)) with the same target and prerequisites, but different recipe. This will replace the default implicit rules with the new pattern rules.
 
@@ -836,8 +849,55 @@ Alternatively, we can disable a default implicit rule by defining a pattern rule
 
 The above pattern rule would disable the implicit rule that performs C++ compilation.
 
+By using ```-r``` or ```--no-builtin-rules``` option, all the predefined implicit rules are cancelled. This means that Make won't search implicit rules for the targets that don't have a recipe or prerequisites that have no target anymore. Instead, we have to define our own rules or fully and explicitly define targets and recipes for all component of the program.
+
+```
+make -r
+#or
+make --no-builtin-rules
+```
+
+Or add the option in Makefile:
+
+```
+MAKEFLAGS += -r
+#or
+MAKEFLAGS += --no-builtin-rules
+```
+
 #### Variables used by Implicit Rules
 
+Here are a few common built-in variables for C/C++ compilation:
+
+**CC**
+
+```
+```
+
+**CXX**
+
+```
+```
+
+**CFLAGS**
+
+```
+```
+
+**CXXFLAGS**
+
+```
+```
+
+**CPPFLAGS**
+
+```
+```
+
+**LDFLAGS**
+
+```
+```
 
 To override an implicit variable, we can simply assign a new value to it in our Makefile. This new value will be used instead of the default value provided by Make. For example, if we want to change the default compiler, we can do:
 
