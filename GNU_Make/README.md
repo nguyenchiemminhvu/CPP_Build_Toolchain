@@ -820,11 +820,46 @@ Of course, when we write a Makefile using Implicit rules, we must known which im
 
 #### Built-in Implicit Rules
 
+Here are a few common built-in implicit rules that can save you time and effort in writing Makefile:
 
+
+
+These rules are already there and are automatically used by Make for targets that don't have a recipe or prerequisites that are not targeted by any rule, unless they are explicitly overridden or disabled in the Makefile.
+
+We can override the built-in implicit rules by defining a new pattern rule (see [Pattern Rules](#pattern-rules)) with the same target and prerequisites, but different recipe. This will replace the default implicit rules with the new pattern rules.
+
+Alternatively, we can disable a default implicit rule by defining a pattern rule with the same target and prerequisites, but no recipe. For example:
+
+```
+%.o : %.cpp
+```
+
+The above pattern rule would disable the implicit rule that performs C++ compilation.
 
 #### Variables used by Implicit Rules
 
 
+To override an implicit variable, we can simply assign a new value to it in our Makefile. This new value will be used instead of the default value provided by Make. For example, if we want to change the default compiler, we can do:
+
+```
+CC = gcc
+```
+
+On the other hand, to disable an implicit variable, we can simply leave it empty or unset it in our Makefile. This tells Make not to use the default value for that variable. For example, if we want to disable the default linker flags, we can do:
+
+```
+LDFLAGS =
+```
+
+This will disable the default linker flags provided by Make.
+
+#### Practice Implicit Rules
+
+Knowing this, we can now create a Makefile to build a C++ program without explicitly telling Make how to do the compilation. Check the below sample Makefile:
+
+```
+
+```
 
 ### Static Pattern rules
 
