@@ -962,9 +962,56 @@ clean:
 
 Shorter than before, right?
 
+### Pattern rules
+
+In Makefile, a pattern rule defines how to build a target that matches a certain pattern. It contains the wildcard character ```%``` in the target for matching any non-empty substring. For other parts of a pattern rule, it looks the same with a normal rule. For example:
+
+```
+%.o : %.cpp
+	$(CXX) -c $^ -o $@
+```
+
+This rule states that any file ending with '.o' extension can be built from a corresponding file ending with '.cpp' extension, like a 'foo.o' object file is depending on a 'foo.cpp' source code file, a 'bar.o' object file is depending on a 'bar.cpp' source code file, and they are both built by the same recipe.
+
+```
+SRC_DIR = ./src
+BUILD_DIR = ./build
+
+SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
+
+OBJECT_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRC_FILES))
+
+program : $(OBJECT_FILES)
+
+all : program
+
+$(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp
+	mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) -c $^ -o $@
+
+clean :
+	rm -rf $(BUILD_DIR)
+
+.PHONY : all clean
+```
+
+This Makefile tells us that it looks for all the source files in './src' directory. These source files will be compiled into their corresponding object files and stored in the ./build directory. We will how the pattern substitution function (patsubst) works later in the [Functions](#functions) section.
+
+So, Pattern rules use a single target and a single prerequisite containing the wildcard ```%``` for applying the build recipe on each file that matches with the pattern.
+
 ### Static Pattern rules
 
-### Pattern rules
+GNU Make gives a confusing explanation about Static Pattern Rules concept.
+
+>Static pattern rules are rules which specify multiple targets and construct the prerequisite names for each target based on the target name. They are more general than ordinary rules with multiple targets because the targets do not have to have identical prerequisites. Their prerequisites must be analogous, but not necessarily identical.
+
+Let us think about it a simple way:
+
+>Static Pattern Rules are a way to write less Makefile content, by defining a pattern for building multiple targets using a common recipe.
+
+```
+
+```
 
 ### Conditional statements
 
