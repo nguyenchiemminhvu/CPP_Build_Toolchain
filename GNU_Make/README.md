@@ -897,42 +897,36 @@ MAKEFLAGS += --no-builtin-rules
 
 #### Variables used by Implicit Rules
 
+There are some variables appear in the built-in implicit rules. We can modify their values in the Makefile or arguments to ```make``` command to alter how the built-in implicit rules work without redefining the rules themselves.
+
 Here are a few common built-in variables for C/C++ compilation:
 
-**CC**
+**CC** - Program for compiling C programs; default ‘cc’.
+
+**CXX** - Program for compiling C++ programs; default ‘g++’.
+
+**CFLAGS** - Extra flags to give to the C compiler. For example:
 
 ```
-
+CFLAGS := -Wall -Wextra -O2
 ```
 
-**CXX**
+**CXXFLAGS** - Extra flags to give to the C++ compiler. For example:
 
 ```
-
+CXXFLAGS := -Wall -Wextra -O2
 ```
 
-**CFLAGS**
+**CPPFLAGS** - Extra flags to give to the C preprocessor. For example:
 
 ```
-
+CPPFLAGS := -I./include -DENABLE_DEBUGGING
 ```
 
-**CXXFLAGS**
+**LDFLAGS** - Extra flags to give to compilers when they are supposed to invoke the linker. For example:
 
 ```
-
-```
-
-**CPPFLAGS**
-
-```
-
-```
-
-**LDFLAGS**
-
-```
-
+LDFLAGS := -L./lib -lmylib
 ```
 
 To override an implicit variable, we can simply assign a new value to it in our Makefile. This new value will be used instead of the default value provided by Make. For example, if we want to change the default compiler, we can do:
@@ -951,7 +945,7 @@ This will disable the default linker flags provided by Make.
 
 #### Practice Implicit Rules
 
-Knowing this, we can now create a Makefile to build a C++ program without explicitly telling Make how to do the compilation. Check the below sample Makefile:
+Knowing this, we can now create a Makefile to build a C++ program without explicitly telling Make how to do the compilation. Check the below sample Makefile which is applied for the sample project: [GNU_Make/SampleProjects/02_MultipleSourceFiles](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/02_MultipleSourceFiles)
 
 ```
 
