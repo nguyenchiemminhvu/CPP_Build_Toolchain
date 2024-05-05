@@ -1005,13 +1005,29 @@ GNU Make gives a confusing explanation about Static Pattern Rules concept.
 
 >Static pattern rules are rules which specify multiple targets and construct the prerequisite names for each target based on the target name. They are more general than ordinary rules with multiple targets because the targets do not have to have identical prerequisites. Their prerequisites must be analogous, but not necessarily identical.
 
-Let us think about it a simple way:
+Let us think about it a simple way: Static Pattern Rules are another way to write less Makefile content, by defining a pattern for building multiple targets using a common recipe.
 
->Static Pattern Rules are a way to write less Makefile content, by defining a pattern for building multiple targets using a common recipe.
+Wait. Sound like the description of [Pattern Rules](#pattern-rules) we just read from the above section?
+
+Almost the same, because the Static Pattern Rules extend the concept of Pattern Rules. Look at the syntax:
 
 ```
+targets ... : target-pattern : prerequisite-patterns ...
+	recipe
+```
+
+Here, targets is a list of target files, target-pattern is the pattern that matches the targets, and prerequisite-patterns are the patterns that match the prerequisite files. And the recipe is the set of commands or action to be done on each target.
+
+For example, suppose we have the source files 'foo.cpp', 'bar.cpp', and 'baz.cpp' in the current directory. We can use a static pattern rule to build all of them by using a common recipe as below:
 
 ```
+OBJECT_FILES = foo.o bar.o baz.o
+
+$(OBJECT_FILES) : %.o : %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+```
+
+If we remove the 'targets' part in Static Pattern Rules, it becomes the Pattern Rules which defines the common build recipe for all the target files matched the pattern. But in Static Pattern Rules, we specify a list of target files that will use a specific pattern rule. With this feature, we can define more pattern rules for different target files.
 
 ### Conditional statements
 
