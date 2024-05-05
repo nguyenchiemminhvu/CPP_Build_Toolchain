@@ -948,8 +948,19 @@ This will disable the default linker flags provided by Make.
 Knowing this, we can now create a Makefile to build a C++ program without explicitly telling Make how to do the compilation. Check the below sample Makefile which is applied for the sample project: [GNU_Make/SampleProjects/02_MultipleSourceFiles](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/02_MultipleSourceFiles)
 
 ```
+CXXFLAGS = -g -Wall -std=c++11 -O2
+OBJECTS = main.o simple_algo.o simple_math.o
 
+main: $(OBJECTS)
+	$(CXX) $^ -o $@
+
+clean:
+	@rm -f main $(OBJECTS)
+
+.PHONY: clean
 ```
+
+Shorter than before, right?
 
 ### Static Pattern rules
 
