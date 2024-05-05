@@ -824,17 +824,47 @@ Here are a few common built-in implicit rules that can save you time and effort 
 
 **Compiling C programs**
 
+A <filename>.o object file is made automatically from a <filename>.c source file, with a rule as below:
+
 ```
+<filename>.o : <filename>.c
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) $^ -o $@
 ```
 
 **Compiling C++ programs**
 
+A <filename>.o object file is made automatically from a <filename>.cpp source file, with a rule as below:
+
 ```
+<filename>.o : <filename>.cpp
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $^ -o $@
 ```
 
 **Linking a single object file**
 
+A <filename> is made automatically from <filename>.o by executing the recipe:
+
 ```
+<filename> : <filename>.o
+	$(CC) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) -o $@
+```
+
+This rule can be applied for a single program made up by a single source file. But it is possible to be applied for the program made up by multiple object files, if one of them matches the executable file. For example:
+
+```
+<filename> : foo.o bar.o
+```
+
+When all <filename>.c, foo.c and bar.c files exist, Make will execute a recipe like:
+
+```
+$(CC) -c $(CPPFLAGS) $(CFLAGS) foo.c -o foo.o
+$(CC) -c $(CPPFLAGS) $(CFLAGS) bar.c -o bar.o
+$(CC) -c $(CPPFLAGS) $(CFLAGS) <filename>.c -o <filename>.o
+$(CC) $(LDFLAGS) foo.o bar.o <filename>.o $(LOADLIBES) $(LDLIBS) -o <filename>
+rm -f foo.o
+rm -f bar.o
+rm -f <filename>.o
 ```
 
 Note that these rules are available in the POSIX-based operating systems. We may have different implicit rules in other operating systems like Windows, OS/2,... These rules are already there and are automatically used by Make for targets that don't have a recipe or prerequisites that are not targeted by any rule, unless they are explicitly overridden or disabled in the Makefile.
@@ -872,31 +902,37 @@ Here are a few common built-in variables for C/C++ compilation:
 **CC**
 
 ```
+
 ```
 
 **CXX**
 
 ```
+
 ```
 
 **CFLAGS**
 
 ```
+
 ```
 
 **CXXFLAGS**
 
 ```
+
 ```
 
 **CPPFLAGS**
 
 ```
+
 ```
 
 **LDFLAGS**
 
 ```
+
 ```
 
 To override an implicit variable, we can simply assign a new value to it in our Makefile. This new value will be used instead of the default value provided by Make. For example, if we want to change the default compiler, we can do:
