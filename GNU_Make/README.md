@@ -1232,7 +1232,44 @@ clean:
 
 #### The foreach Function
 
+The ```foreach``` function allows us to iterate over a list of words and apply an action on to each word. Here is foreach function syntax:
 
+```
+$(foreach temp_var, list_of_words, action)
+```
+
+Where,
+- **temp_var** is the variable name that hold a word of an interation.
+- **list_of_words** is a string containing the space-separated words.
+- **action** is the command to be executed to each word.
+
+Let's take a simple example:
+
+```
+temp :
+	$(foreach word, a.cpp b.cpp c.cpp, touch $(word))
+```
+
+With the Makefile that contains the above 'temp' target, running ```make temp``` command will create 'a.cpp', 'b.cpp', and 'c.cpp' files in the current directory. In its first iteration, string 'a.cpp' will be assigned to variable 'word', the command 'touch a.cpp' is executed then. Same action is done for 'b.cpp' and 'c.cpp' files.
+
+Another sample Makefile that runs C++ compilation for each input C++ source file in the current directory:
+
+```
+SRC_FILES = a.cpp b.cpp c.cpp
+
+compile : 
+	$(foreach SRC_FILE, $(SRC_FILES), $(CXX) $(CXXFLAGS) -c $(SRC_FILE))
+```
+
+This sample Makefile below search for all C++ source files in the list of sub-directories:
+
+```
+SUB_DIRS = sub_dir1 sub_dir2 sub_dir3 sub_dir4
+
+SOURCE_FILES = $(foreach SUB_DIR,$(SUB_DIRS),$(wildcard $(SUB_DIR)/*.cpp))
+```
+
+We must be careful when using complex variable expressions because many things are valid in Makefile, but probably not what we intended.
 
 ## Conclusion
 
