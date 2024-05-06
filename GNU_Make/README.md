@@ -1078,7 +1078,65 @@ else
 endif
 ```
 
+There can be many ```else``` clause as necessary.
 
+There are four different directives that test different conditions.
+
+**ifeq** Check if two values after expanding all variables are equal.
+
+```
+ifeq (arg1, arg2)
+ifeq 'arg1' 'arg2'
+ifeq "arg1" "arg2"
+ifeq "arg1" 'arg2'
+ifeq 'arg1' "arg2"
+```
+
+For example:
+
+```
+DEBUG := 1
+
+ifeq ($(DEBUG), 1)
+	CFLAGS := -g -Wall
+else
+	CFLAGS := -O2
+endif
+```
+
+**ifneq** Check if two values after expanding all variables are not equal.
+
+```
+ifneq (arg1, arg2)
+ifneq 'arg1' 'arg2'
+ifneq "arg1" "arg2"
+ifneq "arg1" 'arg2'
+ifneq 'arg1' "arg2"
+```
+
+For example:
+
+```
+ifneq ($(TARGET), myprogram)
+    $(error Invalid target specified)
+endif
+```
+
+**ifdef** Check if a variable has been defined.
+
+```
+ifdef DEBUG
+    CFLAGS += -g -DDEBUG_MODE
+endif
+```
+
+**ifndef** Check if a variable has not been defined.
+
+```
+ifndef OS
+    OS := $(shell uname)
+endif
+```
 
 ### Functions
 
