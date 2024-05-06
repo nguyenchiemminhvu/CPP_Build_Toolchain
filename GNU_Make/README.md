@@ -1052,6 +1052,32 @@ In this case, since the variable variable is already defined with the value exis
 
 #### Conditional statements
 
+Conditional directives in Makefile allows us to define the sections of code that are executed based on certain conditions.
+
+Here are the syntax of conditional statements used in Makefile:
+
+```
+conditional-directive
+	commands if true
+endif
+
+conditional-directive
+	commands if true
+else
+	commands if false
+endif
+
+conditional-directive-one
+	commands if true
+else conditional-directive-two
+	commands if true
+else conditional-directive-three
+	commands if true
+else
+	commands if all false
+endif
+```
+
 
 
 ### Functions
