@@ -1029,7 +1029,30 @@ $(OBJECT_FILES) : %.o : %.cpp
 
 If we remove the 'targets' part in Static Pattern Rules, it becomes the Pattern Rules which defines the common build recipe for all the target files matched the pattern. But in Static Pattern Rules, we specify a list of target files that will use a specific pattern rule. With this feature, we can define more pattern rules for different target files.
 
-### Conditional statements
+### Conditional
+
+#### Conditional Variable Assignment
+
+We have studied 2 basic types of variable assignment before: [Simply Expanded Variable Assignment](#simply-expanded-variable-assignment) and [Recursively Expanded Variable Assignment](#recursively-expanded-variable-assignment)
+
+The Conditional variable assignment allows you to set a default value for a variable but only if it is not already defined. Here is the syntax:
+
+```
+variable ?= value
+```
+
+This assignment states that if the variable is not yet defined, value will be assigned to variable.
+
+```
+variable = existing_value
+variable ?= new_value
+```
+
+In this case, since the variable variable is already defined with the value existing_value, the conditional assignment ```variable ?= new_value``` does not overwrite the existing value. The variable variable will retain its original value of existing_value.
+
+#### Conditional statements
+
+
 
 ### Functions
 
