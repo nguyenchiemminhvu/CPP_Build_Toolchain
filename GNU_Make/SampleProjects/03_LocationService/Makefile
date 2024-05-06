@@ -3,11 +3,11 @@ BUILD_DIR := ./build
 CXXFLAGS += -I./service -I./core/jsoncpp/include -I./core/nmeaparser/include
 LDFLAGS += -L$(BUILD_DIR) -ljsoncpp -lnmeaparser
 
-TARGET = $(BUILD_DIR)/LocationService
+TARGET = LocationService
 OBJECTS = $(BUILD_DIR)/main.o $(BUILD_DIR)/LocationService.o
 
-$(TARGET) : $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $(wildcard $(BUILD_DIR)/*.o) $(LDFLAGS) -o LocationService
+$(BUILD_DIR)/$(TARGET) : jsoncpp nmeaparser $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $(wildcard $(BUILD_DIR)/*.o) $(LDFLAGS) -o $(BUILD_DIR)/LocationService
 
 jsoncpp :
 	$(MAKE) -C core/jsoncpp
@@ -31,5 +31,7 @@ all : $(TARGET)
 
 clean :
 	rm -rf $(BUILD_DIR)
+	$(MAKE) -C core/jsoncpp clean
+	$(MAKE) -C core/nmeaparser clean
 
 .PHONY: all clean jsoncpp nmeaparser
