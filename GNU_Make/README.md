@@ -1277,13 +1277,47 @@ STRIPPED = $(strip        sample string    with   a lot    whitespace      )
 
 STRIPPED variable then becomes 'sample string with a lot whitespace'.
 
-**$(findstring find,in)**
+**$(findstring find,in)** Searches in for an occurrence of find. If it occurs, the value is find; otherwise, the value is empty.
 
-**$(filter pattern…,text)**
+```
+$(findstring a,a b c)
+$(findstring a,b c)
+```
 
-**$(subst from,to,text)**
+**$(filter pattern…,text)** Returns all whitespace-separated words in text that do match any of the pattern words, removing any words that do not match.
 
-**$(patsubst pattern,replacement,text)**
+```
+fruits := apple banana cherry date
+filtered_fruits := $(filter a%, $(fruits))
+
+all:
+    @echo "Filtered Fruits: $(filtered_fruits)"
+```
+
+With this Makefile, running make comand will output as below:
+
+```Filtered Fruits: apple```
+
+**$(subst from,to,text)** Performs a textual replacement on the text text: each occurrence of from is replaced by to.
+
+```
+TEXT := Hello, world!
+NEW_TEXT := $(subst world,Make,$(TEXT))
+
+all:
+    @echo $(NEW_TEXT)
+```
+
+In this example, we use the subst function to replace "world" with "Make" in the text.
+
+**$(patsubst pattern,replacement,text)** Finds whitespace-separated words in text that match pattern and replaces them with replacement.
+
+```
+SRC_FILES = $(wildcard *.cpp)
+OBJ_FILES = $(patsubst %.cpp, %.o, $(SRC_FILES))
+```
+
+This example demonstrate how to generate the file name of all object files corresponding to the file name of the source files.
 
 We must be careful when using complex variable expressions because many things are valid in Makefile, but probably not what we intended.
 
