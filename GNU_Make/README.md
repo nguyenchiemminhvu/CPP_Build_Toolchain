@@ -1166,7 +1166,33 @@ Here, the wildcard function searches for files that match a pattern.
 
 #### The call Function
 
+GNU Make also support creating user-define functions. By using the built-in function named 'call', we can invoke our user-define functions.
+
+```
+$(call my_func,param_1,param_2,...)
+```
+
+**So, how to define our own functions?**
+
+Define a function in Makefile is quite weird compared to other programming language. Instead of writing a function with function name and its body, in Makefile, we create a variable and add the parameters in the value assigned to that variable. Let's see how its syntax look like:
+
+```
+variable = text including parameters $(1) $(2)...
+```
+
+For example:
+
+```
+REVERSE = $(2) $(1)
+
+REV = $(call REVERSE,Made,It)
+```
+
+Here, REV variable is expanded as "It Made".
+
 #### Functions for String Substitution
+
+
 
 #### The wildcard Function
 
@@ -1187,10 +1213,6 @@ CXXFILES := $(wildcard *.cpp)
 # Convert .cpp filenames to .o filenames
 OBJS := $(patsubst %.cpp,%.o,$(CXXFILES))
 
-# Compiler options
-CXX := g++
-CXXFLAGS := -Wall -Wextra -std=c++11
-
 # Target executable
 TARGET := my_program
 
@@ -1210,7 +1232,7 @@ clean:
 
 #### The foreach Function
 
-#### The eval Function
+
 
 ## Conclusion
 
