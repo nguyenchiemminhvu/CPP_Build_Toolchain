@@ -1269,7 +1269,13 @@ SOURCE_FILES = $(foreach SUB_DIR,$(SUB_DIRS),$(wildcard $(SUB_DIR)/*.cpp))
 
 Here we go into an advanced topic of built-in functions that operate on strings. String Substitution refers to the action of replacing placeholder values within a string with actual values.
 
-**$(strip string)**
+**$(strip string)** Removes leading and trailing whitespace from string and replaces each internal sequence of one or more whitespace characters with a single space.
+
+```
+STRIPPED = $(strip        sample string    with   a lot    whitespace      )
+```
+
+STRIPPED variable then becomes 'sample string with a lot whitespace'.
 
 **$(findstring find,in)**
 
