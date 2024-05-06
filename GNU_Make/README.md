@@ -1190,10 +1190,6 @@ REV = $(call REVERSE,Made,It)
 
 Here, REV variable is expanded as "It Made".
 
-#### Functions for String Substitution
-
-
-
 #### The wildcard Function
 
 Even when Make automatically deals with wildcards at several places in Makefile, it is suggested that always wrap them in the ```wildcard``` function.
@@ -1269,7 +1265,23 @@ SUB_DIRS = sub_dir1 sub_dir2 sub_dir3 sub_dir4
 SOURCE_FILES = $(foreach SUB_DIR,$(SUB_DIRS),$(wildcard $(SUB_DIR)/*.cpp))
 ```
 
+#### Functions for String Substitution
+
+Here we go into an advanced topic of built-in functions that operate on strings. String Substitution refers to the action of replacing placeholder values within a string with actual values.
+
+**$(strip string)**
+
+**$(findstring find,in)**
+
+**$(filter pattern…,text)**
+
+**$(subst from,to,text)**
+
+**$(patsubst pattern,replacement,text)**
+
 We must be careful when using complex variable expressions because many things are valid in Makefile, but probably not what we intended.
+
+There are a lot more useful built-in functions that I can not list all down here. If you want to explore more about them, find them in [GNU Make manual document](https://www.gnu.org/software/make/manual/make.html#Functions).
 
 ## Conclusion
 
