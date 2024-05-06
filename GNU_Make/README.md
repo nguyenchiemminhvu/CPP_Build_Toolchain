@@ -1140,7 +1140,31 @@ endif
 
 ### Functions
 
-#### Function call syntax
+Function concept in Makefile are just like other programming languagues, it is a reusable code that does some specific task or manipulate some data. However, in GNU Make, predefined functions focus on text processing.
+
+#### Call Built-in Functions
+
+GNU Make defines a lot of built-in functions for us. To call a built-in function, we can use the below syntax:
+
+```
+$(function arguments)
+```
+
+or like this:
+
+```
+${function arguments}
+```
+
+For example:
+
+```
+SRC_FILES := $(wildcard *.cpp)
+```
+
+Here, the wildcard function searches for files that match a pattern.
+
+#### The call Function
 
 #### Functions for String Substitution
 
@@ -1187,8 +1211,6 @@ clean:
 #### The foreach Function
 
 #### The eval Function
-
-#### The call Function
 
 ## Conclusion
 
