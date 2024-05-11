@@ -1,5 +1,7 @@
 ## Introduction
 
+Before exploring Autotools, let's make sure we have a complete understanding of [GNU Make](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make).
+
 
 
 ### Autoconf
