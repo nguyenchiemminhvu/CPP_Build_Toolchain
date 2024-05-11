@@ -8,9 +8,9 @@ The GNU Autotools, also known as the GNU Build System, is a set of handy softwar
 - Automake helps create portable GNU standards-compiant Makefiles from template files, supporting all the targets documented by the [GNU Coding Standards](https://www.gnu.org/prep/standards/standards.html).
 - Libtool helps create and use shared libraries portably.
 
-
-
 ### Autoconf
+
+
 
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools$ autoconf --version
@@ -26,6 +26,8 @@ Written by David J. MacKenzie and Akim Demaille.
 
 ### Automake
 
+
+
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools$ automake --version
 automake (GNU automake) 1.16.5
@@ -40,6 +42,8 @@ Written by Tom Tromey <tromey@redhat.com>
 
 ### Libtool
 
+
+
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools$ libtool --version
 libtool (GNU libtool) 2.4.6
@@ -52,11 +56,19 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 ## Practice With Autotools
 
+
+
 ### Setup Configuration
+
+
 
 ### Makefile Generation
 
+
+
 ### Start Building
+
+
 
 ## Conclusion
 
@@ -66,12 +78,14 @@ To truly understand Autotools, it's essential to practice and build a sample pro
 
 I encourage you to take up the challenge and try building the sample project before seeking the [Solution](). 
 
-References:
-
-[https://www.gnu.org/software/automake/faq/autotools-faq.html](https://www.gnu.org/software/automake/faq/autotools-faq.html)
+**References**
 
 [https://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/autoconf-2.72/autoconf.html](https://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/autoconf-2.72/autoconf.html)
 
 [https://www.gnu.org/savannah-checkouts/gnu/automake/manual/automake.html](https://www.gnu.org/savannah-checkouts/gnu/automake/manual/automake.html)
 
 [https://www.gnu.org/savannah-checkouts/gnu/libtool/manual/libtool.html](https://www.gnu.org/savannah-checkouts/gnu/libtool/manual/libtool.html)
+
+[https://www.gnu.org/software/automake/faq/autotools-faq.html](https://www.gnu.org/software/automake/faq/autotools-faq.html)
+
+[https://www.star.bnl.gov/~liuzx/autobook.html](https://www.star.bnl.gov/~liuzx/autobook.html)
