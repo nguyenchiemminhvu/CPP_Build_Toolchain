@@ -60,15 +60,25 @@ At the end, developers using GNU Autotools only need to care about the manual in
 
 ## Working With Autotools
 
+The first thing we need before doing some stuff with Autotools is having a compilable source code repository. I prepare a simple one: [GNU_Autotools/SampleProjects/01_HelloWorld](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Autotools/SampleProjects/01_HelloWorld)
 
+### Write configure.ac for Autoconf
 
-### Setup Configuration
+Write configure.ac file might be quite complex at first sight. But for a simple C++ program like this HelloWorld, there are only a few configurations need to be set.
 
+- **AC_INIT**
 
+- **AM_INIT_AUTOMAKE**
 
-### Makefile Generation
+- **AC_PROG_CXX**
 
+- **AC_CONFIG_FILES**
 
+- **AC_OUTPUT**
+
+### Write Makefile.am for Automake
+
+Makefile.am file has the same format and syntax as a Makefile. If you went through the tutorial about [GNU Make](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make) and write a Makefile from scratch by yourself, things will be familiar. Often, we only need to define some variables in Makefile.am to indicate that what files will be built, where they will be intalled.
 
 ### Start Building
 
@@ -95,3 +105,5 @@ I encourage you to take up the challenge and try building the sample project bef
 [https://opensource.com/article/19/7/introduction-gnu-autotools](https://opensource.com/article/19/7/introduction-gnu-autotools)
 
 [https://www.star.bnl.gov/~liuzx/autobook.html](https://www.star.bnl.gov/~liuzx/autobook.html)
+
+[http://freesoftwaremagazine.com/articles/brief_introduction_to_gnu_autotools/](http://freesoftwaremagazine.com/articles/brief_introduction_to_gnu_autotools/)
