@@ -48,57 +48,17 @@ The GNU Autotools, also known as the GNU Build System, is a set of handy softwar
 
 Although Autoconf, Automake, and Libtool are three different tools that were developed independently, they can be combined together to form a toolchain. (A toolchain refers to the concept where the output of one tool becomes the input of another tool)
 
+Look at the below diagram to see how these tools work together:
+
 ![GNU Autotools process](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Autotools/GNU_Autotools_process.png?raw=true)
+
+With the help of Autoreconf, the build process is even more simplified. Autoreconf knows how to prepare the necessary scripts and files needed to generate the Makefile correctly.
 
 ![GNU Autotools process improved with autoreconf](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Autotools/GNU_Autotools_process_improved.png?raw=true)
 
-### Autoconf
+At the end, developers using GNU Autotools only need to care about the manual input files 'configure.ac' and 'Makefile.am'.
 
-
-
-```
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools$ autoconf --version
-autoconf (GNU Autoconf) 2.71
-Copyright (C) 2021 Free Software Foundation, Inc.
-License GPLv3+/Autoconf: GNU GPL version 3 or later
-<https://gnu.org/licenses/gpl.html>, <https://gnu.org/licenses/exceptions.html>
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
-
-Written by David J. MacKenzie and Akim Demaille.
-```
-
-### Automake
-
-
-
-```
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools$ automake --version
-automake (GNU automake) 1.16.5
-Copyright (C) 2021 Free Software Foundation, Inc.
-License GPLv2+: GNU GPL version 2 or later <https://gnu.org/licenses/gpl-2.0.html>
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
-
-Written by Tom Tromey <tromey@redhat.com>
-       and Alexandre Duret-Lutz <adl@gnu.org>.
-```
-
-### Libtool
-
-
-
-```
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools$ libtool --version
-libtool (GNU libtool) 2.4.6
-Written by Gordon Matzigkeit, 1996
-
-Copyright (C) 2014 Free Software Foundation, Inc.
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-```
-
-## Practice With Autotools
+## Working With Autotools
 
 
 
