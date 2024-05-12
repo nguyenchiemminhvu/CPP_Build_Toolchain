@@ -50,6 +50,8 @@ Although Autoconf, Automake, and Libtool are three different tools that were dev
 
 ![GNU Autotools process](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Autotools/GNU_Autotools_process.png?raw=true)
 
+![GNU Autotools process improved with autoreconf](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Autotools/GNU_Autotools_process_improved.png?raw=true)
+
 ### Autoconf
 
 
