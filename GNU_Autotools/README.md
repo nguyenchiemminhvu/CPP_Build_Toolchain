@@ -80,6 +80,11 @@ Write configure.ac file might be quite complex at first sight. But for a simple 
 
 Makefile.am file has the same format and syntax as a Makefile. If you went through the tutorial about [GNU Make](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make) and write a Makefile from scratch by yourself, things will be familiar. Often, we only need to define some variables in Makefile.am to indicate that what files will be built, where they will be intalled.
 
+```
+bin_PROGRAMS = helloworld
+helloworld_SOURCES = main.cpp
+```
+
 ### Start Building
 
 
