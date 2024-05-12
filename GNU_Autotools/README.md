@@ -2,13 +2,53 @@
 
 Before exploring Autotools, let's make sure we have a complete understanding of [GNU Make](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make).
 
-In the tutorial about GNU Make above, there are some examples of Makefiles that are not too long or difficult to understand. Writing these Makefiles for small projects doesn't take much effort. However, when it comes to compiling large projects that need to run on different Unix-like systems, it becomes quite a challenge to write a Makefile that can meet these requirements. You might end up with a Makefile that spans thousands of lines and includes many macro definitions (-D) to accommodate various configurations. This is where GNU Autotools can be really helpful.
+In the tutorial about GNU Make above, there are some examples of Makefiles that are not too long or difficult to understand. Writing these Makefiles for small projects doesn't take much effort. However, when it comes to compiling large projects that need to run on different Unix-like systems, it becomes quite a challenge to write a Makefile that can meet these requirements. You might end up with a Makefile that spans thousands of lines and includes many macro definitions (-D) to accommodate various configurations.
+
+```
+#ifdef _WIN32
+    #define OS_NAME "Windows"
+#elif __APPLE__
+    #define OS_NAME "Mac OS"
+#elif __linux__
+    #ifdef __ANDROID__
+        #define OS_NAME "Android"
+    #else
+        #define OS_NAME "Linux"
+    #endif
+#elif __unix__
+    #define OS_NAME "Unix-like"
+#else
+    #define OS_NAME "Unknown"
+#endif
+
+#ifdef __GNUC__
+    #define COMPILER_NAME "GCC"
+#elif _MSC_VER
+    #define COMPILER_NAME "MSVC"
+#elif __clang__
+    #define COMPILER_NAME "Clang"
+#else
+    #define COMPILER_NAME "Unknown"
+#endif
+
+#ifdef __LP64__
+    #define ARCHITECTURE "64-bit"
+#else
+    #define ARCHITECTURE "32-bit"
+#endif
+```
+
+This is where GNU Autotools can be really helpful.
 
 The GNU Autotools, also known as the GNU Build System, is a set of handy software packages including Autoconf, Automake, and Libtool used for building software on different types of Unix-like operating systems (POSIX-like).
 
 - Autoconf helps create portable scripts to configure source code packages using templates and an M4 macro package.
 - Automake helps create portable GNU standards-compiant Makefiles from template files, supporting all the targets documented by the [GNU Coding Standards](https://www.gnu.org/prep/standards/standards.html).
 - Libtool helps create and use shared libraries portably.
+
+Although Autoconf, Automake, and Libtool are three different tools that were developed independently, they can be combined together to form a toolchain. (A toolchain refers to the concept where the output of one tool becomes the input of another tool)
+
+![GNU Autotools process](GNU_Autotools_process.png)
 
 ### Autoconf
 
