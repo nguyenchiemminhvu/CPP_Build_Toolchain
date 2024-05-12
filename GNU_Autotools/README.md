@@ -192,7 +192,61 @@ Hello World
 #### Simplified with Autoreconf
 
 ```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ pwd
+/home/ncmv/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ ls
+AUTHORS  ChangeLog  configure.ac  main.cpp  Makefile.am  NEWS  README
+```
 
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ autoreconf -i
+configure.ac:2: installing './install-sh'
+configure.ac:2: installing './missing'
+Makefile.am: installing './INSTALL'
+Makefile.am: installing './COPYING' using GNU General Public License v3 file
+Makefile.am:     Consider adding the COPYING file to the version control system
+Makefile.am:     for your code, to avoid questions about which license your project uses
+Makefile.am: installing './depcomp'
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ ls
+aclocal.m4  AUTHORS  autom4te.cache  ChangeLog  configure  configure.ac  COPYING  depcomp  INSTALL  install-sh  main.cpp  Makefile.am  Makefile.in  missing  NEWS  README
+```
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ ./configure 
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a race-free mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking for g++... g++
+checking whether the C++ compiler works... yes
+checking for C++ compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C++... yes
+checking whether g++ accepts -g... yes
+checking for g++ option to enable C++11 features... none needed
+checking whether make supports the include directive... yes (GNU style)
+checking dependency style of g++... gcc3
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: executing depfiles commands
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ ls
+aclocal.m4  autom4te.cache  config.log     configure     COPYING  INSTALL     main.cpp  Makefile.am  missing  README
+AUTHORS     ChangeLog       config.status  configure.ac  depcomp  install-sh  Makefile  Makefile.in  NEWS
+```
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ make
+g++ -DPACKAGE_NAME=\"HelloWorld\" -DPACKAGE_TARNAME=\"helloworld\" -DPACKAGE_VERSION=\"1.0\" -DPACKAGE_STRING=\"HelloWorld\ 1.0\" -DPACKAGE_BUGREPORT=\"nguyenchiemminhvu@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"helloworld\" -DVERSION=\"1.0\" -I.     -g -O2 -MT main.o -MD -MP -MF .deps/main.Tpo -c -o main.o main.cpp
+mv -f .deps/main.Tpo .deps/main.Po
+g++  -g -O2   -o helloworld main.o  
+
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ ./helloworld 
+Hello World
 ```
 
 ## Learn more about Autotools
