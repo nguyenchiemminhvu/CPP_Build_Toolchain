@@ -48,7 +48,7 @@ The GNU Autotools, also known as the GNU Build System, is a set of handy softwar
 
 Although Autoconf, Automake, and Libtool are three different tools that were developed independently, they can be combined together to form a toolchain. (A toolchain refers to the concept where the output of one tool becomes the input of another tool)
 
-![GNU Autotools process](GNU_Autotools_process.png)
+![GNU Autotools process](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Autotools/GNU_Autotools_process.png?raw=true)
 
 ### Autoconf
 
