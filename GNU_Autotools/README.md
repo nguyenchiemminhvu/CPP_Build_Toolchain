@@ -58,7 +58,7 @@ With the help of Autoreconf, the build process is even more simplified. Autoreco
 
 At the end, developers using GNU Autotools only need to care about the manual input files 'configure.ac' and 'Makefile.am'.
 
-## Working With Autotools
+## Build HelloWorld project
 
 The first thing we need before doing some stuff with Autotools is having a compilable source code repository. I prepare a simple one: [GNU_Autotools/SampleProjects/01_HelloWorld](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Autotools/SampleProjects/01_HelloWorld)
 
@@ -256,6 +256,8 @@ Hello World
 ### Automake
 
 ### Libtool
+
+## Build a Library
 
 ## Conclusion
 
