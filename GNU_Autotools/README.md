@@ -78,11 +78,7 @@ The programming language used for 'configure.ac' file is called Autoconf languag
 
 - **AC_OUTPUT**
 
-The configure.ac file must be presented at the project's root directory. By running 'aclocal' command, a file aclocal.m4 is generated which contains a collection of macro definitions gathered from the installed Autotools package and user-specified locations.
-
-![](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Autotools/aclocal_m4.png?raw=true)
-
-With both input files configure.ac and aclocal.m4, Autoconf has enough information about the build environment and project's dependencies to generate a 'configure' script. The 'configure' script is important in Autotools because it is responsible for detecting the required libraries, and determine platform-specific details... to setup the necessary variables and options for the generated Makefile. The generated Makefile then adapts to the running platform and operating system.
+The configure.ac file must be presented at the project's root directory.
 
 ### Write Makefile.am for Automake
 
@@ -97,6 +93,8 @@ helloworld_SOURCES = main.cpp
 
 #### Step By Step
 
+After preparing the 'configure.ac' and 'Makefile.am' files, everything is ready for Autotools build process.
+
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ pwd
 /home/ncmv/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld
@@ -104,11 +102,19 @@ ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProject
 configure.ac  main.cpp  Makefile.am
 ```
 
+By running 'aclocal' command, a file aclocal.m4 is generated.
+
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ aclocal
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ ls
 aclocal.m4  autom4te.cache  configure.ac  main.cpp  Makefile.am
 ```
+
+Aclocal is a utility in Autotools that helps with adding extra functionality to Autoconf. It consolidates different macro files from Autotool packages and user-specified locations into one file called aclocal.m4. This makes it easier for Autoconf to find and use these macros. It was created because Autoconf alone wasn't flexible enough to handle the extensive macros added by Automake.
+
+![](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Autotools/aclocal_m4.png?raw=true)
+
+With both input files 'configure.ac' and 'aclocal.m4', Autoconf has enough information about the build environment and project's dependencies to generate a 'configure' script. The 'configure' script is important in Autotools because it is responsible for detecting the required libraries, and determine platform-specific details... to setup the necessary variables and options for the generated Makefile. The generated Makefile then adapts to the running platform and operating system.
 
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ autoconf 
