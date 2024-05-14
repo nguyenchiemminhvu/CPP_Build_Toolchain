@@ -64,7 +64,9 @@ The first thing we need before doing some stuff with Autotools is having a compi
 
 ### Write configure.ac for Autoconf
 
-Write configure.ac file might be quite complex at first sight. But for a simple C++ program like this HelloWorld, there are only a few configurations need to be set.
+Write 'configure.ac' file might be quite complex at first sight. But for a simple C++ program like this HelloWorld, there are only a few configurations need to be set.
+
+The programming language used for 'configure.ac' file is called Autoconf language. Autoconf is different from other programming languages because it treats code and plain text in the same way.
 
 - **AC_INIT**
 
@@ -75,6 +77,10 @@ Write configure.ac file might be quite complex at first sight. But for a simple 
 - **AC_CONFIG_FILES**
 
 - **AC_OUTPUT**
+
+The configure.ac file must be presented at the project's root directory. By running 'aclocal' command, a file aclocal.m4 is generated which contains a collection of macro definitions gathered from the installed Autotools package and user-specified locations.
+
+![](aclocal_m4.png)
 
 ### Write Makefile.am for Automake
 
@@ -123,7 +129,7 @@ Makefile.am:     for your code, to avoid questions about which license your proj
 Makefile.am: installing './depcomp'
 ```
 
-What's wrong with it? The error indicates that there are some required files for the project folder: AUTHORS, ChangeLog, NEWS, and README. Not a big deal, let us create these files in the root directory of project folder. We can even left them empty files, but it is a good practice to fill some basic information in the change logs.
+What's wrong with it? The error indicates that there are some required files for the project folder: AUTHORS, ChangeLog, NEWS, and README. This is one of the specific expectations made up the GNU build standard. Not a big deal, let us create these files in the root directory of project folder. We can even left them empty files, but it is a good practice to fill some basic information in the change logs.
 
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ ls
@@ -132,7 +138,6 @@ ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProject
 NCMV <nguyenchiemminhvu@gmail.com>
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ cat ChangeLog 
 2024-05-12  NCMV  <nguyenchiemminhvu@gmail.com>
-
     * Initial commit
 ```
 
