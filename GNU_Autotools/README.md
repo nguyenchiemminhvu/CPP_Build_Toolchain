@@ -80,7 +80,9 @@ The programming language used for 'configure.ac' file is called Autoconf languag
 
 The configure.ac file must be presented at the project's root directory. By running 'aclocal' command, a file aclocal.m4 is generated which contains a collection of macro definitions gathered from the installed Autotools package and user-specified locations.
 
-![](aclocal_m4.png)
+![](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Autotools/aclocal_m4.png?raw=true)
+
+With both input files configure.ac and aclocal.m4, Autoconf has enough information about the build environment and project's dependencies to generate a 'configure' script. The 'configure' script is important in Autotools because it is responsible for detecting the required libraries, and determine platform-specific details... to setup the necessary variables and options for the generated Makefile. The generated Makefile then adapts to the running platform and operating system.
 
 ### Write Makefile.am for Automake
 
