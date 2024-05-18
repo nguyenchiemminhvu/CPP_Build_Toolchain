@@ -110,17 +110,21 @@ ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProject
 aclocal.m4  autom4te.cache  configure.ac  main.cpp  Makefile.am
 ```
 
-Aclocal is a utility in Autotools that helps with adding extra functionality to Autoconf. It consolidates different macro files from Autotool packages and user-specified locations into one file called aclocal.m4. This makes it easier for Autoconf to find and use these macros. It was created because Autoconf alone wasn't flexible enough to handle the extensive macros added by Automake.
+The purpose of 'aclocal' is to consolidate different macro files from Autotool packages and user-specified locations into one file. This file, 'aclocal.m4', contains all the necessary macros that Autoconf needs to configure the project.
 
 ![](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Autotools/aclocal_m4.png?raw=true)
 
-With both input files 'configure.ac' and 'aclocal.m4', Autoconf has enough information about the build environment and project's dependencies to generate a 'configure' script. The 'configure' script is important in Autotools because it is responsible for detecting the required libraries, and determine platform-specific details... to setup the necessary variables and options for the generated Makefile. The generated Makefile then adapts to the running platform and operating system.
+With both input files 'configure.ac' and 'aclocal.m4', Autoconf has enough information about the build environment and project's dependencies to generate a 'configure' script. 
 
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ autoconf 
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ ls
 aclocal.m4  autom4te.cache  configure  configure.ac  main.cpp  Makefile.am
 ```
+
+The 'configure' script is important in Autotools because it is responsible for detecting the required libraries, and determine platform-specific details... to setup the necessary variables and options for the generated Makefile. The generated Makefile then adapts to the running platform and operating system.
+
+For the next step, we run ```automake --add-missing``` command to build a 'Makefile.in' file from 'Makefile.am'.
 
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ automake --add-missing 
@@ -164,6 +168,10 @@ ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProject
 aclocal.m4  AUTHORS  autom4te.cache  ChangeLog  configure  configure.ac  COPYING  depcomp  INSTALL  install-sh  main.cpp  Makefile.am  Makefile.in  missing  NEWS  README
 ```
 
+The '--add-missing' option tells 'automake' to automatically generate all of additional files required. It is useful when we start a new project or if we have recently cleaned up our project directory and accidentally removed some of these auxiliary files.
+
+Now, Makefile.in file is created for the intput of 'configure' script. Just one more step, we gonna have our final Makefile.
+
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ ./configure 
 checking for a BSD-compatible install... /usr/bin/install -c
@@ -187,10 +195,36 @@ checking that generated files are newer than configure... done
 configure: creating ./config.status
 config.status: creating Makefile
 config.status: executing depfiles commands
+
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ ls
 aclocal.m4  autom4te.cache  config.log     configure     COPYING  INSTALL     main.cpp  Makefile.am  missing  README
 AUTHORS     ChangeLog       config.status  configure.ac  depcomp  install-sh  Makefile  Makefile.in  NEWS
 ```
+
+The 'configure' script tests system features and set the appropriate variables in the generated Makefile. For example, the result above shows us GNU GCC compiler for C++ programming language is available:
+
+```
+checking for g++... g++
+checking whether the C++ compiler works... yes
+```
+
+Then, Autotools can choose the g++ compiler for our C++ program:
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ cat Makefile | grep g++
+CXX = g++
+ac_ct_CXX = g++
+```
+
+Or because our C++ program is quite simple, not using any C++11 features. So, configure script tells that:
+
+```
+checking for g++ option to enable C++11 features... none needed
+```
+
+As a result, the option '-std=c++11' is not found in the generated Makefile.
+
+At last, simply run the 'make' command to build our C++ program.
 
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ make
@@ -220,6 +254,7 @@ Makefile.am: installing './COPYING' using GNU General Public License v3 file
 Makefile.am:     Consider adding the COPYING file to the version control system
 Makefile.am:     for your code, to avoid questions about which license your project uses
 Makefile.am: installing './depcomp'
+
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ ls
 aclocal.m4  AUTHORS  autom4te.cache  ChangeLog  configure  configure.ac  COPYING  depcomp  INSTALL  install-sh  main.cpp  Makefile.am  Makefile.in  missing  NEWS  README
 ```
@@ -247,6 +282,7 @@ checking that generated files are newer than configure... done
 configure: creating ./config.status
 config.status: creating Makefile
 config.status: executing depfiles commands
+
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ ls
 aclocal.m4  autom4te.cache  config.log     configure     COPYING  INSTALL     main.cpp  Makefile.am  missing  README
 AUTHORS     ChangeLog       config.status  configure.ac  depcomp  install-sh  Makefile  Makefile.in  NEWS
