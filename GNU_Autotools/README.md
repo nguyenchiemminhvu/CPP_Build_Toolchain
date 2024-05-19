@@ -387,7 +387,7 @@ Except for the source codes in include and src subdirectories are already there,
 
 #### Utilize Libtool
 
-configure.ac
+**configure.ac that utilize the Libtool**
 
 ```
 AC_INIT([libjsoncpp], [1.0], [nguyenchiemminhvu@gmail.com])
@@ -400,7 +400,7 @@ LT_INIT
 AC_OUTPUT
 ```
 
-Makefile.am
+**Makefile.am that utilize the Libtool**
 
 ```
 lib_LTLIBRARIES = libjsoncpp.la
@@ -558,6 +558,10 @@ libtool: link: ( cd ".libs" && rm -f "libjsoncpp.la" && ln -s "../libjsoncpp.la"
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ ls .libs/
 libjsoncpp.la  libjsoncpp.lai  libjsoncpp.so  libjsoncpp.so.0  libjsoncpp.so.0.0.0
 ```
+
+The file named 'libjsoncpp.so.0.0.0' is created using the option '-version-info 0:0:0' in the LDFLAGS. This file represents the target version of the library.
+
+To make things easier to manage, Libtool created a symbolic link called 'libjsoncpp.so' that points to 'libjsoncpp.so.0.0.0'. This way, we don't have to worry about version changes. For instance, if we have a newer version of libjsoncpp and use the option '-version-info 0:0:1', Libtool will automatically update the 'libjsoncpp.so' symbolic link to point to the newer version, which will be 'libjsoncpp.so.0.0.1'. This approach simplifies the usage of the library, as we can always refer to 'libjsoncpp.so' and not worry about the specific version number.
 
 ## Learn more about Autotools
 
