@@ -373,6 +373,11 @@ Except for the source codes in include and src subdirectories are already there,
 ### Write configure.ac for Autoconf
 
 ```
+AC_INIT([JSONCPP_LIB], [1.0], [nguyenchiemminhvu@gmail.com])
+AM_INIT_AUTOMAKE
+AC_PROG_CXX
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
 ```
 
 ### Write Makefile.am for Automake
