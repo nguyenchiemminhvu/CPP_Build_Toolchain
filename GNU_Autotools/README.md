@@ -52,10 +52,6 @@ Look at the below diagram to see how these tools work together:
 
 ![GNU Autotools process](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Autotools/GNU_Autotools_process.png?raw=true)
 
-With the help of Autoreconf, the build process is even more simplified. Autoreconf knows how to prepare the necessary scripts and files needed to generate the Makefile correctly. It performs three important tasks: aclocal, autoconf, and automake.
-
-![GNU Autotools process improved with autoreconf](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Autotools/GNU_Autotools_process_improved.png?raw=true)
-
 At the end, developers using GNU Autotools only need to care about the manual input files 'configure.ac' and 'Makefile.am'.
 
 ## Build HelloWorld project
@@ -238,6 +234,10 @@ Hello World
 
 #### Simplified with Autoreconf
 
+With the help of Autoreconf, the build process is even more simplified. Autoreconf knows how to prepare the necessary scripts and files needed to generate the Makefile correctly. It performs three important tasks: aclocal, autoconf, and automake.
+
+![GNU Autotools process improved with autoreconf](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Autotools/GNU_Autotools_process_improved.png?raw=true)
+
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ pwd
 /home/ncmv/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld
@@ -297,6 +297,8 @@ g++  -g -O2   -o helloworld main.o
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ ./helloworld 
 Hello World
 ```
+
+By using 'autoreconf', we achieve the same result, but less steps to run. It reduces our manual efforts.
 
 ## Learn more about Autotools
 
