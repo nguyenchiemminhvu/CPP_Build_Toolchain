@@ -416,3 +416,5 @@ I encourage you to take up the challenge and try building the sample project bef
 [https://www.star.bnl.gov/~liuzx/autobook.html](https://www.star.bnl.gov/~liuzx/autobook.html)
 
 [http://freesoftwaremagazine.com/articles/brief_introduction_to_gnu_autotools/](http://freesoftwaremagazine.com/articles/brief_introduction_to_gnu_autotools/)
+
+[https://apps.dtic.mil/sti/pdfs/ADA553215.pdf](https://apps.dtic.mil/sti/pdfs/ADA553215.pdf)
