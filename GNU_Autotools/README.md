@@ -385,9 +385,9 @@ Except for the source codes in include and src subdirectories are already there,
 ```
 ```
 
-#### Utilize Libtool
+### Utilize Libtool
 
-**configure.ac that utilize the Libtool**
+#### configure.ac that utilize the Libtool
 
 ```
 AC_INIT([libjsoncpp], [1.0], [nguyenchiemminhvu@gmail.com])
@@ -400,7 +400,7 @@ LT_INIT
 AC_OUTPUT
 ```
 
-**Makefile.am that utilize the Libtool**
+#### Makefile.am that utilize the Libtool
 
 ```
 lib_LTLIBRARIES = libjsoncpp.la
@@ -415,6 +415,8 @@ libjsoncpp_la_LDFLAGS = -version-info 0:0:0 \
 ACLOCAL_AMFLAGS = -I m4
 AUTOMAKE_OPTIONS = subdir-objects
 ```
+
+#### Build with Libtool support
 
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ ls
