@@ -1,4 +1,7 @@
-AC_INIT([JSONCPP_LIB], [1.0], [nguyenchiemminhvu@gmail.com])
-AM_INIT_AUTOMAKE
+AC_INIT([libjsoncpp], [1.0], [nguyenchiemminhvu@gmail.com])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CXX
-AC_OUTPUT(Makefile build/Makefile)
+AC_CONFIG_FILES([Makefile])
+LT_INIT
+AM_PROG_AR
+AC_OUTPUT
