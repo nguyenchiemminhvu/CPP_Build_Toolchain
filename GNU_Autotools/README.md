@@ -76,6 +76,14 @@ The programming language used for 'configure.ac' file is called Autoconf languag
 
 The configure.ac file must be presented at the project's root directory.
 
+```
+AC_INIT([HelloWorld], [1.0], [nguyenchiemminhvu@gmail.com])
+AM_INIT_AUTOMAKE
+AC_PROG_CXX
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
+```
+
 ### Write Makefile.am for Automake
 
 Makefile.am file has the same format and syntax as a Makefile. If you went through the tutorial about [GNU Make](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make) and write a Makefile from scratch by yourself, things will be familiar. Often, we only need to define some variables in Makefile.am to indicate that what files will be built, where they will be intalled.
@@ -300,6 +308,28 @@ Hello World
 
 By using 'autoreconf', we achieve the same result, but less steps to run. It reduces our manual efforts.
 
+## Build a Library
+
+In this section, we would practice to build a library and expect to have a shared object as output.
+[GNU_Autotools/SampleProjects/02_jsoncpp_lib](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Autotools/SampleProjects/02_jsoncpp_lib)
+
+The preparation steps are the same: a 'configure.ac' file for ```autoconf``` and a 'Makefile.am' file ```automake```.
+
+### Write configure.ac for Autoconf
+
+```
+```
+
+### Write Makefile.am for Automake
+
+```
+```
+
+### Start Building
+
+```
+```
+
 ## Learn more about Autotools
 
 ### Autoconf
@@ -307,8 +337,6 @@ By using 'autoreconf', we achieve the same result, but less steps to run. It red
 ### Automake
 
 ### Libtool
-
-## Build a Library
 
 ## Conclusion
 
