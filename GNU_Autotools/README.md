@@ -387,7 +387,176 @@ Except for the source codes in include and src subdirectories are already there,
 
 #### Utilize Libtool
 
+configure.ac
+
 ```
+AC_INIT([libjsoncpp], [1.0], [nguyenchiemminhvu@gmail.com])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AC_PROG_CXX
+AC_CONFIG_FILES([Makefile])
+AC_CONFIG_MACRO_DIRS([m4])
+AM_PROG_AR
+LT_INIT
+AC_OUTPUT
+```
+
+Makefile.am
+
+```
+lib_LTLIBRARIES = libjsoncpp.la
+libjsoncpp_la_SOURCES = $(top_srcdir)/src/json_reader.cpp \
+                        $(top_srcdir)/src/json_value.cpp \
+                        $(top_srcdir)/src/json_writer.cpp
+libjsoncpp_la_CPPFLAGS = -I$(top_srcdir)/include \
+                         -fPIC
+libjsoncpp_la_LDFLAGS = -version-info 0:0:0 \
+                        -shared
+
+ACLOCAL_AMFLAGS = -I m4
+AUTOMAKE_OPTIONS = subdir-objects
+```
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ ls
+AUTHORS  ChangeLog  configure.ac  include  Makefile.am  NEWS  README  src
+
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ autoreconf -i
+aclocal: warning: couldn't open directory 'm4': No such file or directory
+libtoolize: putting auxiliary files in '.'.
+libtoolize: copying file './ltmain.sh'
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
+libtoolize: copying file 'm4/libtool.m4'
+libtoolize: copying file 'm4/ltoptions.m4'
+libtoolize: copying file 'm4/ltsugar.m4'
+libtoolize: copying file 'm4/ltversion.m4'
+libtoolize: copying file 'm4/lt~obsolete.m4'
+configure.ac:6: installing './ar-lib'
+configure.ac:6: installing './compile'
+configure.ac:7: installing './config.guess'
+configure.ac:7: installing './config.sub'
+configure.ac:2: installing './install-sh'
+configure.ac:2: installing './missing'
+Makefile.am: installing './depcomp'
+
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ ./configure 
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a race-free mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking for g++... g++
+checking whether the C++ compiler works... yes
+checking for C++ compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C++... yes
+checking whether g++ accepts -g... yes
+checking for g++ option to enable C++11 features... none needed
+checking whether make supports the include directive... yes (GNU style)
+checking dependency style of g++... gcc3
+checking for gcc... gcc
+checking whether the compiler supports GNU C... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to enable C11 features... none needed
+checking whether gcc understands -c and -o together... yes
+checking dependency style of gcc... gcc3
+checking for ar... ar
+checking the archiver (ar) interface... ar
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking how to print strings... printf
+checking for a sed that does not truncate output... /usr/bin/sed
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking for egrep... /usr/bin/grep -E
+checking for fgrep... /usr/bin/grep -F
+checking for ld used by gcc... /usr/bin/ld
+checking if the linker (/usr/bin/ld) is GNU ld... yes
+checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+checking the name lister (/usr/bin/nm -B) interface... BSD nm
+checking whether ln -s works... yes
+checking the maximum length of command line arguments... 1572864
+checking how to convert x86_64-pc-linux-gnu file names to x86_64-pc-linux-gnu format... func_convert_file_noop
+checking how to convert x86_64-pc-linux-gnu file names to toolchain format... func_convert_file_noop
+checking for /usr/bin/ld option to reload object files... -r
+checking for objdump... objdump
+checking how to recognize dependent libraries... pass_all
+checking for dlltool... no
+checking how to associate runtime and link libraries... printf %s\n
+checking for archiver @FILE support... @
+checking for strip... strip
+checking for ranlib... ranlib
+checking command to parse /usr/bin/nm -B output from gcc object... ok
+checking for sysroot... no
+checking for a working dd... /usr/bin/dd
+checking how to truncate binary pipes... /usr/bin/dd bs=4096 count=1
+checking for mt... mt
+checking if mt is a manifest tool... no
+checking for stdio.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for strings.h... yes
+checking for sys/stat.h... yes
+checking for sys/types.h... yes
+checking for unistd.h... yes
+checking for dlfcn.h... yes
+checking for objdir... .libs
+checking if gcc supports -fno-rtti -fno-exceptions... no
+checking for gcc option to produce PIC... -fPIC -DPIC
+checking if gcc PIC flag -fPIC -DPIC works... yes
+checking if gcc static flag -static works... yes
+checking if gcc supports -c -o file.o... yes
+checking if gcc supports -c -o file.o... (cached) yes
+checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking whether -lc should be explicitly linked in... no
+checking dynamic linker characteristics... GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether stripping libraries is possible... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... yes
+checking how to run the C++ preprocessor... g++ -E
+checking for ld used by g++... /usr/bin/ld -m elf_x86_64
+checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
+checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking for g++ option to produce PIC... -fPIC -DPIC
+checking if g++ PIC flag -fPIC -DPIC works... yes
+checking if g++ static flag -static works... yes
+checking if g++ supports -c -o file.o... yes
+checking if g++ supports -c -o file.o... (cached) yes
+checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking dynamic linker characteristics... (cached) GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: executing depfiles commands
+config.status: executing libtool commands
+
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ make
+/bin/bash ./libtool  --tag=CXX   --mode=compile g++ -DPACKAGE_NAME=\"libjsoncpp\" -DPACKAGE_TARNAME=\"libjsoncpp\" -DPACKAGE_VERSION=\"1.0\" -DPACKAGE_STRING=\"libjsoncpp\ 1.0\" -DPACKAGE_BUGREPORT=\"nguyenchiemminhvu@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"libjsoncpp\" -DVERSION=\"1.0\" -DHAVE_STDIO_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_STRINGS_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_UNISTD_H=1 -DSTDC_HEADERS=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -I.  -I./include -fPIC   -g -O2 -MT ./src/libjsoncpp_la-json_reader.lo -MD -MP -MF ./src/.deps/libjsoncpp_la-json_reader.Tpo -c -o ./src/libjsoncpp_la-json_reader.lo `test -f './src/json_reader.cpp' || echo './'`./src/json_reader.cpp
+libtool: compile:  g++ -DPACKAGE_NAME=\"libjsoncpp\" -DPACKAGE_TARNAME=\"libjsoncpp\" -DPACKAGE_VERSION=\"1.0\" "-DPACKAGE_STRING=\"libjsoncpp 1.0\"" -DPACKAGE_BUGREPORT=\"nguyenchiemminhvu@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"libjsoncpp\" -DVERSION=\"1.0\" -DHAVE_STDIO_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_STRINGS_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_UNISTD_H=1 -DSTDC_HEADERS=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -I. -I./include -fPIC -g -O2 -MT ./src/libjsoncpp_la-json_reader.lo -MD -MP -MF ./src/.deps/libjsoncpp_la-json_reader.Tpo -c ./src/json_reader.cpp  -fPIC -DPIC -o ./src/.libs/libjsoncpp_la-json_reader.o
+libtool: compile:  g++ -DPACKAGE_NAME=\"libjsoncpp\" -DPACKAGE_TARNAME=\"libjsoncpp\" -DPACKAGE_VERSION=\"1.0\" "-DPACKAGE_STRING=\"libjsoncpp 1.0\"" -DPACKAGE_BUGREPORT=\"nguyenchiemminhvu@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"libjsoncpp\" -DVERSION=\"1.0\" -DHAVE_STDIO_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_STRINGS_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_UNISTD_H=1 -DSTDC_HEADERS=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -I. -I./include -fPIC -g -O2 -MT ./src/libjsoncpp_la-json_reader.lo -MD -MP -MF ./src/.deps/libjsoncpp_la-json_reader.Tpo -c ./src/json_reader.cpp -o ./src/libjsoncpp_la-json_reader.o >/dev/null 2>&1
+mv -f ./src/.deps/libjsoncpp_la-json_reader.Tpo ./src/.deps/libjsoncpp_la-json_reader.Plo
+/bin/bash ./libtool  --tag=CXX   --mode=compile g++ -DPACKAGE_NAME=\"libjsoncpp\" -DPACKAGE_TARNAME=\"libjsoncpp\" -DPACKAGE_VERSION=\"1.0\" -DPACKAGE_STRING=\"libjsoncpp\ 1.0\" -DPACKAGE_BUGREPORT=\"nguyenchiemminhvu@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"libjsoncpp\" -DVERSION=\"1.0\" -DHAVE_STDIO_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_STRINGS_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_UNISTD_H=1 -DSTDC_HEADERS=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -I.  -I./include -fPIC   -g -O2 -MT ./src/libjsoncpp_la-json_value.lo -MD -MP -MF ./src/.deps/libjsoncpp_la-json_value.Tpo -c -o ./src/libjsoncpp_la-json_value.lo `test -f './src/json_value.cpp' || echo './'`./src/json_value.cpp
+libtool: compile:  g++ -DPACKAGE_NAME=\"libjsoncpp\" -DPACKAGE_TARNAME=\"libjsoncpp\" -DPACKAGE_VERSION=\"1.0\" "-DPACKAGE_STRING=\"libjsoncpp 1.0\"" -DPACKAGE_BUGREPORT=\"nguyenchiemminhvu@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"libjsoncpp\" -DVERSION=\"1.0\" -DHAVE_STDIO_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_STRINGS_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_UNISTD_H=1 -DSTDC_HEADERS=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -I. -I./include -fPIC -g -O2 -MT ./src/libjsoncpp_la-json_value.lo -MD -MP -MF ./src/.deps/libjsoncpp_la-json_value.Tpo -c ./src/json_value.cpp  -fPIC -DPIC -o ./src/.libs/libjsoncpp_la-json_value.o
+libtool: compile:  g++ -DPACKAGE_NAME=\"libjsoncpp\" -DPACKAGE_TARNAME=\"libjsoncpp\" -DPACKAGE_VERSION=\"1.0\" "-DPACKAGE_STRING=\"libjsoncpp 1.0\"" -DPACKAGE_BUGREPORT=\"nguyenchiemminhvu@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"libjsoncpp\" -DVERSION=\"1.0\" -DHAVE_STDIO_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_STRINGS_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_UNISTD_H=1 -DSTDC_HEADERS=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -I. -I./include -fPIC -g -O2 -MT ./src/libjsoncpp_la-json_value.lo -MD -MP -MF ./src/.deps/libjsoncpp_la-json_value.Tpo -c ./src/json_value.cpp -o ./src/libjsoncpp_la-json_value.o >/dev/null 2>&1
+mv -f ./src/.deps/libjsoncpp_la-json_value.Tpo ./src/.deps/libjsoncpp_la-json_value.Plo
+/bin/bash ./libtool  --tag=CXX   --mode=compile g++ -DPACKAGE_NAME=\"libjsoncpp\" -DPACKAGE_TARNAME=\"libjsoncpp\" -DPACKAGE_VERSION=\"1.0\" -DPACKAGE_STRING=\"libjsoncpp\ 1.0\" -DPACKAGE_BUGREPORT=\"nguyenchiemminhvu@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"libjsoncpp\" -DVERSION=\"1.0\" -DHAVE_STDIO_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_STRINGS_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_UNISTD_H=1 -DSTDC_HEADERS=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -I.  -I./include -fPIC   -g -O2 -MT ./src/libjsoncpp_la-json_writer.lo -MD -MP -MF ./src/.deps/libjsoncpp_la-json_writer.Tpo -c -o ./src/libjsoncpp_la-json_writer.lo `test -f './src/json_writer.cpp' || echo './'`./src/json_writer.cpp
+libtool: compile:  g++ -DPACKAGE_NAME=\"libjsoncpp\" -DPACKAGE_TARNAME=\"libjsoncpp\" -DPACKAGE_VERSION=\"1.0\" "-DPACKAGE_STRING=\"libjsoncpp 1.0\"" -DPACKAGE_BUGREPORT=\"nguyenchiemminhvu@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"libjsoncpp\" -DVERSION=\"1.0\" -DHAVE_STDIO_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_STRINGS_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_UNISTD_H=1 -DSTDC_HEADERS=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -I. -I./include -fPIC -g -O2 -MT ./src/libjsoncpp_la-json_writer.lo -MD -MP -MF ./src/.deps/libjsoncpp_la-json_writer.Tpo -c ./src/json_writer.cpp  -fPIC -DPIC -o ./src/.libs/libjsoncpp_la-json_writer.o
+libtool: compile:  g++ -DPACKAGE_NAME=\"libjsoncpp\" -DPACKAGE_TARNAME=\"libjsoncpp\" -DPACKAGE_VERSION=\"1.0\" "-DPACKAGE_STRING=\"libjsoncpp 1.0\"" -DPACKAGE_BUGREPORT=\"nguyenchiemminhvu@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"libjsoncpp\" -DVERSION=\"1.0\" -DHAVE_STDIO_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_STRINGS_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_UNISTD_H=1 -DSTDC_HEADERS=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -I. -I./include -fPIC -g -O2 -MT ./src/libjsoncpp_la-json_writer.lo -MD -MP -MF ./src/.deps/libjsoncpp_la-json_writer.Tpo -c ./src/json_writer.cpp -o ./src/libjsoncpp_la-json_writer.o >/dev/null 2>&1
+mv -f ./src/.deps/libjsoncpp_la-json_writer.Tpo ./src/.deps/libjsoncpp_la-json_writer.Plo
+/bin/bash ./libtool  --tag=CXX   --mode=link g++  -g -O2 -version-info 0:0:0 -shared  -o libjsoncpp.la -rpath /usr/local/lib ./src/libjsoncpp_la-json_reader.lo ./src/libjsoncpp_la-json_value.lo ./src/libjsoncpp_la-json_writer.lo  
+libtool: link: g++  -fPIC -DPIC -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o  ./src/.libs/libjsoncpp_la-json_reader.o ./src/.libs/libjsoncpp_la-json_value.o ./src/.libs/libjsoncpp_la-json_writer.o   -L/usr/lib/gcc/x86_64-linux-gnu/11 -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/11/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o  -g -O2   -Wl,-soname -Wl,libjsoncpp.so.0 -o .libs/libjsoncpp.so.0.0.0
+libtool: link: (cd ".libs" && rm -f "libjsoncpp.so.0" && ln -s "libjsoncpp.so.0.0.0" "libjsoncpp.so.0")
+libtool: link: (cd ".libs" && rm -f "libjsoncpp.so" && ln -s "libjsoncpp.so.0.0.0" "libjsoncpp.so")
+libtool: link: ( cd ".libs" && rm -f "libjsoncpp.la" && ln -s "../libjsoncpp.la" "libjsoncpp.la" )
+
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ ls .libs/
+libjsoncpp.la  libjsoncpp.lai  libjsoncpp.so  libjsoncpp.so.0  libjsoncpp.so.0.0.0
 ```
 
 ## Learn more about Autotools
