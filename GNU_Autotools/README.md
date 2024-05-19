@@ -313,7 +313,62 @@ By using 'autoreconf', we achieve the same result, but less steps to run. It red
 In this section, we would practice to build a library and expect to have a shared object as output.
 [GNU_Autotools/SampleProjects/02_jsoncpp_lib](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Autotools/SampleProjects/02_jsoncpp_lib)
 
-The preparation steps are the same: a 'configure.ac' file for ```autoconf``` and a 'Makefile.am' file ```automake```.
+In this library project, the directory structure is organized in a way that aligns with the structure typically seen in C/C++ projects using Autotools.
+
+```
+sample_project
+│   ├── AUTHORS
+│   ├── ChangeLog
+│   ├── configure.ac
+│   ├── include
+│   │   └── header files
+│   ├── Makefile.am
+│   ├── NEWS
+│   ├── README
+│   └── src
+│       └── c/cpp files
+```
+
+The 'src' subdirectory is where we will find all the source code files that need to be compiled into object files. These source code files contain the actual implementation of the library.
+
+The 'include' subdirectory is designated to hold the header files. These header files define the interfaces and declarations needed to use the library's functionality.
+
+Additionally, we will find a configure.ac file, which is used by the autoconf tool. This file contains instructions and checks for configuring the build environment and generating the necessary build scripts.
+
+The Makefile.am file is used by automake and specifies how to compile and link the source files into the final library.
+
+In addition to these key files, we may also come across other Autotools-related files such as AUTHORS, ChangeLog, NEWS, and README. These files provide information about the project's authors, changelog, news updates, and general documentation respectively.
+
+This directory structure and the associated Autotools files work together to provide a standardized and automated way to build, configure, and distribute the library.
+
+```
+├── AUTHORS
+├── ChangeLog
+├── configure.ac
+├── include
+│   └── json
+│       ├── allocator.h
+│       ├── assertions.h
+│       ├── config.h
+│       ├── forwards.h
+│       ├── json_features.h
+│       ├── json.h
+│       ├── reader.h
+│       ├── value.h
+│       ├── version.h
+│       └── writer.h
+├── Makefile.am
+├── NEWS
+├── README
+└── src
+    ├── json_reader.cpp
+    ├── json_tool.h
+    ├── json_value.cpp
+    ├── json_valueiterator.inl
+    └── json_writer.cpp
+```
+
+Except for the source codes in include and src subdirectories are already there, copied from an opensource project, the preparation is the same. All we need are a 'configure.ac' file for ```autoconf``` and a 'Makefile.am' file ```automake```.
 
 ### Write configure.ac for Autoconf
 
