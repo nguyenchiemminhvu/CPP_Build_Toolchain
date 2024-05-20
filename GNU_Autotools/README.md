@@ -502,7 +502,11 @@ In this modified version, we use the lib_LTLIBRARIES variable instead of lib_LIB
 
 We also change the suffix of the library file from .a to .la to indicate that it's a library managed by Libtool.
 
+The libjsoncpp_la_CPPFLAGS variable has an additional option '-fPIC' that tells the compiler to generate position-independent code, ensure that the library can be loaded and executed at different memory locations by multiple processes simulataneously.
+
 The libjsoncpp_la_LDFLAGS variable is set to -shared to specify that the library should be built as a shared object.
+
+About the option ```-version-info 0:0:0```, we will make it clear after seeing the output of build process.
 
 #### Build with Libtool support
 
