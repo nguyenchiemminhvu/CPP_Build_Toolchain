@@ -421,6 +421,18 @@ In this modification compared to the configure.ac file in previous section [Buil
 
 **AC_PROG_RANLIB** checks for the presence of the 'ranlib' command, which is used to generate an index for a static library.
 
+Don't worry when you can't remember these flags and variables at all time, autoconf and automake will tell us which options or variables to be declared in configure.ac and Makefile.am clearly if it needed. The build process would stop with error logs. For example:
+
+```
+worker@bb690a873660:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ autoreconf -i
+Makefile.am:1: error: library used but 'RANLIB' is undefined
+Makefile.am:1:   The usual way to define 'RANLIB' is to add 'AC_PROG_RANLIB'
+Makefile.am:1:   to 'configure.ac' and run 'autoconf' again.
+automake: warnings are treated as errors
+/usr/share/automake-1.15/am/library.am: warning: 'libjsoncpp.a': linking libraries using a non-POSIX
+/usr/share/automake-1.15/am/library.am: archiver requires 'AM_PROG_AR' in 'configure.ac'
+```
+
 ### Write Makefile.am for Automake
 
 Here is the sample Makefile.am prepared for the Makefile generation:
@@ -446,18 +458,6 @@ To ensure that the compiler can find the necessary header files, the -I flag is 
 The AUTOMAKE_OPTIONS is set to 'subdir-objects', which enables the generation of object files in subdirectories. This helps organize the build process. For instance, with 'subdir-objects' enabled, 'sub/dir/file.c' will be compiled to 'sub/dir/file.o' (or 'sub/dir/file.lo' if using Libtool) accordingly.
 
 The 'ACLOCAL_AMFLAGS' is set to -I m4, which specifies the directory where aclocal should look for additional macros. The m4 directory is typically used to store custom Autoconf macros.
-
-Don't worry when you can't remember these flags and variables at all time, autoconf and automake will tell us which options or variables to be declared in configure.ac and Makefile.am clearly if it needed. The build process would stop with error logs. For example:
-
-```
-worker@bb690a873660:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ autoreconf -i
-Makefile.am:1: error: library used but 'RANLIB' is undefined
-Makefile.am:1:   The usual way to define 'RANLIB' is to add 'AC_PROG_RANLIB'
-Makefile.am:1:   to 'configure.ac' and run 'autoconf' again.
-automake: warnings are treated as errors
-/usr/share/automake-1.15/am/library.am: warning: 'libjsoncpp.a': linking libraries using a non-POSIX
-/usr/share/automake-1.15/am/library.am: archiver requires 'AM_PROG_AR' in 'configure.ac'
-```
 
 ### Start Building
 
