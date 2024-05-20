@@ -6,6 +6,9 @@ libjsoncpp_a_CPPFLAGS = -I$(top_srcdir)/include \
                         -fPIC
 libjsoncpp_a_LDFLAGS = -shared
 
+LocationService_includedir = $(includedir)/json
+LocationService_include_HEADERS = $(top_srcdir)/include/json/*
+
 lib_LTLIBRARIES = libjsoncpp.la
 libjsoncpp_la_SOURCES = $(libjsoncpp_a_SOURCES)
 libjsoncpp_la_CPPFLAGS = $(libjsoncpp_a_CPPFLAGS)
