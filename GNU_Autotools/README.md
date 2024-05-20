@@ -537,12 +537,11 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CXX
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_MACRO_DIRS([m4])
-AM_PROG_AR
 LT_INIT
 AC_OUTPUT
 ```
 
-**LT_INIT**
+In this configure.ac file, since we don't need to use 'ranlib' command for static library, 'AC_PROG_RANLIB' can be removed. Instead, we add the 'LT_INIT' marco to initialize the Libtool support.
 
 #### Makefile.am that utilize the Libtool
 
