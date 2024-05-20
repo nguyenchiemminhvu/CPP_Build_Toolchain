@@ -415,11 +415,11 @@ AC_OUTPUT
 
 In this modification compared to the configure.ac file in previous section [Build HelloWorld project](#build-helloworld-project), we have a few more configurations:
 
-**AC_CONFIG_MACRO_DIRS([m4])**
+**AC_CONFIG_MACRO_DIRS([m4])** specifies the directory where custom macro files are located.
 
-**AM_PROG_AR**
+**AM_PROG_AR** checks for the presence of the 'ar' command, which is used to create and manipulate static libraries.
 
-**AC_PROG_RANLIB**
+**AC_PROG_RANLIB** checks for the presence of the 'ranlib' command, which is used to generate an index for a static library.
 
 ### Write Makefile.am for Automake
 
@@ -437,15 +437,15 @@ AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = -I m4
 ```
 
-When our target is a library file, lib_LIBRARIES variable is used to specify the library name. This library name is also used as prefix of the common variables we have learned in previous section.
+When our target is a library file, 'lib_LIBRARIES' variable is used to specify the library name. This library name is also used as prefix of the common variables we have learned in previous section.
 
-The library JSONCPP consists of three source files: json_reader.cpp, json_value.cpp, and json_writer.cpp, which are located in the src directory. We loaded them all to the <lib_name>_SOURCES variable, make sure that they are all compiled to the object files.
+The library JSONCPP consists of three source files: json_reader.cpp, json_value.cpp, and json_writer.cpp, which are located in the src directory. We loaded them all to the '<lib_name>_SOURCES' variable, make sure that they are all compiled to the object files.
 
 To ensure that the compiler can find the necessary header files, the -I flag is used with the path to the include directory in the top source directory.
 
-The AUTOMAKE_OPTIONS is set to subdir-objects, which enables the generation of object files in subdirectories. This helps organize the build process. For instance, with subdir-objects enabled, 'sub/dir/file.c' will be compiled to 'sub/dir/file.o' (or 'sub/dir/file.lo' if using Libtool) accordingly.
+The AUTOMAKE_OPTIONS is set to 'subdir-objects', which enables the generation of object files in subdirectories. This helps organize the build process. For instance, with 'subdir-objects' enabled, 'sub/dir/file.c' will be compiled to 'sub/dir/file.o' (or 'sub/dir/file.lo' if using Libtool) accordingly.
 
-The ACLOCAL_AMFLAGS is set to -I m4, which specifies the directory where aclocal should look for additional macros. The m4 directory is typically used to store custom Autoconf macros.
+The 'ACLOCAL_AMFLAGS' is set to -I m4, which specifies the directory where aclocal should look for additional macros. The m4 directory is typically used to store custom Autoconf macros.
 
 Don't worry when you can't remember these flags and variables at all time, autoconf and automake will tell us which options or variables to be declared in configure.ac and Makefile.am clearly if it needed. The build process would stop with error logs. For example:
 
