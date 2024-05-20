@@ -403,17 +403,21 @@ AC_OUTPUT
 #### Makefile.am that utilize the Libtool
 
 ```
-lib_LTLIBRARIES = libjsoncpp.la
-libjsoncpp_la_SOURCES = $(top_srcdir)/src/json_reader.cpp \
-                        $(top_srcdir)/src/json_value.cpp \
-                        $(top_srcdir)/src/json_writer.cpp
-libjsoncpp_la_CPPFLAGS = -I$(top_srcdir)/include \
-                         -fPIC
-libjsoncpp_la_LDFLAGS = -version-info 0:0:0 \
-                        -shared
+lib_LIBRARIES = libjsoncpp.a
+libjsoncpp_a_SOURCES = src/json_reader.cpp \
+                       src/json_value.cpp \
+                       src/json_writer.cpp
+libjsoncpp_a_CPPFLAGS = -I$(top_srcdir)/include \
+                        -fPIC
+libjsoncpp_a_LDFLAGS = -shared
 
-ACLOCAL_AMFLAGS = -I m4
+lib_LTLIBRARIES = libjsoncpp.la
+libjsoncpp_la_SOURCES = $(libjsoncpp_a_SOURCES)
+libjsoncpp_la_CPPFLAGS = $(libjsoncpp_a_CPPFLAGS)
+libjsoncpp_la_LDFLAGS = $(libjsoncpp_a_LDFLAGS) -version-info 0:0:0
+
 AUTOMAKE_OPTIONS = subdir-objects
+ACLOCAL_AMFLAGS = -I m4
 ```
 
 #### Build with Libtool support
