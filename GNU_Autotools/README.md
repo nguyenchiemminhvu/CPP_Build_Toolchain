@@ -372,6 +372,8 @@ Except for the source codes in include and src subdirectories are already there,
 
 ### Write configure.ac for Autoconf
 
+Here is the sample configure.ac file for the configuration:
+
 ```
 AC_INIT([libjsoncpp], [1.0], [nguyenchiemminhvu@gmail.com])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
@@ -383,7 +385,17 @@ AC_PROG_RANLIB
 AC_OUTPUT
 ```
 
+In this modification compared to the configure.ac file in previous section [Build HelloWorld project](#build-helloworld-project), we have a few more configurations:
+
+**AC_CONFIG_MACRO_DIRS([m4])**
+
+**AM_PROG_AR**
+
+**AC_PROG_RANLIB**
+
 ### Write Makefile.am for Automake
+
+Here is the sample Makefile.am prepared for the Makefile generation:
 
 ```
 lib_LIBRARIES = libjsoncpp.a
@@ -397,7 +409,15 @@ AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = -I m4
 ```
 
-### Build Static Library
+The library JSONCPP consists of three source files: json_reader.cpp, json_value.cpp, and json_writer.cpp, which are located in the src directory. We loaded them all to the SOURCES variable, make sure that they are all compiled to the object files.
+
+To ensure that the compiler can find the necessary header files, the -I flag is used with the path to the include directory in the top source directory.
+
+The AUTOMAKE_OPTIONS is set to subdir-objects, which enables the generation of object files in subdirectories. This helps organize the build process. For instance, with subdir-objects enabled, 'sub/dir/file.c' will be compiled to 'sub/dir/file.o' (or 'sub/dir/file.lo' if using Libtool) accordingly.
+
+The ACLOCAL_AMFLAGS is set to -I m4, which specifies the directory where aclocal should look for additional macros. The m4 directory is typically used to store custom Autoconf macros.
+
+### Start Building
 
 ```
 worker@bb690a873660:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ autoreconf -i
@@ -461,9 +481,11 @@ worker@bb690a873660:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SamplePr
 ./src/.deps/libjsoncpp_a-json_value.Po
 ```
 
+There is something not matched with our expectation. We expect to have a shared object (.so) file, but it finally give us a static library (.a) file.
+
 ### Utilize Libtool to Build Dynamic Library
 
-To build a shared object library (.so) instead of a static library (.a), we need to make a few adjustments.
+To build a shared object library (.so) instead of a static library (.a), we need Libtool.
 
 #### configure.ac that utilize the Libtool
 
@@ -477,6 +499,8 @@ AM_PROG_AR
 LT_INIT
 AC_OUTPUT
 ```
+
+**LT_INIT**
 
 #### Makefile.am that utilize the Libtool
 
