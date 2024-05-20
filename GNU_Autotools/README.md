@@ -373,19 +373,97 @@ Except for the source codes in include and src subdirectories are already there,
 ### Write configure.ac for Autoconf
 
 ```
+AC_INIT([libjsoncpp], [1.0], [nguyenchiemminhvu@gmail.com])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AC_PROG_CXX
+AC_CONFIG_FILES([Makefile])
+AC_CONFIG_MACRO_DIRS([m4])
+AM_PROG_AR
+AC_PROG_RANLIB
+AC_OUTPUT
 ```
 
 ### Write Makefile.am for Automake
 
 ```
+lib_LIBRARIES = libjsoncpp.a
+libjsoncpp_a_SOURCES = src/json_reader.cpp \
+                       src/json_value.cpp \
+                       src/json_writer.cpp
+libjsoncpp_a_CPPFLAGS = -I$(top_srcdir)/include
+
+AUTOMAKE_OPTIONS = subdir-objects
+
+ACLOCAL_AMFLAGS = -I m4
 ```
 
-### Start Building
+### Build Static Library
 
 ```
+worker@bb690a873660:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ autoreconf -i
+aclocal: warning: couldn't open directory 'm4': No such file or directory
+configure.ac:6: installing './ar-lib'
+configure.ac:6: installing './compile'
+configure.ac:2: installing './install-sh'
+configure.ac:2: installing './missing'
+Makefile.am: installing './depcomp'
+
+worker@bb690a873660:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ ./configure 
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking for g++... g++
+checking whether the C++ compiler works... yes
+checking for C++ compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C++ compiler... yes
+checking whether g++ accepts -g... yes
+checking for style of include used by make... GNU
+checking dependency style of g++... gcc3
+checking for gcc... gcc
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking whether gcc understands -c and -o together... yes
+checking dependency style of gcc... gcc3
+checking for ar... ar
+checking the archiver (ar) interface... ar
+checking for ranlib... ranlib
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: executing depfiles commands
+
+worker@bb690a873660:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ make
+g++ -DPACKAGE_NAME=\"libjsoncpp\" -DPACKAGE_TARNAME=\"libjsoncpp\" -DPACKAGE_VERSION=\"1.0\" -DPACKAGE_STRING=\"libjsoncpp\ 1.0\" -DPACKAGE_BUGREPORT=\"nguyenchiemminhvu@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"libjsoncpp\" -DVERSION=\"1.0\" -I.  -I./include -fPIC -shared   -g -O2 -MT src/libjsoncpp_a-json_reader.o -MD -MP -MF src/.deps/libjsoncpp_a-json_reader.Tpo -c -o src/libjsoncpp_a-json_reader.o `test -f 'src/json_reader.cpp' || echo './'`src/json_reader.cpp
+mv -f src/.deps/libjsoncpp_a-json_reader.Tpo src/.deps/libjsoncpp_a-json_reader.Po
+g++ -DPACKAGE_NAME=\"libjsoncpp\" -DPACKAGE_TARNAME=\"libjsoncpp\" -DPACKAGE_VERSION=\"1.0\" -DPACKAGE_STRING=\"libjsoncpp\ 1.0\" -DPACKAGE_BUGREPORT=\"nguyenchiemminhvu@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"libjsoncpp\" -DVERSION=\"1.0\" -I.  -I./include -fPIC -shared   -g -O2 -MT src/libjsoncpp_a-json_value.o -MD -MP -MF src/.deps/libjsoncpp_a-json_value.Tpo -c -o src/libjsoncpp_a-json_value.o `test -f 'src/json_value.cpp' || echo './'`src/json_value.cpp
+mv -f src/.deps/libjsoncpp_a-json_value.Tpo src/.deps/libjsoncpp_a-json_value.Po
+g++ -DPACKAGE_NAME=\"libjsoncpp\" -DPACKAGE_TARNAME=\"libjsoncpp\" -DPACKAGE_VERSION=\"1.0\" -DPACKAGE_STRING=\"libjsoncpp\ 1.0\" -DPACKAGE_BUGREPORT=\"nguyenchiemminhvu@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"libjsoncpp\" -DVERSION=\"1.0\" -I.  -I./include -fPIC -shared   -g -O2 -MT src/libjsoncpp_a-json_writer.o -MD -MP -MF src/.deps/libjsoncpp_a-json_writer.Tpo -c -o src/libjsoncpp_a-json_writer.o `test -f 'src/json_writer.cpp' || echo './'`src/json_writer.cpp
+mv -f src/.deps/libjsoncpp_a-json_writer.Tpo src/.deps/libjsoncpp_a-json_writer.Po
+rm -f libjsoncpp.a
+ar cru libjsoncpp.a src/libjsoncpp_a-json_reader.o src/libjsoncpp_a-json_value.o src/libjsoncpp_a-json_writer.o 
+ar: `u' modifier ignored since `D' is the default (see `U')
+ranlib libjsoncpp.a
+
+worker@bb690a873660:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ find . | grep libjson
+./libjsoncpp.a
+./src/libjsoncpp_a-json_value.o
+./src/libjsoncpp_a-json_writer.o
+./src/libjsoncpp_a-json_reader.o
+./src/.deps/libjsoncpp_a-json_writer.Po
+./src/.deps/libjsoncpp_a-json_reader.Po
+./src/.deps/libjsoncpp_a-json_value.Po
 ```
 
-### Utilize Libtool
+### Utilize Libtool to Build Dynamic Library
+
+To build a shared object library (.so) instead of a static library (.a), we need to make a few adjustments.
 
 #### configure.ac that utilize the Libtool
 
@@ -419,6 +497,12 @@ libjsoncpp_la_LDFLAGS = $(libjsoncpp_a_LDFLAGS) -version-info 0:0:0
 AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = -I m4
 ```
+
+In this modified version, we use the lib_LTLIBRARIES variable instead of lib_LIBRARIES. The lib_LTLIBRARIES variable is used to specify the creation of shared object libraries.
+
+We also change the suffix of the library file from .a to .la to indicate that it's a library managed by Libtool.
+
+The libjsoncpp_la_LDFLAGS variable is set to -shared to specify that the library should be built as a shared object.
 
 #### Build with Libtool support
 
