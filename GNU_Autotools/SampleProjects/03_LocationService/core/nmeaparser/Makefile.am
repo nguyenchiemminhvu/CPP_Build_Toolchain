@@ -13,9 +13,6 @@ libnmeaparser_a_CPPFLAGS = -I$(top_srcdir)/include \
                            -fPIC
 libnmeaparser_a_LDFLAGS = -shared
 
-LocationService_includedir = $(includedir)
-LocationService_include_HEADERS = $(top_srcdir)/include/*
-
 lib_LTLIBRARIES = libnmeaparser.la
 libnmeaparser_la_SOURCES = $(libnmeaparser_a_SOURCES)
 libnmeaparser_la_CPPFLAGS = $(libnmeaparser_a_CPPFLAGS)
