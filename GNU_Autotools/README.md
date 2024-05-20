@@ -736,7 +736,7 @@ In simple terms, GNU Autotools is a collection of tools that make it easier to b
 
 To truly understand Autotools, it's essential to practice and build a sample project on your own: [GNU_Autotools/SampleProjects/02_LocationService](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Autotools/SampleProjects/02_LocationService)
 
-I encourage you to take up the challenge and try building the sample project before seeking the solution: [configure.ac]() and [Makefile.am]().
+I encourage you to take up the challenge and try building the sample project before seeking the solution: [configure.ac](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Autotools/SampleProjects/03_LocationService/configure.ac) and [Makefile.am](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/GNU_Autotools/SampleProjects/03_LocationService/Makefile.am).
 
 **References**
 
