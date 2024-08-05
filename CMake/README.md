@@ -4,38 +4,71 @@
 
 CMake is a cross-platform tool designed to manage the build process of software projects. It uses simple configuration files called CMakeLists.txt to generate native build scripts for various platforms, such as Makefiles for Unix or project files for Visual Studio.
 
+In this article, we'll talk about using CMake on Unix-like systems. Before exploring more about CMake, let's make sure we have a complete understanding of [GNU Make](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make).
+
+CMake is a scripting language written in C++ programming language. It includes several components, each serving a specific purpose in the build and testing workflow: cmake, ctest and cpack.
+
+```
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain$ which cmake
+/usr/bin/cmake
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain$ which ctest
+/usr/bin/ctest
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain$ which cpack
+/usr/bin/cpack
+```
+
+**CMake** is the core component of the CMake package that generating compiler-independent build instruction.
+**CTest** is a testing tool that comes with CMake. It is used to automate the execution of tests for a project.
+**CPack** is a packaging tool that comes with CMake. It is used to create installers and packages for software projects.
+
 ### Benefits Of Using CMake
 
-Cross-Platform: Works on Windows, macOS, and Linux.
-Flexibility: Can generate build files for different build systems.
-Modularity: Easy to manage complex projects with multiple components.
-Community Support: Widely used and well-documented.
+**Compatibility**: Works on Windows, macOS, and Linux. Compatible with all mordern C++ standards (C++11, C++14, C++17, ...).
+
+**Flexibility**: Can generate build files for different build systems and various compilers such as GCC, CLang, MSVC. Most of the IDE support CMake, and CMake also support those IDE.
+
+**Popularity**: CMake is widely used. The chance to find a preinstalled module/library with CMake is higher than any other build system. 
+
+**Modularity**: Easy to manage complex projects with multiple components.
+
+**Community Support**: Widely used and well-documented.
 
 ### CMake Installation
 
-To install CMake on a Linux system, you can use your package manager. For example, on Ubuntu, you can run:
+Install via package manager tool. For example in Linux:
 
 ```
 sudo apt-get update
 sudo apt-get install cmake
 ```
 
+Or download CMake source code and compile yourself:
+
+```
+wget https://github.com/Kitware/CMake/releases/download/v3.30.2/cmake-3.30.2.tar.gz
+tar -xzvf cmake-3.30.2.tar.gz
+cd cmake-3.30.2
+./bootstrap
+make
+sudo make install
+```
+
 Verify the installation by running:
 
 ```
-cmake --version
+worker@7e4a84e41875:~/study_workspace$ cmake --version
+cmake version 3.10.2
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
 ```
 
 ## Build HelloWorld Project
 
-Create a directory for your project:
+As all new programmers, we start with HelloWorld project.
 
-```
-mkdir HelloWorld
-cd HelloWorld
-```
+[https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/01_HelloWorld](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/01_HelloWorld)
 
-Create a simple C++ source file:
+It appears a simple source file:
 
 ```
 // main.cpp
@@ -71,6 +104,14 @@ Run the executable:
 ```
 ./HelloWorld
 ```
+
+Generally, CMake is considered easier to set up and use compared to [GNU Autotools](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Autotools).
+
+CMake reads the ```CMakeLists.txt``` file and generates the [Makefile](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make) file.
+
+![](https://raw.githubusercontent.com/nguyenchiemminhvu/CPP_Build_Toolchain/master/CMake/CMake_Build_Process.png)
+
+Now, the only thing we care for is the syntax of writing CMakeLists.txt file.
 
 ## CMakeLists.txt Syntax And Commands
 
