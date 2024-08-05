@@ -115,6 +115,97 @@ Now, the only thing we care for is the syntax of writing CMakeLists.txt file.
 
 ## CMakeLists.txt Syntax And Commands
 
+### General Outline Of CMakeLists.txt
+
+**Minimum CMake Version**: Specify the minimum required version of CMake.
+
+```
+cmake_minimum_required(VERSION 3.10)
+```
+
+**Project Name and Version**: Define the name and version of the project.
+
+```
+project(MyProject VERSION 1.0)
+```
+
+**Specify C++ Standard** (if applicable): Set the C++ standard to be used.
+
+```
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+```
+
+**Include Directories**: Specify directories to be included during the build process.
+
+```
+include_directories(${PROJECT_SOURCE_DIR}/include)
+```
+
+**Source Files**: List the source files to be compiled.
+
+```
+set(SOURCES
+    src/main.cpp
+    src/other_file.cpp
+)
+```
+
+**Add Executable or Library**: Define the executable or library to be built.
+
+```
+add_executable(MyExecutable ${SOURCES})
+# or for a library
+add_library(MyLibrary ${SOURCES})
+```
+
+**Link Libraries**: Link against other libraries.
+
+```
+target_link_libraries(MyExecutable PRIVATE SomeLibrary)
+```
+
+**Add Subdirectories**: Include other CMakeLists.txt files from subdirectories.
+
+```
+add_subdirectory(src)
+add_subdirectory(tests)
+```
+
+**Custom Commands and Targets**: Define custom commands and targets if needed.
+
+```
+add_custom_command(
+    OUTPUT ${CMAKE_BINARY_DIR}/generated_file.cpp
+    COMMAND some_command
+    DEPENDS some_dependency
+)
+```
+
+**Install Rules**: Specify installation rules.
+
+```
+install(TARGETS MyExecutable DESTINATION bin)
+install(FILES ${PROJECT_SOURCE_DIR}/include/my_header.h DESTINATION include)
+```
+
+**Testing**: Enable and define tests.
+
+```
+enable_testing()
+add_test(NAME MyTest COMMAND MyExecutable)
+```
+
+**Options and Configurations**: Define options and configurations.
+
+```
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+```
+
+This is a basic structure and can be expanded based on the specific needs of your project.
+
+Don't be afraid at the first sight. Let's walk through each component of CMakeList.txt file.
+
 ### Basic Syntax And Structure
 
 A CMakeLists.txt file typically starts with specifying the minimum required version of CMake and the project name:
@@ -122,71 +213,6 @@ A CMakeLists.txt file typically starts with specifying the minimum required vers
 ```
 cmake_minimum_required(VERSION 3.10)
 project(MyProject)
-```
-
-### Common Commands
-
-add_executable: Defines an executable target.
-
-```
-add_executable(MyExecutable main.cpp)
-```
-
-add_library: Defines a library target.
-
-```
-add_library(MyLibrary mylib.cpp)
-```
-
-target_link_libraries: Links libraries to targets.
-
-```
-target_link_libraries(MyExecutable MyLibrary)
-```
-
-### Variables And Cache Variables
-
-Setting variables:
-
-```
-set(MY_VAR "Hello")
-```
-
-Using variables:
-
-```
-message(${MY_VAR})
-```
-
-Cache variables (persist between runs):
-
-```
-set(MY_CACHE_VAR "World" CACHE STRING "A cached variable")
-```
-
-## Hanlding Dependencies
-
-### Finding And Using Libraries
-
-Using find_package:
-
-```
-find_package(SomeLibrary REQUIRED)
-target_link_libraries(MyExecutable SomeLibrary::SomeLibrary)
-```
-
-### Download Dependencies
-
-Using FetchContent:
-
-```
-include(FetchContent)
-FetchContent_Declare(
-    googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG release-1.10.0
-)
-FetchContent_MakeAvailable(googletest)
 ```
 
 ## Advanced Features
