@@ -901,29 +901,29 @@ There are some variables appear in the built-in implicit rules. We can modify th
 
 Here are a few common built-in variables for C/C++ compilation:
 
-**CC** - Program for compiling C programs; default ‘cc’.
+```CC``` - Program for compiling C programs; default ‘cc’.
 
-**CXX** - Program for compiling C++ programs; default ‘g++’.
+```CXX``` - Program for compiling C++ programs; default ‘g++’.
 
-**CFLAGS** - Extra flags to give to the C compiler. For example:
+```CFLAGS``` - Extra flags to give to the C compiler. For example:
 
 ```
 CFLAGS := -Wall -Wextra -O2
 ```
 
-**CXXFLAGS** - Extra flags to give to the C++ compiler. For example:
+```CXXFLAGS``` - Extra flags to give to the C++ compiler. For example:
 
 ```
 CXXFLAGS := -Wall -Wextra -O2
 ```
 
-**CPPFLAGS** - Extra flags to give to the C preprocessor. For example:
+```CPPFLAGS``` - Extra flags to give to the C preprocessor. For example:
 
 ```
 CPPFLAGS := -I./include -DENABLE_DEBUGGING
 ```
 
-**LDFLAGS** - Extra flags to give to compilers when they are supposed to invoke the linker. For example:
+```LDFLAGS``` - Extra flags to give to compilers when they are supposed to invoke the linker. For example:
 
 ```
 LDFLAGS := -L./lib -lmylib
@@ -1082,7 +1082,7 @@ There can be many ```else``` clause as necessary.
 
 There are four different directives that test different conditions.
 
-**ifeq** Check if two values after expanding all variables are equal.
+```ifeq``` Check if two values after expanding all variables are equal.
 
 ```
 ifeq (arg1, arg2)
@@ -1104,7 +1104,7 @@ else
 endif
 ```
 
-**ifneq** Check if two values after expanding all variables are not equal.
+```ifneq``` Check if two values after expanding all variables are not equal.
 
 ```
 ifneq (arg1, arg2)
@@ -1122,7 +1122,7 @@ ifneq ($(TARGET), myprogram)
 endif
 ```
 
-**ifdef** Check if a variable has been defined.
+```ifdef``` Check if a variable has been defined.
 
 ```
 ifdef DEBUG
@@ -1130,7 +1130,7 @@ ifdef DEBUG
 endif
 ```
 
-**ifndef** Check if a variable has not been defined.
+```ifndef``` Check if a variable has not been defined.
 
 ```
 ifndef OS
@@ -1235,9 +1235,9 @@ $(foreach temp_var, list_of_words, action)
 ```
 
 Where,
-- **temp_var** is the variable name that hold a word of an interation.
-- **list_of_words** is a string containing the space-separated words.
-- **action** is the command to be executed to each word.
+```temp_var``` is the variable name that hold a word of an interation.
+```list_of_words``` is a string containing the space-separated words.
+```action``` is the command to be executed to each word.
 
 Let's take a simple example:
 
@@ -1269,7 +1269,7 @@ SOURCE_FILES = $(foreach SUB_DIR,$(SUB_DIRS),$(wildcard $(SUB_DIR)/*.cpp))
 
 Here we go into an advanced topic of built-in functions that operate on strings. String Substitution refers to the action of replacing placeholder values within a string with actual values.
 
-**$(strip string)** Removes leading and trailing whitespace from string and replaces each internal sequence of one or more whitespace characters with a single space.
+```$(strip string)``` Removes leading and trailing whitespace from string and replaces each internal sequence of one or more whitespace characters with a single space.
 
 ```
 STRIPPED = $(strip        sample string    with   a lot    whitespace      )
@@ -1277,14 +1277,14 @@ STRIPPED = $(strip        sample string    with   a lot    whitespace      )
 
 STRIPPED variable then becomes 'sample string with a lot whitespace'.
 
-**$(findstring find,in)** Searches in for an occurrence of find. If it occurs, the value is find; otherwise, the value is empty.
+```$(findstring find,in)``` Searches in for an occurrence of find. If it occurs, the value is find; otherwise, the value is empty.
 
 ```
 $(findstring a,a b c)
 $(findstring a,b c)
 ```
 
-**$(filter pattern…,text)** Returns all whitespace-separated words in text that do match any of the pattern words, removing any words that do not match.
+```$(filter pattern…,text)``` Returns all whitespace-separated words in text that do match any of the pattern words, removing any words that do not match.
 
 ```
 fruits := apple banana cherry date
@@ -1298,7 +1298,7 @@ With this Makefile, running make comand will output as below:
 
 ```Filtered Fruits: apple```
 
-**$(subst from,to,text)** Performs a textual replacement on the text text: each occurrence of from is replaced by to.
+```$(subst from,to,text)``` Performs a textual replacement on the text text: each occurrence of from is replaced by to.
 
 ```
 TEXT := Hello, world!
@@ -1310,7 +1310,7 @@ all:
 
 In this example, we use the subst function to replace "world" with "Make" in the text.
 
-**$(patsubst pattern,replacement,text)** Finds whitespace-separated words in text that match pattern and replaces them with replacement.
+```$(patsubst pattern,replacement,text)``` Finds whitespace-separated words in text that match pattern and replaces them with replacement.
 
 ```
 SRC_FILES = $(wildcard *.cpp)

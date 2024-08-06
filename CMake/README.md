@@ -208,12 +208,141 @@ Don't be afraid at the first sight. Let's walk through each component of CMakeLi
 
 ### Basic Syntax And Structure
 
-A CMakeLists.txt file typically starts with specifying the minimum required version of CMake and the project name:
+#### cmake_minimum_required
+
+A top-level CMakeLists.txt file typically starts with specifying the minimum required version of CMake and the project name:
+
+```
+cmake_minimum_required(VERSION <min_version>...<max_version> [FATAL_ERROR])
+```
+
+```VERSION <min_version>```: Specifies the minimum required version of CMake. This is a mandatory argument.
+
+```<max_version>```: (Optional) Specifies the maximum version of CMake that is supported. This is rarely used.
+
+```FATAL_ERROR```: (Optional) If specified, CMake will stop processing and report an error if the version requirement is not met.
+
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10...3.20)
+```
+
+#### project
+
+The ```project``` command is used to define the name, version, and supported language of a project.
+
+```
+project(<project-name> [VERSION <major>[.<minor>[.<patch>[.<tweak>]]]]
+        [DESCRIPTION <project-description>]
+        [HOMEPAGE_URL <url>]
+        [LANGUAGES <language-name>...])
+```
+
+```<project-name>```: The name of the project. This is a mandatory argument.
+
+```VERSION <major>[.<minor>[.<patch>[.<tweak>]]]```: (Optional) Specifies the version of the project.
+
+```DESCRIPTION <project-description>```: (Optional) Provides a description of the project.
+
+```HOMEPAGE_URL <url>```: (Optional) Specifies the homepage URL for the project.
+
+```LANGUAGES <language-name>...```: (Optional) Specifies the programming languages used in the project. Common languages include C, CXX (C++), Fortran, etc.
+
+For example:
+
+```
+project(libNmea VERSION 1.0.1 DESCRIPTION "Generate NMEA sentences" HOMEPAGE_URL "https://nmea.sourceforge.net" LANGUAGE C CXX)
+```
+
+Variables Set by project command:
+
+```PROJECT_NAME```: The name of the project.
+```PROJECT_VERSION```: The full version string of the project.
+```PROJECT_VERSION_MAJOR```: The major version number.
+```PROJECT_VERSION_MINOR```: The minor version number.
+```PROJECT_VERSION_PATCH```: The patch version number.
+```PROJECT_VERSION_TWEAK```: The tweak version number.
+```PROJECT_DESCRIPTION```: The description of the project.
+```PROJECT_HOMEPAGE_URL```: The homepage URL of the project.
+```PROJECT_SOURCE_DIR```: The source directory of the project.
+```PROJECT_BINARY_DIR```: The binary directory of the project.
+
+Modify project command in HelloWorld project for example:
 
 ```
 cmake_minimum_required(VERSION 3.10)
-project(MyProject)
+
+project(HelloWorld VERSION 1.0.0 DESCRIPTION "Print HelloWorld on Console" LANGUAGES C CXX)
+
+message(STATUS "Project Name: ${PROJECT_NAME}")
+message(STATUS "Project Version: ${PROJECT_VERSION}")
+message(STATUS "Project Description: ${PROJECT_DESCRIPTION}")
+message(STATUS "Project Source Dir: ${PROJECT_SOURCE_DIR}")
+message(STATUS "Project Binary Dir: ${PROJECT_BINARY_DIR}")
+
+add_executable(HelloWorld main.cpp)
 ```
+
+```
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ cmake ..
+...
+-- Project Name: HelloWorld
+-- Project Version: 1.0.0
+-- Project Description: Print HelloWorld on Console
+-- Project Source Dir: /home/worker/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld
+-- Project Binary Dir: /home/worker/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build
+```
+
+#### set
+
+The ```set``` command is used to define and manipulate variables. These variables can be used to control the build process, store configuration options, path, and other data.
+
+```
+set(<variable> <value>... [CACHE <type> <docstring> [FORCE]])
+```
+
+```<variable>```: The name of the variable to set.
+
+```<value>```: The value(s) to assign to the variable. Multiple values are separated by spaces.
+
+```CACHE```: Indicates that the variable should be stored in the CMake cache.
+
+```<type>```: The type of the cache variable (e.g., STRING, BOOL, PATH, FILEPATH).
+
+```<docstring>```: A description of the cache variable.
+
+```FORCE```: Forces the cache variable to be set to the specified value, even if it already exists.
+
+For example:
+
+```
+set(MY_VARIABLE "Hello, World!")
+message(STATUS "The value of MY_VARIABLE is: ${MY_VARIABLE}")
+
+set(MY_CACHE_VARIABLE "default_value" CACHE STRING "This is a cache variable")
+set(MY_CACHE_VARIABLE "new_value" CACHE STRING "This is a cache variable" FORCE)
+```
+
+To set an environment variable:
+
+```
+set(ENV{<variable_name>} <value>)
+```
+
+```ENV{<variable_name>}```: The name of the environment variable to set.
+```<value>```: The value to assign to the environment variable.
+
+For example:
+
+```
+set(ENV{MY_ENV_VAR} "some_value")
+message(STATUS "The value of environment variable MY_ENV_VAR: $ENV{MY_ENV_VAR}")
+```
+
+This sets the environment variable MY_ENV_VAR to "some_value".
+
+
 
 ## Advanced Features
 
