@@ -429,13 +429,76 @@ In this example, CMakeLists.txt file specify a target MyLibrary to be built as l
 
 #### add_executable
 
+The ```add_executable``` command is used to define an executable target from a set of source files.
 
+```
+add_executable(<name> [WIN32] [MACOSX_BUNDLE] [EXCLUDE_FROM_ALL]
+               [source1] [source2 ...])
+```
+
+```<name>```: The name of the executable target.
+
+```[WIN32]```: Optional. Specifies that the executable is a Windows GUI application on Windows. This option sets the WIN32 property of the target.
+
+```[MACOSX_BUNDLE]```: Optional. Specifies that the executable is a macOS bundle. This option sets the MACOSX_BUNDLE property of the target.
+
+```[EXCLUDE_FROM_ALL]```: Optional. Excludes the target from the default build target. This means the executable will not be built unless explicitly specified.
+
+```[source1] [source2 ...]```: A list of source files that will be compiled to create the executable.
+
+For example:
+
+```
+add_executable(SimpleMath main.cpp geometry.cpp algebra.cpp)
+```
 
 #### add_library
 
+The ```add_library``` is used to define a library target from a set of source files.
 
+```
+add_library(<name> [STATIC | SHARED | MODULE]
+            [EXCLUDE_FROM_ALL]
+            [source1] [source2 ...])
+```
+
+```<name>```: The name of the library target.
+
+```[STATIC | SHARED | MODULE]```: Optional. Specifies the type of library to be created. If not specified, the default type is STATIC.
+
+```STATIC```: Creates a static library.
+
+```SHARED```: Creates a shared library.
+
+```MODULE```: Creates a module library, a type of shared library that is not linked into an executable but is loaded at runtime. This is often used for plugins.
+
+```[EXCLUDE_FROM_ALL]```: Optional. Excludes the target from the default build target. This means the library will not be built unless explicitly specified.
+
+```[source1] [source2 ...]```: A list of source files that will be compiled to create the library.
+
+For example:
+
+```
+add_library(LibFormattedData STATIC my_json.cpp my_xml.cpp my_csv.cpp)
+or
+add_library(LibFormattedData SHARED my_json.cpp my_xml.cpp my_csv.cpp)
+```
+
+**Is it possible to build both static and shared library for one target?**
+
+No, it is not possible, but it requires two different target names.
+
+```
+set(LIB_SOURCES my_json.cpp my_xml.cpp my_csv.cpp)
+add_library(LibFormattedDataStatic STATIC ${LIB_SOURCES})
+add_library(LibFormattedDataShared SHARED ${LIB_SOURCES})
+```
 
 #### target_link_libraries
+
+
+
+#### target_sources
 
 
 
@@ -443,15 +506,77 @@ In this example, CMakeLists.txt file specify a target MyLibrary to be built as l
 
 
 
-### Practice the basic
+### Practice the basis
 
 #### Build jsoncpp lib
 
-[]()
+[https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/02_jsoncpp_lib](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/02_jsoncpp_lib)
+
+```
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/02_jsoncpp_lib$ tree
+.
+├── CMakeLists.txt
+├── include
+│   └── json
+│       ├── allocator.h
+│       ├── assertions.h
+│       ├── config.h
+│       ├── forwards.h
+│       ├── json.h
+│       ├── json_features.h
+│       ├── reader.h
+│       ├── value.h
+│       ├── version.h
+│       └── writer.h
+└── src
+    ├── json_reader.cpp
+    ├── json_tool.h
+    ├── json_value.cpp
+    ├── json_valueiterator.inl
+    └── json_writer.cpp
+```
+
+**./CMakeLists.txt**
+
+```
+
+```
 
 #### Build source and lib in sub directories
 
-[]()
+[https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/03_BuildSubDirs](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/03_BuildSubDirs)
+
+```
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/03_BuildSubDirs$ tree
+.
+├── CMakeLists.txt
+├── main.cpp
+├── opensource
+│   ├── CMakeLists.txt
+│   ├── include
+│   │   └── simplecrypto.h
+│   └── simplecrypto
+│       ├── binary.h
+│       ├── md5.c
+│       ├── simplecrypto.h
+│       └── tea.c
+├── simple_algo.cpp
+├── simple_algo.h
+├── simple_math.cpp
+└── simple_math.h
+```
+
+**./opensource/CMakeLists.txt**
+
+```
+
+```
+
+**./CMakeLists.txt**
+
+```
+
+```
 
 ### Advanced Features
 
