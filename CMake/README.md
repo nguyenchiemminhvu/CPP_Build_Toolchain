@@ -766,10 +766,10 @@ The lib/CMakeLists.txt file defines a library target SampleLib from util.cpp fil
 
 ## Practice the basis
 
-[https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/03_BuildSubDirs](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/03_BuildSubDirs)
+[https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/02_BuildSubDirs](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/02_BuildSubDirs)
 
 ```
-worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/03_BuildSubDirs$ tree
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/02_BuildSubDirs$ tree
 .
 ├── CMakeLists.txt
 ├── main.cpp

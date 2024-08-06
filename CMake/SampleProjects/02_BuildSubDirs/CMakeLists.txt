@@ -5,15 +5,13 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/opensource)
 
 add_executable(utility main.cpp)
 
-target_sources(
-    utility
+target_sources(utility
     PRIVATE
         simple_algo.cpp
         simple_math.cpp
 )
 
-target_include_directories(
-    utility
+target_include_directories(utility
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/opensource/jsoncpp/include
