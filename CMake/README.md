@@ -484,6 +484,28 @@ or
 add_library(LibFormattedData SHARED my_json.cpp my_xml.cpp my_csv.cpp)
 ```
 
+When using ```add_library``` command without specifying STATIC, or SHARED, or MODULE option, the type of library that will be built depends on the value of the BUILD_SHARED_LIBS variable.
+
+```
+add_library(SampleLib ${SampleSources})
+```
+
+behaves as if written
+
+```
+if(BUILD_SHARED_LIBS)
+    add_library(SampleLib SHARED ${SampleSources})
+else()
+    add_library(SampleLib STATIC ${SampleSources})
+endif()
+```
+
+CMake does not define BUILD_SHARED_LIBS by default, but projects often create a cache entry for it using the ```option``` command:
+
+```
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+```
+
 **Is it possible to build both static and shared library for one target?**
 
 No, it is not possible, but it requires two different target names.
@@ -626,13 +648,121 @@ target_sources(MyExe
 )
 ```
 
+#### target_compile_options
+
+The ```target_compile_options``` is used to specify additional compiler options that are necessary for a target at compilation stage.
+
+```
+target_compile_options(<target> [BEFORE] <INTERFACE|PUBLIC|PRIVATE> [items1...])
+```
+
+```<target>```: The name of the target to which you want to add compiler options.
+
+```BEFORE (optional)```: If specified, the options will be added before any options that are added by CMake or other commands. This can be useful if you need to ensure that your options take precedence.
+
+```<INTERFACE|PUBLIC|PRIVATE>```: Specifies the scope of the options.
+
+```INTERFACE```: The options are used by targets that link to this target, but not by the target itself.
+
+```PUBLIC```: The options are used by both the target itself and by targets that link to this target.
+
+```PRIVATE```: The options are used only by the target itself.
+
+```[items1...]```: The actual compiler options you want to add.
+
+For example:
+
+```
+add_executable(SampleProgram main.cpp)
+
+target_compile_options(SampleProgram PRIVATE -Wall -Wextra -fpermissive)
+```
+
 #### target_link_options
 
+The ```target_link_options``` command is used to specify linker flags that are necessary for the linker when building a target. It was introduced in CMake 3.13.
 
+```
+target_link_options(<target> [BEFORE] <INTERFACE|PUBLIC|PRIVATE> [items1...])
+```
+
+```<target>```: The name of the target to which you want to add linker options.
+
+```BEFORE (optional)```: If specified, the options will be added before any options that are added by CMake or other commands. This can be useful if you need to ensure that your options take precedence.
+
+```<INTERFACE|PUBLIC|PRIVATE>```: Specifies the scope of the options.
+
+```INTERFACE```: The options are used by targets that link to this target, but not by the target itself.
+
+```PUBLIC```: The options are used by both the target itself and by targets that link to this target.
+
+```PRIVATE```: The options are used only by the target itself.
+
+```[items1...]```: The actual linker options you want to add.
+
+For example:
+
+```
+add_executable(SampleProgram main.cpp)
+
+target_link_libraries(SampleProgram LibUtil)
+target_link_options(SampleProgram PRIVATE -Wl,--no-undefined)
+```
 
 #### add_subdirectory
 
+The ```add_subdirectory``` command is used to add sub-directories to the build, allow us to include another CMakeLists.txt file from a sub-directory, which can define additional targets, libraries, and other build-related settings. It is useful for organizing large projects into smaller components.
 
+```
+add_subdirectory(source_dir [binary_dir] [EXCLUDE_FROM_ALL])
+```
+
+```source_dir```: The relative or absolute path to the source directory containing the CMakeLists.txt file you want to include.
+
+```binary_dir (optional)```: The directory where the build files for the subdirectory will be placed. If not specified, it defaults to the same directory as source_dir.
+
+```EXCLUDE_FROM_ALL (optional)```: If specified, the targets in the subdirectory will not be built unless explicitly requested. This is useful for optional components or examples that should not be built by default.
+
+For example, consider a sample project with the following structure:
+
+```
+project_root/
+├── CMakeLists.txt
+├── src/
+│   ├── CMakeLists.txt
+│   ├── main.cpp
+├── lib/
+│   ├── CMakeLists.txt
+│   ├── mylib.cpp
+│   ├── mylib.h
+```
+
+```Top-level CMakeLists.txt```
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleProject)
+
+add_subdirectory(src)
+add_subdirectory(lib)
+```
+
+```src/CMakeLists.txt```
+```
+add_executable(SampleProgram main.cpp)
+
+target_link_libraries(SampleProgram PRIVATE SampleLib)
+```
+
+```lib/CMakeLists.txt```
+```
+add_library(SampleLib STATIC util.cpp)
+```
+
+The top-level CMakeLists.txt file tells CMake to process the CMakeLists.txt files in src and lib sub-folders.
+
+The src/CMakeLists.txt file defines a executable file called SampleProgram from main.cpp file, linked with SampleLib library which is defined in the lib subdirectory.
+
+The lib/CMakeLists.txt file defines a library target SampleLib from util.cpp file.
 
 ### Practice the basis
 
@@ -664,8 +794,7 @@ worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/0
     └── json_writer.cpp
 ```
 
-**./CMakeLists.txt**
-
+```Top-level CMakeLists.txt```
 ```
 
 ```
@@ -694,14 +823,12 @@ worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/0
 └── simple_math.h
 ```
 
-**./opensource/CMakeLists.txt**
-
+```Top-level CMakeLists.txt```
 ```
 
 ```
 
-**./CMakeLists.txt**
-
+```opensource/CMakeLists.txt```
 ```
 
 ```
