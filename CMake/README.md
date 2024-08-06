@@ -941,13 +941,253 @@ This defines a new command that will be associated with building the specified `
 
 ### install
 
-### enable_testing
+The ```install``` command is used to specify how files, directories, executables, libraries, and other build outputs should be installed to a specified directory on the system.
 
-### add_test
+The ```install``` command has various forms to handle different types of installations.
+
+```
+install(TARGETS targets... [options...])
+install(FILES files... [options...])
+install(DIRECTORY directories... [options...])
+install(SCRIPT script)
+install(CODE code)
+```
+
+**Install Targets**
+
+Install executables, libraries, or modules.
+
+```
+install(TARGETS target1 [target2 ...]
+        [EXPORT <export-name>]
+        [RUNTIME|LIBRARY|ARCHIVE|FRAMEWORK|BUNDLE|PRIVATE_HEADER|PUBLIC_HEADER|RESOURCE]
+        [DESTINATION <dir>]
+        [PERMISSIONS permissions...]
+        [CONFIGURATIONS [Debug|Release|...]]
+        [COMPONENT <component>]
+        [NAMELINK_ONLY|NAMELINK_SKIP]
+        [EXCLUDE_FROM_ALL]
+        [OPTIONAL])
+```
+
+**Install Files**
+
+Install individual files.
+
+```
+install(FILES file1 [file2 ...]
+        DESTINATION <dir>
+        [PERMISSIONS permissions...]
+        [CONFIGURATIONS [Debug|Release|...]]
+        [COMPONENT <component>]
+        [RENAME <name>]
+        [OPTIONAL])
+```
+
+**Install Directory**
+
+Install a directory sub-tree of headers.
+
+```
+install(DIRECTORY dir1 [dir2 ...]
+        DESTINATION <dir>
+        [FILE_PERMISSIONS permissions...]
+        [DIRECTORY_PERMISSIONS permissions...]
+        [USE_SOURCE_PERMISSIONS]
+        [FILES_MATCHING]
+        [PATTERN <pattern> [REGEX] [EXCLUDE]]
+        [CONFIGURATIONS [Debug|Release|...]]
+        [COMPONENT <component>])
+```
+
+**Install Script**
+
+Invoke CMake script during installation process.
+
+```
+install(SCRIPT <script-file>)
+```
+
+**Install Code**
+
+Invoke CMake code during installation process.
+
+```
+install(CODE <code>)
+```
+
+### enable_testing and add_test
+
+The ```enable_testing``` command is used to enable testing capabilities within a CMake project. It is essential for integrated testing frameworks like CTest, allows us the define and run tests as part of the build process. It is often used in conjuction with ```add_test``` command to create a complete test setup.
+
+```
+add_test(NAME <test_name> COMMAND <command> [args...])
+```
+
+```<test_name>```: The name assigned to the test. This name is used to reference the test in CTest and other CMake commands.
+
+```<command>```: The command to run the test. This typically includes the path to an executable or script, followed by any necessary arguments.
+
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10)
+
+project(HelloWorld VERSION 1.0.0 DESCRIPTION "Print HelloWorld on Console" LANGUAGES C CXX)
+
+add_executable(HelloWorld main.cpp)
+
+enable_testing()
+add_test(NAME HelloWorldTest COMMAND HelloWorld --test)
+set_tests_properties(HelloWorldTest PROPERTIES TIMEOUT 10)
+```
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld$ mkdir build
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld$ cd build/
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ cmake ..
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ make
+[ 50%] Building CXX object CMakeFiles/HelloWorld.dir/main.cpp.o
+[100%] Linking CXX executable HelloWorld
+[100%] Built target HelloWorld
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ ./HelloWorld 
+Hello World
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ ctest
+Test project /home/ncmv/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build
+    Start 1: HelloWorldTest
+1/1 Test #1: HelloWorldTest ...................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.00 sec
+```
+
+### conditional statements
+
+The ```if...elseif...else...endif``` statements are used to control the flow of CMakeLists.txt script based on conditions.
+
+```
+if(condition)
+    # Commands to execute if condition is true
+elseif(condition2)
+    # Commands to execute if condition2 is true
+else()
+    # Commands to execute if all conditions are false
+endif()
+```
+
+CMake supports a variety of conditions that can be used in conditional statements.
+
+**Boolean values**
+
+For example:
+
+```
+if(FEATURE_X_AVAILABLE)
+    message(STATUS "FEATURE_X_AVAILABLE variable is set to TRUE/ON")
+endif()
+```
+
+**Comparison operators**
+
+```Equality```: STREQUAL, EQUAL
+
+```Inequality```: STRNOTEQUAL, NOTEQUAL
+
+```Greater/Less```: GREATER, LESS, GREATER_EQUAL, LESS_EQUAL
+
+For example:
+
+```
+if(CXX_COMPILE_TOOL STREQUAL "g++")
+    message(STATUS "Compile source files using g++")
+endif()
+```
+
+**Logical operators**
+
+```AND```: Logical AND
+
+```OR```: Logical OR
+
+```NOT```: Logical NOT
+
+For example:
+
+```
+if(USE_NO_OPTIMAL_OPTIONS and CONTINUE_WITH_WARNING)
+    message(STATUS "Accept build warning")
+endif()
+```
+
+**Existing checks**
+
+```DEFINED```: Checks if a variable is defined
+
+For example:
+
+```
+if(DEFINED SAMPLE_VAR)
+    message(STATUS "SAMPLE_VAR variable is defined")
+endif()
+```
+
+**File checks**
+
+```EXISTS```: Checks if a file or directory exists
+
+```IS_DIRECTORY```: Checks if a path is a directory
+
+```IS_SYMLINK```: Checks if a path is a symbolic link
+
+```
+if(EXISTS "/usr/bin/cmake")
+    message(STATUS "Found CMake tool")
+endif()
+```
 
 ### option
 
-## Configuring Build Types
+The ```option``` command is used to define configurable options for a CMake project. These options can be enabled or disabled by user when configuring the project, providing a way to control build features or settings.
+
+```
+option(<option_variable> "description" [initial_value])
+```
+
+```<option_variable>```: The name of the variable to define.
+
+```"description"```: A brief description of what the option does.
+
+```[initial_value]```: The initial value of the option, which can be ON or OFF. If not specified, it defaults to OFF.
+
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleProject)
+
+option(ENABLE_MULTITHREADING "Allow to use multithreading features" ON)
+
+add_executable(SampleProgram main.cpp)
+
+if(ENABLE_MULTITHREADING)
+    message(STATUS "Multithreading is enabled.")
+    include(CheckCXXCompilerFlag)
+    check_cxx_compiler_flag("-std=c++11" HAS_CXX11_FLAG)
+
+    if(HAS_CXX11_FLAG)
+        target_compile_options(SampleProgram PRIVATE -std=c++11)
+        find_package(Threads REQUIRED)
+        target_link_libraries(SampleProgram PRIVATE Threads::Threads)
+    else()
+        message(STATUS "Compiler does not support C++11 Threads.")
+    endif()
+else()
+    message(STATUS "Multithreading is disabled.")
+endif()
+```
+
+### Configuring Build Types
 
 Setting build types:
 
@@ -955,45 +1195,7 @@ Setting build types:
 set(CMAKE_BUILD_TYPE Debug)
 ```
 
-# Best Pratices
-
-## Organizing CMake Projects
-
-Directory structure:
-
-```
-MyProject/
-├── CMakeLists.txt
-├── src/
-│   └── main.cpp
-└── include/
-    └── myheader.h
-```
-
-## Writing Maintainable CMakeLists.txt Files
-
-Modularize with subdirectories:
-
-```
-add_subdirectory(src)
-add_subdirectory(include)
-```
-
-## Common Pitfall And How To Avoid
-
-Avoid hardcoding paths: Use variables like ${CMAKE_SOURCE_DIR} and ${CMAKE_BINARY_DIR}.
-
-Use modern CMake practices: Prefer target_* commands over global settings.
-
-# Debugging And Troubleshooting
-
-## Common Errors
-
-Missing files: Ensure all source files are listed in CMakeLists.txt.
-
-Library not found: Check if the library is installed and paths are correctly set.
-
-## CMake Debugging Tools And Options
+### CMake Debugging Tools And Options
 
 Verbose output:
 
