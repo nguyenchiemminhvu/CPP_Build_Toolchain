@@ -575,7 +575,7 @@ link_directories(${CMAKE_CURRENT_SOURCE_DIR}/opensource/build/)
 target_link_libraries(SimpleEncryptor SimpleMD5 SimpleBase64)
 ```
 
-While ```link_directories``` command is a global command that affects all targets, it's often better to use target-specific commands like ```target_link_directories``` to avoid unintended side effects.
+While ```link_directories``` command is a global command that affects all targets, it's often better to use target-specific commands like ```target_link_directories``` to avoid unintended side effects. (New in version 3.13)
 
 ```
 target_link_directories(<target> [BEFORE] <INTERFACE|PUBLIC|PRIVATE> [items1 [items2 ...]])
@@ -737,7 +737,7 @@ project_root/
 │   ├── mylib.h
 ```
 
-```Top-level CMakeLists.txt```
+**Top-level CMakeLists.txt**
 ```
 cmake_minimum_required(VERSION 3.10)
 project(SampleProject)
@@ -746,14 +746,14 @@ add_subdirectory(src)
 add_subdirectory(lib)
 ```
 
-```src/CMakeLists.txt```
+**src/CMakeLists.txt**
 ```
 add_executable(SampleProgram main.cpp)
 
 target_link_libraries(SampleProgram PRIVATE SampleLib)
 ```
 
-```lib/CMakeLists.txt```
+**lib/CMakeLists.txt**
 ```
 add_library(SampleLib STATIC util.cpp)
 ```
@@ -766,41 +766,6 @@ The lib/CMakeLists.txt file defines a library target SampleLib from util.cpp fil
 
 ### Practice the basis
 
-#### Build jsoncpp lib
-
-[https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/02_jsoncpp_lib](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/02_jsoncpp_lib)
-
-```
-worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/02_jsoncpp_lib$ tree
-.
-├── CMakeLists.txt
-├── include
-│   └── json
-│       ├── allocator.h
-│       ├── assertions.h
-│       ├── config.h
-│       ├── forwards.h
-│       ├── json.h
-│       ├── json_features.h
-│       ├── reader.h
-│       ├── value.h
-│       ├── version.h
-│       └── writer.h
-└── src
-    ├── json_reader.cpp
-    ├── json_tool.h
-    ├── json_value.cpp
-    ├── json_valueiterator.inl
-    └── json_writer.cpp
-```
-
-```Top-level CMakeLists.txt```
-```
-
-```
-
-#### Build source and lib in sub directories
-
 [https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/03_BuildSubDirs](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/03_BuildSubDirs)
 
 ```
@@ -810,27 +775,71 @@ worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/0
 ├── main.cpp
 ├── opensource
 │   ├── CMakeLists.txt
-│   ├── include
-│   │   └── simplecrypto.h
-│   └── simplecrypto
-│       ├── binary.h
-│       ├── md5.c
-│       ├── simplecrypto.h
-│       └── tea.c
+│   └── jsoncpp
+│       ├── include
+│       │   └── json
+│       │       ├── allocator.h
+│       │       ├── assertions.h
+│       │       ├── config.h
+│       │       ├── forwards.h
+│       │       ├── json.h
+│       │       ├── json_features.h
+│       │       ├── reader.h
+│       │       ├── value.h
+│       │       ├── version.h
+│       │       └── writer.h
+│       └── src
+│           ├── json_reader.cpp
+│           ├── json_tool.h
+│           ├── json_value.cpp
+│           ├── json_valueiterator.inl
+│           └── json_writer.cpp
 ├── simple_algo.cpp
 ├── simple_algo.h
 ├── simple_math.cpp
 └── simple_math.h
 ```
 
-```Top-level CMakeLists.txt```
+**Top-level CMakeLists.txt**
+```
+cmake_minimum_required(VERSION 3.10)
+project(Utility VERSION 1.0 DESCRIPTION "Simple utility features" LANGUAGES C CXX)
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/opensource)
+
+add_executable(utility main.cpp)
+
+target_sources(
+    utility
+    PRIVATE
+        simple_algo.cpp
+        simple_math.cpp
+)
+
+target_include_directories(
+    utility
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/opensource/jsoncpp/include
+)
+
+target_link_libraries(utility PRIVATE jsoncpp)
 ```
 
+**opensource/CMakeLists.txt**
 ```
+cmake_minimum_required(VERSION 3.10)
+project(JSONCPP VERSION 1.0 DESCRIPTION "jsoncpp opensource library" LANGUAGES C CXX)
 
-```opensource/CMakeLists.txt```
-```
+set(JSONCPP_SOURCES SHARED
+    jsoncpp/src/json_reader.cpp
+    jsoncpp/src/json_value.cpp
+    jsoncpp/src/json_writer.cpp
+)
 
+add_library(jsoncpp ${JSONCPP_SOURCES})
+
+target_include_directories(jsoncpp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/include)
 ```
 
 ### Advanced Features

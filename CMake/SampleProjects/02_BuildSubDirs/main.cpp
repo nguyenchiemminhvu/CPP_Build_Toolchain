@@ -5,10 +5,7 @@
 #include <vector>
 #include "simple_math.h"
 #include "simple_algo.h"
-
-#ifdef USE_SIMPLE_CRYPTO_LIB
-#include "simplecrypto.h"
-#endif
+#include "json/json.h"
 
 int main(int argc, char** argv)
 {
@@ -37,21 +34,23 @@ int main(int argc, char** argv)
     std::cout << "Sum of Numbers: " << sumOfNumbers << std::endl;
     std::cout << "Average: " << average << std::endl;
 
-#ifdef USE_SIMPLE_CRYPTO_LIB
-    // Using opensource prebuilt library
-    const char* data = "Hello, world!";
-    size_t data_len = strlen(data);
-    uint8_t digest[16];
+    const std::string rawJson = R"({"Age": 20, "Name": "colin"})";
+    const int rawJsonLength = static_cast<int>(rawJson.length());
+    JSONCPP_STRING err;
+    Json::Value root;
 
-    md5((const uint8_t*)data, data_len, digest);
-
-    printf("MD5 Digest: ");
-    for (int i = 0; i < 16; i++)
+    Json::CharReaderBuilder builder;
+    const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
+    if (!reader->parse(rawJson.c_str(), rawJson.c_str() + rawJsonLength, &root, &err))
     {
-        printf("%02x", digest[i]);
+        std::cout << "error" << std::endl;
+        return -1;
     }
-    printf("\n");
-#endif
+
+    const std::string name = root["Name"].asString();
+    const int age = root["Age"].asInt();
+    std::cout << name << std::endl;
+    std::cout << age << std::endl;
 
     return 0;
 }
