@@ -376,7 +376,7 @@ include_directories([AFTER|BEFORE] [SYSTEM] dir1 [dir2 ...])
 For example:
 
 ```
-include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 ```
 
 While ```include_directories``` command is a global command that affects all targets, it's often better to use target-specific commands like ```target_include_directories``` to avoid unintended side effects.
@@ -496,9 +496,137 @@ add_library(LibFormattedDataShared SHARED ${LIB_SOURCES})
 
 #### target_link_libraries
 
+The ```target_link_libraries``` command is used to specify libraries or targets that a particular target (such as an executable or another library) should be linked against. The command plays an important role in dependency management between different parts of a project, ensure that linker tool can resolve symbols correctly.
 
+```
+target_link_libraries(<target> [item1 [item2 [...]]]
+                      [<keyword> <value>]...)
+```
+
+```<target>```: The name of the target to which we want to link libraries. The named ```<target>``` must have been created by a command such as ```add_executable()``` or ```add_library()```.
+
+```[item1 [item2 [...]]]```: A list of libraries or targets to link against. The named ```items``` must be created by add_library() within the project or from Imported libraries. Item names starting with -, but not -l or -framework, are treated as linker flags, but preferred to use ```target_link_options``` command to add linker flags explicitly.
+
+```[<keyword> <value>]...```: Optional keywords and values to specify additional linking properties.
+
+**Keywords**
+
+```PRIVATE```: The libraries specified after this keyword are linked only to the target and are not propagated to other targets that link against this target.
+
+```PUBLIC```: The libraries specified after this keyword are linked to the target and are also propagated to other targets that link against this target.
+
+```INTERFACE```: The libraries specified after this keyword are not linked to the target itself but are propagated to other targets that link against this target.
+
+For example:
+
+```
+add_library(LibSimpleMath STATIC geometry.cpp algebra.cpp)
+add_library(LibFormattedData STATIC my_json.cpp my_xml.cpp my_csv.cpp)
+
+add_executable(MathExe main.cpp)
+target_link_libraries(MathExe PRIVATE LibSimpleMath LibFormattedData)
+```
+
+#### link_directories
+
+The ```link_directories``` command is used to specify the directories where the linker should look for libraries when linking a target. In case all necessary libraries are located in standard system directories like ```/usr/lib```, ```/usr/local/lib```, or other directories that the linker searches by default, we don't need to use ```link_directories``` command in CMake.
+
+```
+link_directories(directory1 [directory2 ...])
+```
+
+```directory1 [directory2 ...]```: A list of directories to be added to the linker search path.
+
+For example:
+
+```
+add_library(SimpleMD5 ${CMAKE_CURRENT_SOURCE_DIR}/opensource/src/md5.cpp)
+add_library(SimpleBase64 ${CMAKE_CURRENT_SOURCE_DIR}/opensource/src/base64.cpp)
+
+add_executable(SimpleEncryptor src/main.cpp)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/opensource/include)
+
+# Note: This is generally not required if we are building the libraries within the same project.
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/opensource/build/)
+
+target_link_libraries(SimpleEncryptor SimpleMD5 SimpleBase64)
+```
+
+While ```link_directories``` command is a global command that affects all targets, it's often better to use target-specific commands like ```target_link_directories``` to avoid unintended side effects.
+
+```
+target_link_directories(<target> [BEFORE] <INTERFACE|PUBLIC|PRIVATE> [items1 [items2 ...]])
+```
+
+```<target>```: The name of the target to which we want to add link directories.
+
+```BEFORE (optional)```: If specified, the directories will be added to the beginning of the search path.
+
+```<INTERFACE|PUBLIC|PRIVATE>```: Specifies the scope of the directories.
+
+```INTERFACE```: The directories are used by targets that link against this target but not by the target itself.
+
+```PUBLIC```: The directories are used by both the target and targets that link against this target.
+
+```PRIVATE```: The directories are used only by the target itself.
+
+```[items1 [items2 ...]]```: A list of directories to be added to the linker search path.
+
+For example:
+
+```
+add_library(SimpleMD5 ${CMAKE_CURRENT_SOURCE_DIR}/opensource/src/md5.cpp)
+target_include_directories(SimpleMD5 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/opensource/include)
+
+add_library(SimpleBase64 ${CMAKE_CURRENT_SOURCE_DIR}/opensource/src/base64.cpp)
+target_include_directories(SimpleBase64 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/opensource/include)
+
+add_executable(SimpleEncryptor src/main.cpp)
+target_include_directories(SimpleEncryptor PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/opensource/include)
+
+# Note: This is generally not required if we are building the libraries within the same project.
+target_link_directories(SimpleEncryptor ${CMAKE_CURRENT_SOURCE_DIR}/opensource/build/)
+
+target_link_libraries(SimpleEncryptor SimpleMD5 SimpleBase64)
+```
 
 #### target_sources
+
+The ```target_sources``` is used to specify additional source files for a target (an executable or library). It is useful to organize and manage source files more effectively within CMake project.
+
+```
+target_sources(<target>
+  <INTERFACE|PUBLIC|PRIVATE> [items1...]
+  [<INTERFACE|PUBLIC|PRIVATE> [items2...] ...])
+```
+
+```<target>```: The name of the target to which we want to add source files.
+
+```[PRIVATE | PUBLIC | INTERFACE]```: These keywords specify the scope of the source files being added. They determine how the source files are treated with respect to the target's usage requirements.
+
+```PRIVATE```: The source files are used only for the target itself.
+
+```PUBLIC```: The source files are used for the target and are also propagated to targets that link against this target.
+
+```INTERFACE```: The source files are not used for the target itself but are propagated to targets that link against this target.
+
+For example:
+
+```
+add_executable(MyExe main.cpp)
+
+target_sources(MyExe
+    PRIVATE
+        src/file1.cpp
+        src/file2.cpp
+    PUBLIC
+        src/file3.cpp
+        src/file4.cpp
+)
+```
+
+#### target_link_options
 
 
 
@@ -663,7 +791,7 @@ message("MY_VAR is ${MY_VAR}")
 
 ## Conclusion
 
-CMake is a versatile and powerful tool for managing the build process of software projects. By understanding its basic and advanced features, you can efficiently handle dependencies, organize your project, and troubleshoot common issues.
+CMake is a versatile and powerful tool for managing the build process of software projects. By understanding its basic and advanced features, we can efficiently handle dependencies, organize your project, and troubleshoot common issues.
 
 **References**
 
