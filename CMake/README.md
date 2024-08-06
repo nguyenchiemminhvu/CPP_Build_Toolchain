@@ -1189,29 +1189,51 @@ endif()
 
 ### Configuring Build Types
 
-Setting build types:
+Typical values of built-in build types include:
+
+```Release```: high optimization level, no debug info, code or asserts. ```-O3 -DNDEBUG```
+
+```Debug```: No optimization, asserts enabled, [custom debug (output) code enabled], debug info included in executable (so you can step through the code with a debugger and have address to source-file:line-number translation). ```-O0 -g```
+
+```RelWithDebInfo```: optimized, with debug info, but no debug (output) code or asserts. ```-O2 -g -DNDEBUG```
+
+```MinSizeRel```: same as Release but optimizing for size rather than speed. ```-Os -DNDEBUG```
 
 ```
 set(CMAKE_BUILD_TYPE Debug)
+
+or
+
+set(CMAKE_BUILD_TYPE Debug)
 ```
 
-### CMake Debugging Tools And Options
-
-Verbose output:
+or
 
 ```
-cmake --trace ..
-```
+mkdir Debug
+cd Debug
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+make
 
-Check variable values:
+or
 
-```
-message("MY_VAR is ${MY_VAR}")
+mkdir Release
+cd Release
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make
 ```
 
 # Conclusion
 
 CMake is a versatile and powerful tool for managing the build process of software projects. By understanding its basic and advanced features, we can efficiently handle dependencies, organize your project, and troubleshoot common issues.
+
+To truly understand CMake, it's essential to practice and build a sample project on your own. This hands-on experience will help you grasp the concepts better and become more proficient in using CMake for your projects.
+
+[https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/03_LocationService](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/03_LocationService)
+
+I encourage you to take up the challenge and try building the sample project before seeking the solution.
+
+[https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/CMake/SampleProjects/03_LocationService/CMakeLists.txt](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/blob/master/CMake/SampleProjects/03_LocationService/CMakeLists.txt)
 
 **References**
 
