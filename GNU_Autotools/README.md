@@ -1,4 +1,4 @@
-## Introduction
+# Introduction
 
 Before exploring Autotools, let's make sure we have a complete understanding of [GNU Make](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make).
 
@@ -54,11 +54,11 @@ Look at the below diagram to see how these tools work together:
 
 At the end, developers using GNU Autotools only need to care about the manual input files 'configure.ac' and 'Makefile.am'.
 
-## Build HelloWorld project
+# Build HelloWorld project
 
 The first thing we need before doing some stuff with Autotools is having a compilable source code repository. I prepare a simple one: [GNU_Autotools/SampleProjects/01_HelloWorld](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Autotools/SampleProjects/01_HelloWorld)
 
-### Write configure.ac for Autoconf
+## Write configure.ac for Autoconf
 
 The configure.ac file is the key of a project's configuration. It contains various settings and instructions for Autoconf to generate the necessary files for building a project.
 
@@ -89,7 +89,7 @@ AC_OUTPUT
 
 The configure.ac file must be presented at the project's root directory.
 
-### Write Makefile.am for Automake
+## Write Makefile.am for Automake
 
 Makefile.am file has the same format and syntax as a Makefile. If you went through the tutorial about [GNU Make](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make) and write a Makefile from scratch by yourself, things will be familiar. Often, we only need to define some variables in Makefile.am to indicate that what files will be built, where they will be intalled.
 
@@ -121,11 +121,11 @@ helloworld_LDFLAGS =
 helloworld_LDADD = 
 ```
 
-### Start Building
+## Start Building
 
 After preparing the 'configure.ac' and 'Makefile.am' files, everything is ready for Autotools build process.
 
-#### Step By Step
+### Step By Step
 
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/01_HelloWorld$ pwd
@@ -268,7 +268,7 @@ ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProject
 Hello World
 ```
 
-#### Simplified with Autoreconf
+### Simplified with Autoreconf
 
 With the help of Autoreconf, the build process is even more simplified. Autoreconf knows how to prepare the necessary scripts and files needed to generate the Makefile correctly. It performs three important tasks: aclocal, autoconf, and automake.
 
@@ -336,7 +336,7 @@ Hello World
 
 By using 'autoreconf', we achieve the same result, but less steps to run. It reduces our manual efforts.
 
-## Build a Library
+# Build a Library
 
 In this section, we would practice to build a library and expect to have a shared object as output.
 [GNU_Autotools/SampleProjects/02_jsoncpp_lib](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Autotools/SampleProjects/02_jsoncpp_lib)
@@ -398,7 +398,7 @@ This directory structure and the associated Autotools files work together to pro
 
 Except for the source codes in include and src subdirectories are already there, copied from an opensource project, the preparation is the same. All we need are a 'configure.ac' file for ```autoconf``` and a 'Makefile.am' file ```automake```.
 
-### Write configure.ac for Autoconf
+## Write configure.ac for Autoconf
 
 Here is the sample configure.ac file for the configuration:
 
@@ -433,7 +433,7 @@ automake: warnings are treated as errors
 /usr/share/automake-1.15/am/library.am: archiver requires 'AM_PROG_AR' in 'configure.ac'
 ```
 
-### Write Makefile.am for Automake
+## Write Makefile.am for Automake
 
 Here is the sample Makefile.am prepared for the Makefile generation:
 
@@ -459,7 +459,7 @@ The AUTOMAKE_OPTIONS is set to 'subdir-objects', which enables the generation of
 
 The 'ACLOCAL_AMFLAGS' is set to -I m4, which specifies the directory where aclocal should look for additional macros. The m4 directory is typically used to store custom Autoconf macros.
 
-### Start Building
+## Start Building
 
 ```
 worker@bb690a873660:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ autoreconf -i
@@ -525,11 +525,11 @@ worker@bb690a873660:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SamplePr
 
 There is something not matched with our expectation. We expect to have a shared object (.so) file, but it finally give us a static library (.a) file.
 
-### Utilize Libtool to Build Dynamic Library
+## Utilize Libtool to Build Dynamic Library
 
 To build a shared object library (.so) instead of a static library (.a), we need Libtool.
 
-#### configure.ac that utilize the Libtool
+### configure.ac that utilize the Libtool
 
 ```
 AC_INIT([libjsoncpp], [1.0], [nguyenchiemminhvu@gmail.com])
@@ -543,7 +543,7 @@ AC_OUTPUT
 
 In this configure.ac file, since we don't need to use 'ranlib' command for static library, 'AC_PROG_RANLIB' can be removed. Instead, we add the 'LT_INIT' marco to initialize the Libtool support.
 
-#### Makefile.am that utilize the Libtool
+### Makefile.am that utilize the Libtool
 
 ```
 lib_LIBRARIES = libjsoncpp.a
@@ -573,7 +573,7 @@ The libjsoncpp_la_LDFLAGS variable is set to -shared to specify that the library
 
 About the option ```-version-info 0:0:0```, we will make it clear after seeing the output of build process.
 
-#### Build with Libtool support
+### Build with Libtool support
 
 ```
 ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/GNU_Autotools/SampleProjects/02_jsoncpp_lib$ ls
@@ -722,7 +722,7 @@ The file named 'libjsoncpp.so.0.0.0' is created using the option '-version-info 
 
 To make things easier to manage, Libtool created a symbolic link called 'libjsoncpp.so' that points to 'libjsoncpp.so.0.0.0'. This way, we don't have to worry about version changes. For instance, if we have a newer version of libjsoncpp and use the option '-version-info 0:0:1', Libtool will automatically update the 'libjsoncpp.so' symbolic link to point to the newer version, which will be 'libjsoncpp.so.0.0.1'. This approach simplifies the usage of the library, as we can always refer to 'libjsoncpp.so' and not worry about the specific version number.
 
-## Conclusion
+# Conclusion
 
 In simple terms, GNU Autotools is a collection of tools that make it easier to build and install software projects. Autoconf helps us configure our project by detecting system features and dependencies. Automake generates the necessary Makefiles to build our project. Libtool helps manage shared libraries for better compatibility.
 

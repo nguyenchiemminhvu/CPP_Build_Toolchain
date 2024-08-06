@@ -1,4 +1,4 @@
-## Introduction
+# Introduction
 
 The GNU Compiler Collection, also known as GCC, is a collection of compilers for various programming languages, including C, C++, Objective-C, Fortran, Ada, Go, and D. The GNU Compiler Collection (GCC) was first released in 1987 as part of the GNU Project, which was initiated by Richard Stallman in 1983. The goal of the GNU Project was to create a free Unix-like operating system composed entirely of free software.
 
@@ -30,7 +30,7 @@ The latest version of GCC is 13.2, released on July 27, 2023. The GCC project al
 - GCC Version 7 (2017): Continued C++17 support, introduced C++2a support, new optimizations, and improved diagnostics.
 - ...
 
-## Compiling a C/C++ program
+# Compiling a C/C++ program
 
 Compilation is a multi-stage process involving several tools, including the GNU Compiler itself (through the gcc or g++ frontends), the GNU Assembler as, and the GNU Linker ld. The complete set of tools used in the compilation process is referred to as a toolchain.
 
@@ -130,7 +130,7 @@ g++ main.cpp -o main
 
 This command compiles the main.cpp file and links it to create the final executable main. By default, g++ performs the preprocessing, compilation, assembly, and linking steps for us. It also automatically links the necessary standard C++ libraries.
 
-### Compiling multiple source files
+## Compiling multiple source files
 
 In a real C++ project, it is common practice to split the program source code into multiple files for easier management and maintainability. This approach is known as modular programming.
 
@@ -198,8 +198,8 @@ else
 fi
 ```
 
-### Using more compilation options
-#### Adding search paths
+## Using more compilation options
+### Adding search paths
 
 A common problem when compiling a C/C++ program with many include file directories is the error:
 
@@ -349,7 +349,7 @@ else
 fi
 ```
 
-#### Adding environment variables
+### Adding environment variables
 
 By default, GNU GCC compiler search for the header and library files in the standard directories specified in its configuration. However, we can also configure the search paths for header and library files using environment variable in the shell.
 
@@ -391,7 +391,7 @@ This works the same way using the option '-I' multiple times:
 g++ -I./opensource/include -I./boost/include -I./gnss/include
 ```
 
-#### Using preprocessors
+### Using preprocessors
 
 There are options to control the C/C++ preprocessor, which is run on each C/C++ source file before actual compilation. The GNU C/C++ preprocessor expands the macros in the source files before they are compiled.
 
@@ -495,7 +495,7 @@ export LIBRARY_PATH=./opensource/lib
 g++ -std=c++11 -DUSE_SIMPLE_CRYPTO_LIB main.cpp simple_math.cpp simple_algo.cpp -lsimplecrypto -o main
 ```
 
-#### Compiling for debugging
+### Compiling for debugging
 
 Normally, an executable file after compiling does not contains any references to the original source codes, such as variable names, function names, and line numbers,... Only machine codes are sometimes insufficient for debugging.
 
@@ -594,7 +594,7 @@ Reading further about GNU GDB debugging here:
 [Debugging C++ core file](https://www.cse.unsw.edu.au/~learn/debugging/modules/gdb_coredumps/)
 [Load shared object debugging symbols](https://stackoverflow.com/questions/30281766/need-to-load-debugging-symbols-for-shared-library-in-gdb)
 
-#### Compiling with optimization
+### Compiling with optimization
 
 One feature makes GNU GCC powerfull is the source code optimization. The optimized source codes achieve the same result as the original source codes but with improved performance. This mean the optimizing source codes have smaller size, increased execution speed. GNU GCC offers different optimization levels to achieve this.
 
@@ -891,7 +891,7 @@ void doSomething(int flags)
 We don't focus much on the specifics of GNU GCC optimization in this topic. If you want more examples of how GNU GCC optimization works, you can refer to this article for reference:
 [https://medium.com/@guannan.shen.ai/compiler-optimizations-46db19221947](https://medium.com/@guannan.shen.ai/compiler-optimizations-46db19221947)
 
-#### Other common use options
+### Other common use options
 
 ```-std=``` Specifies the version of the programming language standard to be used. For example, -std=c++11 specifies the C++11 standard.
 
@@ -918,9 +918,9 @@ We don't focus much on the specifics of GNU GCC optimization in this topic. If y
 -fPIC/-fpic + -fpie = -fpie
 ```
 
-## Compiling a C/C++ library
+# Compiling a C/C++ library
 
-### Compiling static library and link to C/C++ program
+## Compiling static library and link to C/C++ program
 
 A static library is an archive of collection of reusable codes, stored in compiled object files. These files contains pre-compiled codes that can be linked directly into the C++ program at compile-time.
 
@@ -1105,7 +1105,7 @@ ncmv@localhost 03_jsoncpp_lib/test % ls -la
 
 In the next part of this article, when we compile the test problem with dynamic linking, we will compare the output size of the executable file and see the difference.
 
-### Compiling shared object (dynamic library) and link to C/C++ program
+## Compiling shared object (dynamic library) and link to C/C++ program
 
 Using the same jsoncpp source codes in the static library compilation example: [https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib](https://github.com/nguyenchiemminhvu/CPP_Build_Automation/tree/master/GNU_GCC/SampleProjects/03_jsoncpp_lib)
 
@@ -1207,7 +1207,7 @@ ncmv@localhost 03_jsoncpp_lib/test % ldd ./../build/libjsoncpp.so
         /lib64/ld-linux-x86-64.so.2 (0x00007f51eca82000)
 ```
 
-## Conclusion
+# Conclusion
 
 After going through this article, we now have a good understanding of the basics of GNU GCC Compilation. If you want to learn more advanced topics about GNU GCC, check it out the detailed publication by GNU at [https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc.pdf](https://gcc.gnu.org/onlinedocs/gcc-13.2.0/gcc.pdf). This document has additional information to help you learn more and improve your skills in using GNU GCC.
 

@@ -1,6 +1,6 @@
-## Introduction
+# Introduction
 
-### What is GNU Make and why is it useful?
+## What is GNU Make and why is it useful?
 
 In the vision of creating a complete free and open-source software ecosystem, led by Richard Stallman, after the creation of the GNU GCC Compiler in 1987, the GNU Project released GNU Make in 1988.
 
@@ -67,7 +67,7 @@ Hello GNU Make
 
 Now, all we need to know is the syntax or other details for writing the content of a Makefile.
 
-### Makefile Syntax
+## Makefile Syntax
 
 In a Makefile, we define a set of rules that specify how to build different parts of your project. Each rule consists of a target, prerequisites, and commands. Here's the basic structure:
 
@@ -82,9 +82,9 @@ target : prerequisites ...
 - Prerequisites are the files or components that the target depends on. If any of the prerequisites are newer than the target, Make will execute the commands to update the target.
 - A recipe usually contains more than one command, either on the same line or on each line. Commands of a recipe are the actions that need to be performed in order to build the target. They are are typically shell commands, and are indented by a tab character, not spaces.
 
-## Basic Makefile Concepts
+# Basic Makefile Concepts
 
-### Hello Makefile
+## Hello Makefile
 
 For example, let's take a look at a simple HelloWorld program:
 
@@ -166,7 +166,7 @@ However, it is not mandatory for a target to create a file with the same name. T
 
 GNU Make determines if a source file has changed by comparing its timestamp with the timestamp of the target file. If the source file's timestamp is more recent than the target file's timestamp, Make knows that the source file has been modified and triggers the recompilation of the associated target.
 
-### The clean target
+## The clean target
 
 The 'clean' target is a common convention in Makefiles. It is used to remove any files generated during the build process. The purpose of the 'clean' target is to ensure a clean and consistent state of the project.
 
@@ -205,7 +205,7 @@ main.cpp  Makefile
 
 Including a clean target to the Makefile is a good practice we should remember.
 
-### The all target
+## The all target
 
 The ```all``` target is typically used to specify the default target that should be built when you execute the make command without any arguments. The target ```all``` is not a built-in target in Makefile, but a convention that many developers follow.
 
@@ -224,7 +224,7 @@ target3 : prerequisite_3
 
 Here, the **target1**, **target2** and **target3** represent the actual targets we want to build when executing ```make``` or ```make all``` command.
 
-### Phony targets
+## Phony targets
 
 Usually, when we define a target in Makefile, GNU Make expects that target to be a file existing after executing the recipe. Sometimes, we have targets that don't correspond to any files. These targets are called **PHONY targets**.
 
@@ -245,7 +245,7 @@ clean :
 
 By doing this, we tells GNU Make that the 'clean' target is not an actual file expected to exist after running the clean commands. Therefore, even a file named 'clean' is created, Make still executes the 'clean' recipe. 
 
-### Write a Makefile to compile multiple source files
+## Write a Makefile to compile multiple source files
 
 Using all the GNU Make knowledge from the previous sections is enough the write a simple Makefile to compile this small C++ project:
 
@@ -312,7 +312,7 @@ But before Make can fulfill the rule for 'main' target, it must process the rule
 
 It is not mandatory to put the default target on top of other targets in the Makefile, but it is a common convention and a good practice to do so. When run ```make``` without specifying a target, Make will build the default target.
 
-### Splitting Recipe Lines
+## Splitting Recipe Lines
 
 GNU Make has no limit on the length of the recipe. But for better readability, GNU Make allows us to break long lines in Makefile into multiple lines. We can do this by putting backslash (\) character in the middle of the command/statement, then Make will treat the next line of the command as a continuation of the previous line.
 
@@ -357,7 +357,7 @@ clean :
 
 It's important to note that when using this feature, the backslash character must be the last character on the line, and there shouldn't be any trailing spaces after it.
 
-### Include Other Makefile
+## Include Other Makefile
 
 When working in a large project or complex build systems, It is often necessary to split the Makefile into multiple smaller, more manageable pieces. By using ```include``` directive in Makefile, we can bring in the contents of another Makefile and incorporate it into the current one. This feature is useful when we have some common rules or variables that we wish to reuse across multiple Makefiles.
 
@@ -397,7 +397,7 @@ main : main.cpp
 	g++ $(CXXFLAGS) main.cpp -o main
 ```
 
-### Recursive Use of Make
+## Recursive Use of Make
 
 **Recursive Use of Make** feature definition is simple:
 >Recursive use of ```make``` means using ```make``` as a command in a Makefile.
@@ -450,7 +450,7 @@ lib_qt:
 .PHONY: all lib_curl lib_sqlite lib_qt
 ```
 
-### Variables
+## Variables
 
 In the sample Makefile of the [previous section](#splitting-recipe-lines), we can observe several duplication like object files declaration, GCC Compilation flags,... Such duplication is error-prone. When a new object file is added into the project, we might add it to one list and forget another one. Instead of repeating the compiler command and flags in each target rule, we can use the variables.
 
@@ -460,7 +460,7 @@ Variable names are case-sensitive. So, 'foo', 'FOO', and 'Foo' would indeed be t
 
 There is two common used assignment syntax in Makefile:
 
-#### Simply Expanded Variable Assignment
+### Simply Expanded Variable Assignment
 
 ```
 var_name := values
@@ -485,7 +485,7 @@ x := later
 
 Using Simply Expanded variables generally make complicated Makefile more predictable because they work like variables in most programming languages.
 
-#### Recursively Expanded Variable Assignment
+### Recursively Expanded Variable Assignment
 
 ```
 var_name = values
@@ -588,7 +588,7 @@ clean :
 
 By using variables, we not only make our Makefile more readable and concise, but also ensure consistency.
 
-#### Variable References
+### Variable References
 
 The syntax ```$(var)``` or ```${var}``` is used to reference a variable. Make would substitute the variable reference by its values evaluated by that time.
 
@@ -604,7 +604,7 @@ prog.o : prog.$(foo)
 
 can be used to compile prog.c source file.
 
-#### Environment Variables
+### Environment Variables
 
 One question here:
 
@@ -633,7 +633,7 @@ ncmv
 
 Remember that when using environment variables, they should be exported in the shell before invoking GNU Make.
 
-#### Automatic Variables
+### Automatic Variables
 
 Automatic variables are predefined variables that hold specific values based on the context of the rule being executed. Their values are generated by Make, rather than having to be set explicitly.
 
@@ -696,9 +696,9 @@ simple_algo.o : simple_algo.cpp
 	g++ -c $^
 ```
 
-## Advanced Makefile Concepts
+# Advanced Makefile Concepts
 
-### Wildcards
+## Wildcards
 
 In a Makefile, wildcards are special characters used to represent a pattern of string or filenames. They are particularly useful for tasks like file manipulation. 
 
@@ -795,7 +795,7 @@ The ```*``` (asterisk) is a Shell wildcard character, not specific to Makefile. 
 
 The ```%``` is particularly used as placeholders in the targets or prerequisites to create Pattern rules.
 
-### Implicit rules
+## Implicit rules
 
 Implicit rules make things complex and confusing, but we need to know them because they are standards in Makefile.
 
@@ -818,7 +818,7 @@ gcc -c $(CFLAGS) foo.c -o foo.o
 
 Of course, when we write a Makefile using Implicit rules, we must known which implicit rule we want Make to use, and known exactly it will choose the correct one. Let me provide a catalogue of built-in implicit rules in the next section.
 
-#### Built-in Implicit Rules
+### Built-in Implicit Rules
 
 Here are a few common built-in implicit rules that can save you time and effort in writing Makefile:
 
@@ -895,7 +895,7 @@ MAKEFLAGS += -r
 MAKEFLAGS += --no-builtin-rules
 ```
 
-#### Variables used by Implicit Rules
+### Variables used by Implicit Rules
 
 There are some variables appear in the built-in implicit rules. We can modify their values in the Makefile or arguments to ```make``` command to alter how the built-in implicit rules work without redefining the rules themselves.
 
@@ -943,7 +943,7 @@ LDFLAGS =
 
 This will disable the default linker flags provided by Make.
 
-#### Practice Implicit Rules
+### Practice Implicit Rules
 
 Knowing this, we can now create a Makefile to build a C++ program without explicitly telling Make how to do the compilation. Check the below sample Makefile which is applied for the sample project: [GNU_Make/SampleProjects/02_MultipleSourceFiles](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make/SampleProjects/02_MultipleSourceFiles)
 
@@ -962,7 +962,7 @@ clean:
 
 Shorter than before, right?
 
-### Pattern rules
+## Pattern rules
 
 In Makefile, a pattern rule defines how to build a target that matches a certain pattern. It contains the wildcard character ```%``` in the target for matching any non-empty substring. For other parts of a pattern rule, it looks the same with a normal rule. For example:
 
@@ -999,7 +999,7 @@ This Makefile tells us that it looks for all the source files in './src' directo
 
 So, Pattern rules use a single target and a single prerequisite containing the wildcard ```%``` for applying the build recipe on each file that matches with the pattern.
 
-### Static Pattern rules
+## Static Pattern rules
 
 GNU Make gives a confusing explanation about Static Pattern Rules concept.
 
@@ -1029,9 +1029,9 @@ $(OBJECT_FILES) : %.o : %.cpp
 
 If we remove the 'targets' part in Static Pattern Rules, it becomes the Pattern Rules which defines the common build recipe for all the target files matched the pattern. But in Static Pattern Rules, we specify a list of target files that will use a specific pattern rule. With this feature, we can define more pattern rules for different target files.
 
-### Conditional
+## Conditional
 
-#### Conditional Variable Assignment
+### Conditional Variable Assignment
 
 We have studied 2 basic types of variable assignment before: [Simply Expanded Variable Assignment](#simply-expanded-variable-assignment) and [Recursively Expanded Variable Assignment](#recursively-expanded-variable-assignment)
 
@@ -1050,7 +1050,7 @@ variable ?= new_value
 
 In this case, since the variable variable is already defined with the value existing_value, the conditional assignment ```variable ?= new_value``` does not overwrite the existing value. The variable variable will retain its original value of existing_value.
 
-#### Conditional statements
+### Conditional statements
 
 Conditional directives in Makefile allows us to define the sections of code that are executed based on certain conditions.
 
@@ -1138,11 +1138,11 @@ ifndef OS
 endif
 ```
 
-### Functions
+## Functions
 
 Function concept in Makefile are just like other programming languagues, it is a reusable code that does some specific task or manipulate some data. However, in GNU Make, predefined functions focus on text processing.
 
-#### Call Built-in Functions
+### Call Built-in Functions
 
 GNU Make defines a lot of built-in functions for us. To call a built-in function, we can use the below syntax:
 
@@ -1164,7 +1164,7 @@ SRC_FILES := $(wildcard *.cpp)
 
 Here, the wildcard function searches for files that match a pattern.
 
-#### The call Function
+### The call Function
 
 GNU Make also support creating user-define functions. By using the built-in function named 'call', we can invoke our user-define functions.
 
@@ -1190,7 +1190,7 @@ REV = $(call REVERSE,Made,It)
 
 Here, REV variable is expanded as "It Made".
 
-#### The wildcard Function
+### The wildcard Function
 
 Even when Make automatically deals with wildcards at several places in Makefile, it is suggested that always wrap them in the ```wildcard``` function.
 
@@ -1226,7 +1226,7 @@ clean:
     rm -f $(OBJS) $(TARGET)
 ```
 
-#### The foreach Function
+### The foreach Function
 
 The ```foreach``` function allows us to iterate over a list of words and apply an action on to each word. Here is foreach function syntax:
 
@@ -1265,7 +1265,7 @@ SUB_DIRS = sub_dir1 sub_dir2 sub_dir3 sub_dir4
 SOURCE_FILES = $(foreach SUB_DIR,$(SUB_DIRS),$(wildcard $(SUB_DIR)/*.cpp))
 ```
 
-#### Functions for String Substitution
+### Functions for String Substitution
 
 Here we go into an advanced topic of built-in functions that operate on strings. String Substitution refers to the action of replacing placeholder values within a string with actual values.
 
@@ -1323,7 +1323,7 @@ We must be careful when using complex variable expressions because many things a
 
 There are a lot more useful built-in functions that I can not list all down here. If you want to explore more about them, find them in [GNU Make manual document](https://www.gnu.org/software/make/manual/make.html#Functions).
 
-## Conclusion
+# Conclusion
 
 After exploring the GNU Make tool, It is clear that GNU Make is a powerful tool for automating the process of building software projects. With GNU Make, managing large projects with multiple files becomes more efficient and less time-consuming.
 

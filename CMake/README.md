@@ -1,6 +1,6 @@
-## Introduction
+# Introduction
 
-### What Is CMake?
+## What Is CMake?
 
 CMake is a cross-platform tool designed to manage the build process of software projects. It uses simple configuration files called CMakeLists.txt to generate native build scripts for various platforms, such as Makefiles for Unix or project files for Visual Studio.
 
@@ -21,7 +21,7 @@ worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain$ which cpack
 **CTest** is a testing tool that comes with CMake. It is used to automate the execution of tests for a project.
 **CPack** is a packaging tool that comes with CMake. It is used to create installers and packages for software projects.
 
-### Benefits Of Using CMake
+## Benefits Of Using CMake
 
 **Compatibility**: Works on Windows, macOS, and Linux. Compatible with all mordern C++ standards (C++11, C++14, C++17, ...).
 
@@ -60,7 +60,7 @@ cmake version 3.10.2
 CMake suite maintained and supported by Kitware (kitware.com/cmake).
 ```
 
-## Build HelloWorld Project
+# Build HelloWorld Project
 
 As all new programmers, we start with HelloWorld project.
 
@@ -111,9 +111,9 @@ CMake reads the ```CMakeLists.txt``` file and generates the [Makefile](https://g
 
 Now, the only thing we care for is the syntax of writing CMakeLists.txt file.
 
-## CMakeLists.txt Syntax And Commands
+# CMakeLists.txt Syntax And Commands
 
-### General Outline Of CMakeLists.txt
+## General Outline Of CMakeLists.txt
 
 **Minimum CMake Version**: Specify the minimum required version of CMake.
 
@@ -204,9 +204,9 @@ This is a basic structure and can be expanded based on the specific needs of you
 
 Don't be afraid at the first sight. Let's walk through each component of CMakeList.txt file.
 
-### Basic Syntax And Structure
+## Basic Syntax And Structure
 
-#### cmake_minimum_required
+### cmake_minimum_required
 
 A top-level CMakeLists.txt file typically starts with specifying the minimum required version of CMake and the project name:
 
@@ -226,7 +226,7 @@ For example:
 cmake_minimum_required(VERSION 3.10...3.20)
 ```
 
-#### project
+### project
 
 The ```project``` command is used to define the name, version, and supported language of a project.
 
@@ -301,7 +301,7 @@ worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/0
 -- Project Binary Dir: /home/worker/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build
 ```
 
-#### set variables
+### set variables
 
 The ```set``` command is used to define and manipulate variables. These variables can be used to control the build process, store configuration options, path, and other data.
 
@@ -357,7 +357,7 @@ message(STATUS "The value of environment variable MY_ENV_VAR: $ENV{MY_ENV_VAR}")
 
 This sets the environment variable MY_ENV_VAR to "some_value".
 
-#### include_directories
+### include_directories
 
 The ```include_directories``` command is used to specify directories that the compiler should search for header files during the build process. In case all necessary header files are located in standard system directories like ```/usr/include```, ```/usr/local/include```, or other directories that the compiler searches by default, we don't need to use ```include_directories``` command in CMake.
 
@@ -427,7 +427,7 @@ In this example, CMakeLists.txt file specify a target MyLibrary to be built as l
 
 ```SYSTEM ${CMAKE_SOURCE_DIR}/third_party/include```: The third_party/include directory is added as a system include directory, which can suppress warnings from headers in this directory.
 
-#### add_executable
+### add_executable
 
 The ```add_executable``` command is used to define an executable target from a set of source files.
 
@@ -452,7 +452,7 @@ For example:
 add_executable(SimpleMath main.cpp geometry.cpp algebra.cpp)
 ```
 
-#### add_library
+### add_library
 
 The ```add_library``` is used to define a library target from a set of source files.
 
@@ -516,7 +516,7 @@ add_library(LibFormattedDataStatic STATIC ${LIB_SOURCES})
 add_library(LibFormattedDataShared SHARED ${LIB_SOURCES})
 ```
 
-#### target_link_libraries
+### target_link_libraries
 
 The ```target_link_libraries``` command is used to specify libraries or targets that a particular target (such as an executable or another library) should be linked against. The command plays an important role in dependency management between different parts of a project, ensure that linker tool can resolve symbols correctly.
 
@@ -549,7 +549,7 @@ add_executable(MathExe main.cpp)
 target_link_libraries(MathExe PRIVATE LibSimpleMath LibFormattedData)
 ```
 
-#### link_directories
+### link_directories
 
 The ```link_directories``` command is used to specify the directories where the linker should look for libraries when linking a target. In case all necessary libraries are located in standard system directories like ```/usr/lib```, ```/usr/local/lib```, or other directories that the linker searches by default, we don't need to use ```link_directories``` command in CMake.
 
@@ -613,7 +613,7 @@ target_link_directories(SimpleEncryptor ${CMAKE_CURRENT_SOURCE_DIR}/opensource/b
 target_link_libraries(SimpleEncryptor SimpleMD5 SimpleBase64)
 ```
 
-#### target_sources
+### target_sources
 
 The ```target_sources``` is used to specify additional source files for a target (an executable or library). It is useful to organize and manage source files more effectively within CMake project.
 
@@ -648,7 +648,7 @@ target_sources(MyExe
 )
 ```
 
-#### target_compile_options
+### target_compile_options
 
 The ```target_compile_options``` is used to specify additional compiler options that are necessary for a target at compilation stage.
 
@@ -678,7 +678,7 @@ add_executable(SampleProgram main.cpp)
 target_compile_options(SampleProgram PRIVATE -Wall -Wextra -fpermissive)
 ```
 
-#### target_link_options
+### target_link_options
 
 The ```target_link_options``` command is used to specify linker flags that are necessary for the linker when building a target. It was introduced in CMake 3.13.
 
@@ -709,7 +709,7 @@ target_link_libraries(SampleProgram LibUtil)
 target_link_options(SampleProgram PRIVATE -Wl,--no-undefined)
 ```
 
-#### add_subdirectory
+### add_subdirectory
 
 The ```add_subdirectory``` command is used to add sub-directories to the build, allow us to include another CMakeLists.txt file from a sub-directory, which can define additional targets, libraries, and other build-related settings. It is useful for organizing large projects into smaller components.
 
@@ -764,7 +764,7 @@ The src/CMakeLists.txt file defines a executable file called SampleProgram from 
 
 The lib/CMakeLists.txt file defines a library target SampleLib from util.cpp file.
 
-### Practice the basis
+## Practice the basis
 
 [https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/03_BuildSubDirs](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/CMake/SampleProjects/03_BuildSubDirs)
 
@@ -842,9 +842,9 @@ add_library(jsoncpp ${JSONCPP_SOURCES})
 target_include_directories(jsoncpp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/include)
 ```
 
-### Advanced Features
+## Advanced Features
 
-#### add_custom_command
+### add_custom_command
 
 Adding custom commands:
 
@@ -857,15 +857,15 @@ add_custom_command(
 add_custom_target(generate DEPENDS ${CMAKE_BINARY_DIR}/generated_file.cpp)
 ```
 
-#### install
+### install
 
-#### enable_testing
+### enable_testing
 
-#### add_test
+### add_test
 
-#### option
+### option
 
-### Configuring Build Types
+## Configuring Build Types
 
 Setting build types:
 
@@ -873,9 +873,9 @@ Setting build types:
 set(CMAKE_BUILD_TYPE Debug)
 ```
 
-## Best Pratices
+# Best Pratices
 
-### Organizing CMake Projects
+## Organizing CMake Projects
 
 Directory structure:
 
@@ -888,7 +888,7 @@ MyProject/
     └── myheader.h
 ```
 
-### Writing Maintainable CMakeLists.txt Files
+## Writing Maintainable CMakeLists.txt Files
 
 Modularize with subdirectories:
 
@@ -897,21 +897,21 @@ add_subdirectory(src)
 add_subdirectory(include)
 ```
 
-### Common Pitfall And How To Avoid
+## Common Pitfall And How To Avoid
 
 Avoid hardcoding paths: Use variables like ${CMAKE_SOURCE_DIR} and ${CMAKE_BINARY_DIR}.
 
 Use modern CMake practices: Prefer target_* commands over global settings.
 
-## Debugging And Troubleshooting
+# Debugging And Troubleshooting
 
-### Common Errors
+## Common Errors
 
 Missing files: Ensure all source files are listed in CMakeLists.txt.
 
 Library not found: Check if the library is installed and paths are correctly set.
 
-### CMake Debugging Tools And Options
+## CMake Debugging Tools And Options
 
 Verbose output:
 
@@ -925,7 +925,7 @@ Check variable values:
 message("MY_VAR is ${MY_VAR}")
 ```
 
-## Conclusion
+# Conclusion
 
 CMake is a versatile and powerful tool for managing the build process of software projects. By understanding its basic and advanced features, we can efficiently handle dependencies, organize your project, and troubleshoot common issues.
 
