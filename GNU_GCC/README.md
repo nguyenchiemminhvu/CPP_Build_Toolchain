@@ -470,7 +470,9 @@ By default, there is no macro definition of USE_SIMPLE_CRYPTO_LIB. When the macr
 There are a few basic GCC options to control preprocessor:
 
 ```-D <name>``` predefine *name* as macro, with definition 1.
+
 ```-D <name>=<definition>``` The contents of *definition* are tokenized and processed as if they appeared during translation phase three in a '#define' directive.
+
 ```-include file``` Process file as if #include "file" appeared as the first line of the primary source file. However, the first directory searched for file is the preprocessor’s working directory instead of the directory containing the main source file. If not found there, it is searched for in the remainder of the #include "..." search chain as normal.
 
 This command below is compiled normally with no USE_SIMPLE_CRYPTO_LIB macro define:
@@ -502,6 +504,7 @@ In most of all cases, we only need to add the option '-g' to the compilation com
 Debug symbols are typically stored in a format called DWARF (Debugging With Attributed Record Formats). Reference: [https://dwarfstd.org/](https://dwarfstd.org/)
 
 ```-g``` Produce debugging information in the operating system’s native format (stabs, COFF, XCOFF, or DWARF). GDB can work with this debugging information.
+
 ```-gdwarf -gdwarf-version``` Produce debugging information in DWARF format (if that is supported). The value of version may be either 2, 3, 4 or 5; the default version for most targets is 5.
 
 Another benefit of storing debugging symbols to the executable is the ability to examine the cause of crash program from "core dump" file.
@@ -596,6 +599,7 @@ Reading further about GNU GDB debugging here:
 One feature makes GNU GCC powerfull is the source code optimization. The optimized source codes achieve the same result as the original source codes but with improved performance. This mean the optimizing source codes have smaller size, increased execution speed. GNU GCC offers different optimization levels to achieve this.
 
 ```-O0``` The lowest level of optimization, no optimization is applied. Using this option, GCC Compiler produces codes that closely reflects to the original source codes. Each command in the source codes is converted directly to the corresponding machine instructions in the executable file. However, it may result in slower and less efficient performance.
+
 ```-O1 or -O``` Enable basic level of optimization: constant folding, common subexpression elimination, and dead code elimination. These flags are enabled at -O0 optimization level:
 ```
 -fauto-inc-dec
@@ -646,6 +650,7 @@ One feature makes GNU GCC powerfull is the source code optimization. The optimiz
 -ftree-ter
 -funit-at-a-time
 ```
+
 ```-O2``` Enable a higher level of optimization than -O1, including additional optimization strategy like: loop unrolling, function inlining, and instruction scheduling without involving the space-speed tradeoff. The compiler will take longer to compile programs and requires more memory than -O1, but result better run-time performance. These flags are enabled at this optimization level:
 ```
 -falign-functions -falign-jumps
@@ -687,6 +692,7 @@ One feature makes GNU GCC powerfull is the source code optimization. The optimiz
 -ftree-vrp
 -fvect-cost-model=very-cheap
 ```
+
 ```-O3``` Enable even more optimizations compared to -O2, including advanced techniques like loop fusion, loop vectorization, and profile-guided optimization. This option produces a significant enhance performance codes at run time, but may also increase compilation time and code size. These flags are enabled at this optimization level:
 ```
 -fgcse-after-reload
@@ -703,6 +709,7 @@ One feature makes GNU GCC powerfull is the source code optimization. The optimiz
 -fvect-cost-model=dynamic
 -fversion-loops-for-strides
 ```
+
 ```-Os``` This option optimizes for code size rather than performance, suitable for systems constrained by memory or disk space like embedded systems. This option includes all -O2 optimization flags except those that increase code size: ```-falign-functions -falign-jumps -falign-labels -falign-loops -fprefetch-loop-arrays -freorder-blocks-algorithm=stc```
 
 For the details of each optimization flags, refer to the home page of GNU GCC: [https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html)
@@ -887,12 +894,19 @@ We don't focus much on the specifics of GNU GCC optimization in this topic. If y
 #### Other common use options
 
 ```-std=``` Specifies the version of the programming language standard to be used. For example, -std=c++11 specifies the C++11 standard.
+
 ```-Wall``` Enables additional warning messages during compilation.
+
 ```-Werror``` Treats all warnings as errors.
+
 ```-Wno-unused-parameter``` Disables warnings for unused function parameters.
+
 ```-fpermissive``` Relaxes some of the strictness of the compiler, allowing certain non-standard or potentially unsafe code constructs to compile without errors. Thus, using -fpermissive allows some nonconforming code to compile.
+
 ```-fstack-protector-all``` Enables stack protection mechanisms for all functions, adding extra checks to detect and prevent stack-based buffer overflows.
+
 ```-fPIE``` Generates position-independent executables (PIE), which can be loaded at any memory address, enhancing security by making it harder for attackers to exploit certain vulnerabilities.
+
 ```-pie``` Produce a dynamically linked position independent executable on targets that support it. Similar to -fPIE, but with additional linker options to ensure that all code and data references are resolved correctly.
 
 ```
@@ -1071,7 +1085,9 @@ colin
 ```
 
 ```-L``` Specify the directory where the linker should look for the libraries during the linking phase.
+
 ```-l``` Specify the name of the library that should be linked with your program during the linking phase.
+
 ```-static``` When the linker encounters both a static library (.a file) and a shared library (.so file) with the same name in the same directory, it follows a specific order of preference. By default, the linker will prioritize the shared library (.so file) over the static library (.a file). The -static flag instructs the linker to prefer static libraries over shared libraries. 
 
 We can specify the absolute name and path of the static library and achieve the same result, because the static library is just a combination of the symbols of object files.

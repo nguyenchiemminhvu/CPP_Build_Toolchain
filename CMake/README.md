@@ -31,8 +31,6 @@ worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain$ which cpack
 
 **Modularity**: Easy to manage complex projects with multiple components.
 
-**Community Support**: Widely used and well-documented.
-
 ### CMake Installation
 
 Install via package manager tool. For example in Linux:
@@ -258,14 +256,23 @@ project(libNmea VERSION 1.0.1 DESCRIPTION "Generate NMEA sentences" HOMEPAGE_URL
 Variables Set by project command:
 
 ```PROJECT_NAME```: The name of the project.
+
 ```PROJECT_VERSION```: The full version string of the project.
+
 ```PROJECT_VERSION_MAJOR```: The major version number.
+
 ```PROJECT_VERSION_MINOR```: The minor version number.
+
 ```PROJECT_VERSION_PATCH```: The patch version number.
+
 ```PROJECT_VERSION_TWEAK```: The tweak version number.
+
 ```PROJECT_DESCRIPTION```: The description of the project.
+
 ```PROJECT_HOMEPAGE_URL```: The homepage URL of the project.
+
 ```PROJECT_SOURCE_DIR```: The source directory of the project.
+
 ```PROJECT_BINARY_DIR```: The binary directory of the project.
 
 Modify project command in HelloWorld project for example:
@@ -294,7 +301,7 @@ worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/0
 -- Project Binary Dir: /home/worker/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build
 ```
 
-#### set
+#### set variables
 
 The ```set``` command is used to define and manipulate variables. These variables can be used to control the build process, store configuration options, path, and other data.
 
@@ -322,6 +329,14 @@ message(STATUS "The value of MY_VARIABLE is: ${MY_VARIABLE}")
 
 set(MY_CACHE_VARIABLE "default_value" CACHE STRING "This is a cache variable")
 set(MY_CACHE_VARIABLE "new_value" CACHE STRING "This is a cache variable" FORCE)
+
+set(SOURCES
+    src/main.cpp
+    src/helper.cpp
+    src/utils.cpp
+)
+
+add_executable(MyExecutable ${SOURCES})
 ```
 
 To set an environment variable:
@@ -342,11 +357,105 @@ message(STATUS "The value of environment variable MY_ENV_VAR: $ENV{MY_ENV_VAR}")
 
 This sets the environment variable MY_ENV_VAR to "some_value".
 
+#### include_directories
+
+The ```include_directories``` command is used to specify directories that the compiler should search for header files during the build process. In case all necessary header files are located in standard system directories like ```/usr/include```, ```/usr/local/include```, or other directories that the compiler searches by default, we don't need to use ```include_directories``` command in CMake.
+
+```
+include_directories([AFTER|BEFORE] [SYSTEM] dir1 [dir2 ...])
+```
+
+```AFTER```: Adds the directories to the end of the list of include directories.
+
+```BEFORE```: Adds the directories to the beginning of the list of include directories.
+
+```SYSTEM```: Marking directories as system include directories can be useful to suppress warnings from third-party headers.
+
+```dir1 dir2 ...```: The directories to be added to the include path.
+
+For example:
+
+```
+include_directories(${CMAKE_SOURCE_DIR}/include)
+```
+
+While ```include_directories``` command is a global command that affects all targets, it's often better to use target-specific commands like ```target_include_directories``` to avoid unintended side effects.
+
+```
+target_include_directories(<target> [SYSTEM] [AFTER|BEFORE]
+  <INTERFACE|PUBLIC|PRIVATE> [items1...]
+  [<INTERFACE|PUBLIC|PRIVATE> [items2...] ...])
+```
+
+```<target>```: The name of the target to which the include directories will be applied.
+
+```SYSTEM```: Marking directories as system include directories can be useful to suppress warnings from third-party headers.
+
+```AFTER | BEFORE```: Controls the order in which directories are added to the include path. AFTER adds directories to the end, and BEFORE adds them to the beginning.
+
+```<INTERFACE|PUBLIC|PRIVATE>```: Specifies the scope of the include directories.
+
+```INTERFACE```: Include directories are used by targets that link to this target but not by the target itself.
+
+```PUBLIC```: Include directories are used by both the target itself and by targets that link to this target.
+
+```PRIVATE```: Include directories are used only by the target itself.
+
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(MyProject)
+
+add_library(MyLibrary src/mylibrary.cpp)
+
+target_include_directories(MyLibrary
+    PUBLIC
+        ${CMAKE_SOURCE_DIR}/include
+    PRIVATE
+        ${CMAKE_SOURCE_DIR}/ext_include
+    SYSTEM
+        ${CMAKE_SOURCE_DIR}/third_party/include
+)
+```
+
+In this example, CMakeLists.txt file specify a target MyLibrary to be built as library.
+
+```PUBLIC ${CMAKE_SOURCE_DIR}/include```: The include directory is added to the include path for both MyLibrary and any target that links to MyLibrary.
+
+```PRIVATE ${CMAKE_SOURCE_DIR}/ext_include```: The src directory is added to the include path only for MyLibrary.
+
+```SYSTEM ${CMAKE_SOURCE_DIR}/third_party/include```: The third_party/include directory is added as a system include directory, which can suppress warnings from headers in this directory.
+
+#### add_executable
 
 
-## Advanced Features
 
-### Custom Commands And Targets
+#### add_library
+
+
+
+#### target_link_libraries
+
+
+
+#### add_subdirectory
+
+
+
+### Practice the basic
+
+#### Build jsoncpp lib
+
+[]()
+
+#### Build source and lib in sub directories
+
+[]()
+
+### Advanced Features
+
+#### add_custom_command
 
 Adding custom commands:
 
@@ -358,6 +467,14 @@ add_custom_command(
 )
 add_custom_target(generate DEPENDS ${CMAKE_BINARY_DIR}/generated_file.cpp)
 ```
+
+#### install
+
+#### enable_testing
+
+#### add_test
+
+#### option
 
 ### Configuring Build Types
 
