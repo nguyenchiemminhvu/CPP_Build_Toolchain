@@ -31,7 +31,7 @@ worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain$ which cpack
 
 **Modularity**: Easy to manage complex projects with multiple components.
 
-### CMake Installation
+## CMake Installation
 
 Install via package manager tool. For example in Linux:
 
@@ -1106,21 +1106,424 @@ endif()
 
 ### while
 
+The ```while``` command is used to create loops that execute a block of code repeatedly as long as the specified condition is true.
 
+```
+while(<condition>)
+    <commands>
+endwhile()
+```
+
+```condition```: A boolean expression that is evaluated before each iteration of the loop. If the condition evaluates to true, the loop body is executed. If it evaluates to false, the loop terminates.
+
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleLoop)
+
+set(providers "ublox;novatel;topcon;qualcomm")
+list(LENGTH providers num_provider)
+set(index 0)
+
+while(index LESS num_provider)
+    list(GET providers ${index} provider)
+    add_subdirectory(${provider})
+    math(EXPR index "${index} + 1")
+endwhile()
+```
 
 ### foreach
 
+The ```foreach``` command is used to iterate over a list of items, performing a set of commands for each item in the list.
+
+```
+foreach(<loop_var> <items>)
+  <commands>
+endforeach()
+```
+
+```<loop_var>```: At the beginning of each iteration the variable ```<loop_var>``` will be set to the value of the current item.
+
+```<items>```: is a list of items that are separated by semicolon or whitespace.
+
+```<commands>```: The commands to execute for each item in the list.
+
+Common patterns of ```foreach``` in CMake:
+
+```
+foreach(<loop_var> RANGE <stop>)
+    # iterates over the numbers 0, 1, ... up to (and including) the nonnegative integer <stop>.
+endforeach()
+
+foreach(<loop_var> RANGE <start> <stop> [<step>])
+    # iterates over the numbers from <start> up to at most <stop> in steps of <step>. If <step> is not specified, then the step size is 1.
+endforeach()
+
+foreach(<loop_var> IN [LISTS [<lists>]] [ITEMS [<items>]])
+    # <lists> is a whitespace or semicolon separated list of list-valued variables.
+endforeach()
+```
+
+For example:
+
+**top-level feature.cmake script**
+```
+option(FeatureA "Feature A is enabled" ON)
+option(FeatureB "Feature B is enabled" OFF)
+option(FeatureC "Feature C is enabled" ON)
+```
+
+**top-level CMakeLists.txt**
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleLoop)
+
+include("features.cmake")
+
+set(FEATURES "FeatureA" "FeatureB" "FeatureC")
+
+foreach(FEATURE IN LISTS FEATURES)
+    if(${FEATURE})
+        message(STATUS "${FEATURE}")
+    endif()
+endforeach()
+```
+
+**CMake processing result**
+```
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/temp/build$ cmake ..
+-- FeatureA
+-- FeatureC
+-- Configuring done
+-- Generating done
+```
+
 ### break
+
+The ```break``` command is used to exit from a loop (```foreach``` or ```while```) early.
+
+```
+break()
+```
+
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleLoop)
+
+include("features.cmake")
+
+set(FEATURES "FeatureA" "FeatureB" "FeatureC")
+
+foreach(FEATURE IN LISTS FEATURES)
+    if(${FEATURE})
+        message(STATUS "${FEATURE}")
+    else()
+        break()
+    endif()
+endforeach()
+```
 
 ### continue
 
-### function and endfunction
+The ```continue``` command is used to skip the remaining commands in the current iteration of a loop and proceed the next iteration.
 
-### block and endblock
+```
+continue()
+```
 
-### return
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleLoop)
+
+include("features.cmake")
+
+set(FEATURES "FeatureA" "FeatureB" "FeatureC")
+
+foreach(FEATURE IN LISTS FEATURES)
+    if(${FEATURE})
+        message(STATUS "${FEATURE}")
+    else()
+        continue()
+    endif()
+endforeach()
+```
+
+### function
+
+The ```function``` command is used to define a reusable block of CMake code that can be called with different arguments. It is useful for organizing and modularizing CMake scripts.
+
+```
+function(<name> [<arg1> ... <argN>])
+    # Commands
+endfunction()
+```
+
+```<name>```: The name of the function.
+
+```<arg1> ... <argN>```: Optional arguments that the function can accept.
+
+Function in CMake is case-insensitive. A function defined as:
+
+```
+function(foo)
+    <commands>
+endfunction()
+```
+
+can be invoked via any of:
+
+```
+foo()
+Foo()
+FOO()
+cmake_language(CALL foo)
+```
+
+However, it is strongly recommended to treat functions as case-sensitive.
+
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleFunction)
+
+function(print_message arg)
+    message(STATUS "Message: ${arg}")
+endfunction()
+
+function(enable_feature feature)
+    print_message("Enable ${feature} feature")
+    option(${feature} "" ON)
+endfunction()
+
+function(disable_feature feature)
+    print_message("Disable ${feature} feature")
+    option(${feature} "" OFF)
+endfunction()
+
+
+enable_feature(CHINA_SHIFT)
+enable_feature(ECALL)
+enable_feature(DEAD_RECKONING)
+
+disable_feature(TIME_SYNC)
+disable_feature(DIAGNOSTICS)
+```
 
 ### file
+
+The ```file``` command is dedicated to file and path manipulation (read, write, copy, remove,...) requiring access to filesystem. Here are the different modes and their description:
+
+**READ**
+
+```
+file(READ <filename> <variable> [OFFSET <offset>] [LIMIT <max-in>] [HEX])
+```
+
+Read content from a file called ```<filename>``` and store it in a ```<variable>```. Optionally start from the given ```<offset>``` and read at most ```<max-in>``` bytes. The ```HEX``` option causes data to be converted to a hexadecimal representation (useful for binary data).
+
+```
+file(STRINGS <filename> <variable> <options>...)
+```
+
+Parse a list of ASCII strings from ```<filename>``` and store it in ```<variable>```.
+
+For example:
+
+build_configs.txt
+```
+FEATURE_A=ON
+FEATURE_B=OFF
+FEATURE_C=ON
+```
+
+top-level CMakeLists.txt
+```
+file(READ "build_configs.txt" build_configs)
+message(STATUS "${build_configs}")
+
+file(STRINGS "build_configs.txt" build_configs)
+message(STATUS "${build_configs}")
+```
+
+CMake processing result
+```
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/temp/build$ cmake ..
+-- FEATURE_A=ON
+FEATURE_B=OFF
+FEATURE_C=ON
+-- FEATURE_A=ON;FEATURE_B=OFF;FEATURE_C=ON
+-- Configuring done
+-- Generating done
+
+```
+
+**WRITE**
+
+```
+file(WRITE <filename> <content>...)
+or
+file(APPEND <filename> <content>...)
+```
+
+Write ```<content>``` into a file called ```<filename>```. If the file does not exist, it will be created. If the file already exists, ```WRITE``` mode will overwrite it and ```APPEND``` mode will append to the end.
+
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleFile)
+
+file(READ "build_configs.txt" build_configs)
+message(STATUS "${build_configs}")
+
+file(WRITE "${CMAKE_BINARY_DIR}/build_configs.txt" ${build_configs})
+```
+
+**RENAME**
+
+```
+file(RENAME <oldname> <newname> [RESULT <result>] [NO_REPLACE])
+```
+
+Move a file or directory within a filesystem from ```<oldname>``` to ```<newname>```, replacing the destination atomically.
+
+For example:
+
+```
+file(RENAME "${CMAKE_BINARY_DIR}/build_configs.txt" "${CMAKE_BINARY_DIR}/build_configs_temp.txt")
+```
+
+**COPY**
+
+```
+file(COPY file1 [file2 ...] DESTINATION destination [FOLLOW_SYMLINK_CHAIN] [NO_SOURCE_PERMISSIONS] [USE_SOURCE_PERMISSIONS] [FILES_FROM_DIR directory])
+```
+
+Copies files to a destination.
+
+For example:
+
+```
+file(COPY "source.txt" DESTINATION "${CMAKE_BINARY_DIR}/source.txt")
+```
+
+**DOWNLOAD**
+
+```
+file(DOWNLOAD url file [TIMEOUT timeout] [STATUS status] [LOG log] [SHOW_PROGRESS])
+```
+
+```TIMEOUT```: Set a timeout for the download.
+
+```STATUS```: Variable to store the status of the download.
+
+```LOG```: Variable to store the log of the download.
+
+```SHOW_PROGRESS```: Show download progress.
+
+Downloads a file from a URL.
+
+For example:
+
+```
+file(DOWNLOAD
+    http://graphics.stanford.edu/pub/3Dscanrep/bunny.tar.gz
+    ${CMAKE_BINARY_DIR}/bunny.tar.gz
+    SHOW_PROGRESS
+)
+```
+
+**UPLOAD**
+
+```
+file(UPLOAD file url [TIMEOUT timeout] [STATUS status] [LOG log] [SHOW_PROGRESS])
+```
+
+```TIMEOUT```: Set a timeout for the upload.
+
+```STATUS```: Variable to store the status of the upload.
+
+```LOG```: Variable to store the log of the upload.
+
+```SHOW_PROGRESS```: Show upload progress.
+
+Uploads a file to a URL.
+
+For example:
+
+```
+file(UPLOAD
+    ${CMAKE_BINARY_DIR}/bunny.tar.gz
+    http://graphics.stanford.edu/pub/3Dscanrep/
+    SHOW_PROGRESS
+)
+```
+
+**REMOVE**
+
+```
+file(REMOVE file1 [file2 ...])
+or
+file(REMOVE_RECURSE dir1 [dir2 ...])
+```
+
+Removes files or directories and their contents recursively.
+
+For example:
+
+```
+file(REMOVE "example.txt")
+```
+
+**GLOB**
+
+```
+file(GLOB variable [RELATIVE path] [globbing expressions]...)
+```
+
+```RELATIVE```: Make file paths relative to the specified path.
+
+Creates a list of files that match the globbing expressions, searching directories recursively.
+
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleFile)
+
+file(GLOB txt_files "*.txt")
+foreach(txt_file ${txt_files})
+    message(STATUS "Found text file: ${txt_file}")
+endforeach()
+```
+
+```
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/temp/build$ cmake ..
+-- Found text file: /home/worker/study_workspace/CPP_Build_Toolchain/CMake/temp/CMakeLists.txt
+-- Found text file: /home/worker/study_workspace/CPP_Build_Toolchain/CMake/temp/build_configs.txt
+-- Configuring done
+-- Generating done
+```
+
+Example to add all buildable sub-directories:
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleFile)
+
+file(GLOB subdirlist *)
+foreach(subdir ${subdirlist})
+    if (IS_DIRECTORY ${subdir} AND EXISTS ${subdir}/CMakeLists.txt)
+        add_subdirectory(${subdir})
+    endif()
+endforeach()
+```
 
 ### find commands
 
