@@ -890,6 +890,52 @@ target_include_directories(jsoncpp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/i
 
 ## Advance Syntax And Structure
 
+### enable_testing and add_test
+
+The ```enable_testing``` command is used to enable testing capabilities within a CMake project. It is essential for integrated testing frameworks like CTest, allows us the define and run tests as part of the build process. It is often used in conjuction with ```add_test``` command to create a complete test setup.
+
+```
+add_test(NAME <test_name> COMMAND <command> [args...])
+```
+
+```<test_name>```: The name assigned to the test. This name is used to reference the test in CTest and other CMake commands.
+
+```<command>```: The command to run the test. This typically includes the path to an executable or script, followed by any necessary arguments.
+
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10)
+
+project(HelloWorld VERSION 1.0.0 DESCRIPTION "Print HelloWorld on Console" LANGUAGES C CXX)
+
+add_executable(HelloWorld main.cpp)
+
+enable_testing()
+add_test(NAME HelloWorldTest COMMAND HelloWorld --test)
+set_tests_properties(HelloWorldTest PROPERTIES TIMEOUT 10)
+```
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld$ mkdir build
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld$ cd build/
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ cmake ..
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ make
+[ 50%] Building CXX object CMakeFiles/HelloWorld.dir/main.cpp.o
+[100%] Linking CXX executable HelloWorld
+[100%] Built target HelloWorld
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ ./HelloWorld 
+Hello World
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ ctest
+Test project /home/ncmv/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build
+    Start 1: HelloWorldTest
+1/1 Test #1: HelloWorldTest ...................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.00 sec
+```
+
 ### add_custom_target
 
 The ```add_custom_target``` command is used to add a target with the given name that executes the given commands. The added targets are not directly associated with building source files into executables or libraries, they has no output files and are always considered out-of-date even if the commands try to create the file with the name of the target.
@@ -1078,129 +1124,6 @@ This defines a new command that will be associated with building the specified `
 
 ```COMMAND_EXPAND_LISTS```: Expands lists in command arguments. When specified, if any argument is a list, it will be expanded into individual arguments rather than being treated as a single argument.
 
-### install
-
-The ```install``` command is used to specify how files, directories, executables, libraries, and other build outputs should be installed to a specified directory on the system.
-
-The ```install``` command has various forms to handle different types of installations.
-
-```
-install(TARGETS targets... [options...])
-install(FILES files... [options...])
-install(DIRECTORY directories... [options...])
-install(SCRIPT script)
-install(CODE code)
-```
-
-**Install Targets**
-
-Install executables, libraries, or modules.
-
-```
-install(TARGETS target1 [target2 ...]
-        [EXPORT <export-name>]
-        [RUNTIME|LIBRARY|ARCHIVE|FRAMEWORK|BUNDLE|PRIVATE_HEADER|PUBLIC_HEADER|RESOURCE]
-        [DESTINATION <dir>]
-        [PERMISSIONS permissions...]
-        [CONFIGURATIONS [Debug|Release|...]]
-        [COMPONENT <component>]
-        [NAMELINK_ONLY|NAMELINK_SKIP]
-        [EXCLUDE_FROM_ALL]
-        [OPTIONAL])
-```
-
-**Install Files**
-
-Install individual files.
-
-```
-install(FILES file1 [file2 ...]
-        DESTINATION <dir>
-        [PERMISSIONS permissions...]
-        [CONFIGURATIONS [Debug|Release|...]]
-        [COMPONENT <component>]
-        [RENAME <name>]
-        [OPTIONAL])
-```
-
-**Install Directory**
-
-Install a directory sub-tree of headers.
-
-```
-install(DIRECTORY dir1 [dir2 ...]
-        DESTINATION <dir>
-        [FILE_PERMISSIONS permissions...]
-        [DIRECTORY_PERMISSIONS permissions...]
-        [USE_SOURCE_PERMISSIONS]
-        [FILES_MATCHING]
-        [PATTERN <pattern> [REGEX] [EXCLUDE]]
-        [CONFIGURATIONS [Debug|Release|...]]
-        [COMPONENT <component>])
-```
-
-**Install Script**
-
-Invoke CMake script during installation process.
-
-```
-install(SCRIPT <script-file>)
-```
-
-**Install Code**
-
-Invoke CMake code during installation process.
-
-```
-install(CODE <code>)
-```
-
-### enable_testing and add_test
-
-The ```enable_testing``` command is used to enable testing capabilities within a CMake project. It is essential for integrated testing frameworks like CTest, allows us the define and run tests as part of the build process. It is often used in conjuction with ```add_test``` command to create a complete test setup.
-
-```
-add_test(NAME <test_name> COMMAND <command> [args...])
-```
-
-```<test_name>```: The name assigned to the test. This name is used to reference the test in CTest and other CMake commands.
-
-```<command>```: The command to run the test. This typically includes the path to an executable or script, followed by any necessary arguments.
-
-For example:
-
-```
-cmake_minimum_required(VERSION 3.10)
-
-project(HelloWorld VERSION 1.0.0 DESCRIPTION "Print HelloWorld on Console" LANGUAGES C CXX)
-
-add_executable(HelloWorld main.cpp)
-
-enable_testing()
-add_test(NAME HelloWorldTest COMMAND HelloWorld --test)
-set_tests_properties(HelloWorldTest PROPERTIES TIMEOUT 10)
-```
-
-```
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld$ mkdir build
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld$ cd build/
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ cmake ..
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ make
-[ 50%] Building CXX object CMakeFiles/HelloWorld.dir/main.cpp.o
-[100%] Linking CXX executable HelloWorld
-[100%] Built target HelloWorld
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ ./HelloWorld 
-Hello World
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ ctest
-Test project /home/ncmv/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build
-    Start 1: HelloWorldTest
-1/1 Test #1: HelloWorldTest ...................   Passed    0.00 sec
-
-100% tests passed, 0 tests failed out of 1
-
-Total Test time (real) =   0.00 sec
-```
-
 ### option
 
 The ```option``` command is used to define configurable options for a CMake project. These options can be enabled or disabled by user when configuring the project, providing a way to control build features or settings.
@@ -1352,6 +1275,83 @@ endif()
 
 **find_program**
 
+### install
+
+The ```install``` command is used to specify how files, directories, executables, libraries, and other build outputs should be installed to a specified directory on the system.
+
+The ```install``` command has various forms to handle different types of installations.
+
+```
+install(TARGETS targets... [options...])
+install(FILES files... [options...])
+install(DIRECTORY directories... [options...])
+install(SCRIPT script)
+install(CODE code)
+```
+
+**Install Targets**
+
+Install executables, libraries, or modules.
+
+```
+install(TARGETS target1 [target2 ...]
+        [EXPORT <export-name>]
+        [RUNTIME|LIBRARY|ARCHIVE|FRAMEWORK|BUNDLE|PRIVATE_HEADER|PUBLIC_HEADER|RESOURCE]
+        [DESTINATION <dir>]
+        [PERMISSIONS permissions...]
+        [CONFIGURATIONS [Debug|Release|...]]
+        [COMPONENT <component>]
+        [NAMELINK_ONLY|NAMELINK_SKIP]
+        [EXCLUDE_FROM_ALL]
+        [OPTIONAL])
+```
+
+**Install Files**
+
+Install individual files.
+
+```
+install(FILES file1 [file2 ...]
+        DESTINATION <dir>
+        [PERMISSIONS permissions...]
+        [CONFIGURATIONS [Debug|Release|...]]
+        [COMPONENT <component>]
+        [RENAME <name>]
+        [OPTIONAL])
+```
+
+**Install Directory**
+
+Install a directory sub-tree of headers.
+
+```
+install(DIRECTORY dir1 [dir2 ...]
+        DESTINATION <dir>
+        [FILE_PERMISSIONS permissions...]
+        [DIRECTORY_PERMISSIONS permissions...]
+        [USE_SOURCE_PERMISSIONS]
+        [FILES_MATCHING]
+        [PATTERN <pattern> [REGEX] [EXCLUDE]]
+        [CONFIGURATIONS [Debug|Release|...]]
+        [COMPONENT <component>])
+```
+
+**Install Script**
+
+Invoke CMake script during installation process.
+
+```
+install(SCRIPT <script-file>)
+```
+
+**Install Code**
+
+Invoke CMake code during installation process.
+
+```
+install(CODE <code>)
+```
+
 ### export
 
 ### try_compile
@@ -1409,6 +1409,8 @@ I encourage you to take up the challenge and try building the sample project bef
 ----
 
 **References**
+
+[https://cmake.org/cmake/help/latest/index.html](https://cmake.org/cmake/help/latest/index.html)
 
 [https://cmake.org/cmake/help/latest/guide/tutorial/index.html](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)
 
