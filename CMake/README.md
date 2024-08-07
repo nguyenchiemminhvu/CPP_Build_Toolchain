@@ -936,6 +936,204 @@ Test project /home/ncmv/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects
 Total Test time (real) =   0.00 sec
 ```
 
+### include
+
+The ```include``` command is used to load and execute another CMake script file. It is useful for reusing common CMake code across multiple CMake projects or organizing CMake code into more manageable pieces.
+
+```
+include(<file> [OPTIONAL] [RESULT_VARIABLE <var>] [NO_POLICY_SCOPE])
+```
+
+```<file>```: The path to the CMake script file you want to include. This can be a relative or absolute path. If the path is relative, it is interpreted relative to the current source directory.
+
+```OPTIONAL```: If this keyword is specified, CMake will not produce an error if the file does not exist. Without this keyword, CMake will generate an error if the file is not found.
+
+```RESULT_VARIABLE``` : If RESULT_VARIABLE is given the variable ```<var>``` will be set to the full filename which has been included or ```NOTFOUND``` if it failed.
+
+```NO_POLICY_SCOPE```: If this keyword is specified, the policies set in the included file will not affect the including scope. This can be useful to avoid policy warnings or errors when including files that might set policies.
+
+For example:
+
+```
+project/
+├── CMakeLists.txt
+├── cmake/
+│   └── common.cmake
+└── src/
+    └── main.cpp
+```
+
+**cmake/common.cmake**
+```
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+```
+
+**top-level CMakeLists.txt**
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleProject)
+
+include(cmake/common.cmake)
+
+add_executable(MyProject src/main.cpp)
+```
+
+### option
+
+The ```option``` command is used to define configurable options for a CMake project. These options can be enabled or disabled by user when configuring the project, providing a way to control build features or settings.
+
+```
+option(<option_variable> "description" [initial_value])
+```
+
+```<option_variable>```: The name of the variable to define.
+
+```"description"```: A brief description of what the option does.
+
+```[initial_value]```: The initial value of the option, which can be ON or OFF. If not specified, it defaults to OFF.
+
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleProject)
+
+option(ENABLE_MULTITHREADING "Allow to use multithreading features" ON)
+
+add_executable(SampleProgram main.cpp)
+
+if(ENABLE_MULTITHREADING)
+    message(STATUS "Multithreading is enabled.")
+    include(CheckCXXCompilerFlag)
+    check_cxx_compiler_flag("-std=c++11" HAS_CXX11_FLAG)
+
+    if(HAS_CXX11_FLAG)
+        target_compile_options(SampleProgram PRIVATE -std=c++11)
+        find_package(Threads REQUIRED)
+        target_link_libraries(SampleProgram PRIVATE Threads::Threads)
+    else()
+        message(STATUS "Compiler does not support C++11 Threads.")
+    endif()
+else()
+    message(STATUS "Multithreading is disabled.")
+endif()
+```
+
+### conditional statements
+
+The ```if...elseif...else...endif``` statements are used to control the flow of CMakeLists.txt script based on conditions.
+
+```
+if(condition)
+    # Commands to execute if condition is true
+elseif(condition2)
+    # Commands to execute if condition2 is true
+else()
+    # Commands to execute if all conditions are false
+endif()
+```
+
+CMake supports a variety of conditions that can be used in conditional statements.
+
+**Boolean values**
+
+For example:
+
+```
+if(FEATURE_X_AVAILABLE)
+    message(STATUS "FEATURE_X_AVAILABLE variable is set to TRUE/ON")
+endif()
+```
+
+**Comparison operators**
+
+```Equality```: STREQUAL, EQUAL
+
+```Inequality```: STRNOTEQUAL, NOTEQUAL
+
+```Greater/Less```: GREATER, LESS, GREATER_EQUAL, LESS_EQUAL
+
+For example:
+
+```
+if(CXX_COMPILE_TOOL STREQUAL "g++")
+    message(STATUS "Compile source files using g++")
+endif()
+```
+
+**Logical operators**
+
+```AND```: Logical AND
+
+```OR```: Logical OR
+
+```NOT```: Logical NOT
+
+For example:
+
+```
+if(USE_NO_OPTIMAL_OPTIONS and CONTINUE_WITH_WARNING)
+    message(STATUS "Accept build warning")
+endif()
+```
+
+**Existing checks**
+
+```DEFINED```: Checks if a variable is defined
+
+For example:
+
+```
+if(DEFINED SAMPLE_VAR)
+    message(STATUS "SAMPLE_VAR variable is defined")
+endif()
+```
+
+**File checks**
+
+```EXISTS```: Checks if a file or directory exists
+
+```IS_DIRECTORY```: Checks if a path is a directory
+
+```IS_SYMLINK```: Checks if a path is a symbolic link
+
+```
+if(EXISTS "/usr/bin/cmake")
+    message(STATUS "Found CMake tool")
+endif()
+```
+
+### while
+
+
+
+### foreach
+
+### break
+
+### continue
+
+### function and endfunction
+
+### block and endblock
+
+### return
+
+### file
+
+### find commands
+
+**find_file**
+
+**find_library**
+
+**find_package**
+
+**find_path**
+
+**find_program**
+
 ### add_custom_target
 
 The ```add_custom_target``` command is used to add a target with the given name that executes the given commands. The added targets are not directly associated with building source files into executables or libraries, they has no output files and are always considered out-of-date even if the commands try to create the file with the name of the target.
@@ -1124,156 +1322,11 @@ This defines a new command that will be associated with building the specified `
 
 ```COMMAND_EXPAND_LISTS```: Expands lists in command arguments. When specified, if any argument is a list, it will be expanded into individual arguments rather than being treated as a single argument.
 
-### option
-
-The ```option``` command is used to define configurable options for a CMake project. These options can be enabled or disabled by user when configuring the project, providing a way to control build features or settings.
-
-```
-option(<option_variable> "description" [initial_value])
-```
-
-```<option_variable>```: The name of the variable to define.
-
-```"description"```: A brief description of what the option does.
-
-```[initial_value]```: The initial value of the option, which can be ON or OFF. If not specified, it defaults to OFF.
-
 For example:
 
 ```
-cmake_minimum_required(VERSION 3.10)
-project(SampleProject)
-
-option(ENABLE_MULTITHREADING "Allow to use multithreading features" ON)
-
-add_executable(SampleProgram main.cpp)
-
-if(ENABLE_MULTITHREADING)
-    message(STATUS "Multithreading is enabled.")
-    include(CheckCXXCompilerFlag)
-    check_cxx_compiler_flag("-std=c++11" HAS_CXX11_FLAG)
-
-    if(HAS_CXX11_FLAG)
-        target_compile_options(SampleProgram PRIVATE -std=c++11)
-        find_package(Threads REQUIRED)
-        target_link_libraries(SampleProgram PRIVATE Threads::Threads)
-    else()
-        message(STATUS "Compiler does not support C++11 Threads.")
-    endif()
-else()
-    message(STATUS "Multithreading is disabled.")
-endif()
-```
-
-### conditional statements
-
-The ```if...elseif...else...endif``` statements are used to control the flow of CMakeLists.txt script based on conditions.
 
 ```
-if(condition)
-    # Commands to execute if condition is true
-elseif(condition2)
-    # Commands to execute if condition2 is true
-else()
-    # Commands to execute if all conditions are false
-endif()
-```
-
-CMake supports a variety of conditions that can be used in conditional statements.
-
-**Boolean values**
-
-For example:
-
-```
-if(FEATURE_X_AVAILABLE)
-    message(STATUS "FEATURE_X_AVAILABLE variable is set to TRUE/ON")
-endif()
-```
-
-**Comparison operators**
-
-```Equality```: STREQUAL, EQUAL
-
-```Inequality```: STRNOTEQUAL, NOTEQUAL
-
-```Greater/Less```: GREATER, LESS, GREATER_EQUAL, LESS_EQUAL
-
-For example:
-
-```
-if(CXX_COMPILE_TOOL STREQUAL "g++")
-    message(STATUS "Compile source files using g++")
-endif()
-```
-
-**Logical operators**
-
-```AND```: Logical AND
-
-```OR```: Logical OR
-
-```NOT```: Logical NOT
-
-For example:
-
-```
-if(USE_NO_OPTIMAL_OPTIONS and CONTINUE_WITH_WARNING)
-    message(STATUS "Accept build warning")
-endif()
-```
-
-**Existing checks**
-
-```DEFINED```: Checks if a variable is defined
-
-For example:
-
-```
-if(DEFINED SAMPLE_VAR)
-    message(STATUS "SAMPLE_VAR variable is defined")
-endif()
-```
-
-**File checks**
-
-```EXISTS```: Checks if a file or directory exists
-
-```IS_DIRECTORY```: Checks if a path is a directory
-
-```IS_SYMLINK```: Checks if a path is a symbolic link
-
-```
-if(EXISTS "/usr/bin/cmake")
-    message(STATUS "Found CMake tool")
-endif()
-```
-
-### while
-
-### foreach
-
-### break
-
-### continue
-
-### function and endfunction
-
-### block and endblock
-
-### return
-
-### find commands
-
-**find_file**
-
-**find_library**
-
-**find_package**
-
-**find_path**
-
-**find_program**
 
 ### install
 
