@@ -709,6 +709,52 @@ target_link_libraries(SampleProgram LibUtil)
 target_link_options(SampleProgram PRIVATE -Wl,--no-undefined)
 ```
 
+### add_definitions
+
+The ```add_definitions``` command is used to add preprocessor definitions to the compilation of source files for targets in the current directory. This command can be used to add other compilation flags, but it is intended to add preprocessor definitions.
+
+```
+add_definitions(-D<definition> ...)
+```
+
+```-D<definition>```: This specifies a preprocessor definition. The -D flag is followed by the definition you want to add. You can add multiple definitions by separating them with spaces.
+
+For example:
+
+```
+add_definitions(-DDEBUG -DVERSION=2 -DUSE_CHINA_SHIFT_SHARED_OBJ)
+```
+
+### target_compile_definitions
+
+In order to add definitions for just a specific target, use ```target_compile_definitions``` command instead, which provides more control and recommended approach in modern CMake.
+
+```
+target_compile_definitions(<target> [<INTERFACE|PUBLIC|PRIVATE>] [items1...])
+```
+
+```<target>```: The name of the target to which you want to add the preprocessor definitions.
+
+```<INTERFACE|PUBLIC|PRIVATE>```: Specifies the scope of the definitions.
+
+```PRIVATE```: The definitions are used only when compiling the target itself.
+
+```PUBLIC```: The definitions are used both when compiling the target itself and when compiling other targets that link to this target.
+
+```INTERFACE```: The definitions are used only when compiling other targets that link to this target.
+
+```[items1...]```: The list of preprocessor definitions to add.
+
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleProject)
+
+add_executable(SampleProgram main.cpp)
+target_compile_definitions(SampleProgram PRIVATE DEBUG VERSION=2)
+```
+
 ### add_subdirectory
 
 The ```add_subdirectory``` command is used to add sub-directories to the build, allow us to include another CMakeLists.txt file from a sub-directory, which can define additional targets, libraries, and other build-related settings. It is useful for organizing large projects into smaller components.
@@ -842,7 +888,7 @@ add_library(jsoncpp ${JSONCPP_SOURCES})
 target_include_directories(jsoncpp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/include)
 ```
 
-## Advanced Features
+## Advance Syntax And Structure
 
 ### add_custom_target
 
@@ -1155,6 +1201,47 @@ Test project /home/ncmv/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects
 Total Test time (real) =   0.00 sec
 ```
 
+### option
+
+The ```option``` command is used to define configurable options for a CMake project. These options can be enabled or disabled by user when configuring the project, providing a way to control build features or settings.
+
+```
+option(<option_variable> "description" [initial_value])
+```
+
+```<option_variable>```: The name of the variable to define.
+
+```"description"```: A brief description of what the option does.
+
+```[initial_value]```: The initial value of the option, which can be ON or OFF. If not specified, it defaults to OFF.
+
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleProject)
+
+option(ENABLE_MULTITHREADING "Allow to use multithreading features" ON)
+
+add_executable(SampleProgram main.cpp)
+
+if(ENABLE_MULTITHREADING)
+    message(STATUS "Multithreading is enabled.")
+    include(CheckCXXCompilerFlag)
+    check_cxx_compiler_flag("-std=c++11" HAS_CXX11_FLAG)
+
+    if(HAS_CXX11_FLAG)
+        target_compile_options(SampleProgram PRIVATE -std=c++11)
+        find_package(Threads REQUIRED)
+        target_link_libraries(SampleProgram PRIVATE Threads::Threads)
+    else()
+        message(STATUS "Compiler does not support C++11 Threads.")
+    endif()
+else()
+    message(STATUS "Multithreading is disabled.")
+endif()
+```
+
 ### conditional statements
 
 The ```if...elseif...else...endif``` statements are used to control the flow of CMakeLists.txt script based on conditions.
@@ -1239,46 +1326,37 @@ if(EXISTS "/usr/bin/cmake")
 endif()
 ```
 
-### option
+### while
 
-The ```option``` command is used to define configurable options for a CMake project. These options can be enabled or disabled by user when configuring the project, providing a way to control build features or settings.
+### foreach
 
-```
-option(<option_variable> "description" [initial_value])
-```
+### break
 
-```<option_variable>```: The name of the variable to define.
+### continue
 
-```"description"```: A brief description of what the option does.
+### function and endfunction
 
-```[initial_value]```: The initial value of the option, which can be ON or OFF. If not specified, it defaults to OFF.
+### block and endblock
 
-For example:
+### return
 
-```
-cmake_minimum_required(VERSION 3.10)
-project(SampleProject)
+### find commands
 
-option(ENABLE_MULTITHREADING "Allow to use multithreading features" ON)
+**find_file**
 
-add_executable(SampleProgram main.cpp)
+**find_library**
 
-if(ENABLE_MULTITHREADING)
-    message(STATUS "Multithreading is enabled.")
-    include(CheckCXXCompilerFlag)
-    check_cxx_compiler_flag("-std=c++11" HAS_CXX11_FLAG)
+**find_package**
 
-    if(HAS_CXX11_FLAG)
-        target_compile_options(SampleProgram PRIVATE -std=c++11)
-        find_package(Threads REQUIRED)
-        target_link_libraries(SampleProgram PRIVATE Threads::Threads)
-    else()
-        message(STATUS "Compiler does not support C++11 Threads.")
-    endif()
-else()
-    message(STATUS "Multithreading is disabled.")
-endif()
-```
+**find_path**
+
+**find_program**
+
+### export
+
+### try_compile
+
+### try_run
 
 ### Configuring Build Types
 
