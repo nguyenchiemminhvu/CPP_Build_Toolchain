@@ -1484,10 +1484,22 @@ file(REMOVE "example.txt")
 **GLOB**
 
 ```
-file(GLOB variable [RELATIVE path] [globbing expressions]...)
+file(GLOB <variable> [LIST_DIRECTORIES true|false] [RELATIVE <path>] [CONFIGURE_DEPENDS] <globbing-expressions>...)
+
+or
+
+file(GLOB_RECURSE <variable> [FOLLOW_SYMLINKS] [LIST_DIRECTORIES true|false] [RELATIVE <path>] [CONFIGURE_DEPENDS] <globbing-expressions>...)
 ```
 
-```RELATIVE```: Make file paths relative to the specified path.
+```<variable>```: The name of the variable where the results (i.e., paths to files or directories) will be stored.
+
+```LIST_DIRECTORIES true|false```: ```true```: Includes directories in the search results. ```false```: Excludes directories and includes only files. This is the default behavior.
+
+```RELATIVE```: If specified, the paths returned in the result will be relative to the provided ```<path>``` instead of being absolute paths.
+
+```CONFIGURE_DEPENDS```: If specified, the list of files or directories will be re-evaluated at build time whenever the content of the searched directories changes.
+
+```<globbing-expressions>```: The patterns used to match files or directories. These can include wildcards like *.cpp, *.h, etc. Multiple patterns can be provided.
 
 Creates a list of files that match the globbing expressions, searching directories recursively.
 
@@ -1529,7 +1541,167 @@ endforeach()
 
 **find_file**
 
+The ```find_file``` command is used to locate a file in a set of directories. It searches for a file with a specified name or pattern, and if found, it stores the full path to that file in a variable.
+
+```
+find_file(
+  <VAR>
+  name1 [name2 ...]
+  [HINTS path1 [path2 ... ENV var]]
+  [PATHS path1 [path2 ... ENV var]]
+  [PATH_SUFFIXES suffix1 [suffix2 ...]]
+  [DOC "cache documentation string"]
+  [NO_DEFAULT_PATH]
+  [NO_CMAKE_ENVIRONMENT_PATH]
+  [NO_CMAKE_PATH]
+  [NO_SYSTEM_ENVIRONMENT_PATH]
+  [NO_CMAKE_SYSTEM_PATH]
+  [CMAKE_FIND_ROOT_PATH_BOTH |
+   ONLY_CMAKE_FIND_ROOT_PATH |
+   NO_CMAKE_FIND_ROOT_PATH]
+  [REQUIRED]
+  [NO_CACHE]
+)
+```
+
+```<VAR>```: The variable that stores the result. If the file is found, this variable is set to the full path; otherwise, it's set to NOTFOUND.
+
+```name1 [name2 ...]```: The names of the files to search for.
+
+```HINTS path1 [path2 ...] or PATHS path1 [path2 ...]```: Additional paths to be considered during the search.
+
+```PATH_SUFFIXES suffix1 [suffix2 ...]```: Suffixes to append to each path during the search.
+
+```DOC "cache documentation string"```: Documentation string for the cache entry.
+
+```NO_DEFAULT_PATH```: Do not use default paths when searching.
+
+```NO_CMAKE_ENVIRONMENT_PATH```: Do not search paths from the ```CMAKE_PREFIX_PATH``` environment variable.
+
+```NO_CMAKE_PATH```: Skip the default CMake paths.
+
+```NO_SYSTEM_ENVIRONMENT_PATH```: Do not search paths from the PATH environment variable.
+
+```NO_CMAKE_SYSTEM_PATH```: Skip system paths.
+
+```CMAKE_FIND_ROOT_PATH_BOTH | ONLY_CMAKE_FIND_ROOT_PATH | NO_CMAKE_FIND_ROOT_PATH```: Control whether the ```CMAKE_FIND_ROOT_PATH``` is used.
+
+```REQUIRED```: If the file is not found, stop processing with an error.
+
+```NO_CACHE```: The result will not be stored in the cache.
+
+For example:
+
+```
+find_file(HEADER_PATH
+    common.h
+    PATHS ${CMAKE_CURRENT_SOURCE_DIR}
+    PATH_SUFFIXES .h
+    DOC "Path to header files"
+)
+
+message(STATUS "${HEADER_PATH}")
+```
+
+The search process for the find_file command in CMake follows a specific order, which is influenced by the options and paths provided.
+
+```CMAKE_PREFIX_PATH```: Paths specified in the CMAKE_PREFIX_PATH environment variable.
+
+```CMAKE_FRAMEWORK_PATH```: Paths for framework directories on macOS.
+
+```CMAKE_APPBUNDLE_PATH```: Paths for application bundles on macOS.
+
+```Paths specified with the PATHS option```: Custom paths defined by the user.
+
+```Paths specified with the HINTS option```: Additional hints for the search.
+
+```System Environment Paths```: Paths from the system's environment variables.
+
+```CMake Variables```: Variables like ```CMAKE_SYSTEM_PREFIX_PATH```.
+
+```CMAKE_FIND_ROOT_PATH```: Prefixed search paths if enabled.
+
+```NO_DEFAULT_PATH```: Ignores all default paths and uses only those provided explicitly.
+
+```NO_CMAKE_ENVIRONMENT_PATH```: Skips paths specified in ```CMAKE_PREFIX_PATH```.
+
+```NO_CMAKE_PATH```: Ignores default CMake paths.
+
+```NO_SYSTEM_ENVIRONMENT_PATH```: Skips paths from the system's environment variables.
+
+```NO_CMAKE_SYSTEM_PATH```: Ignores system paths known to CMake.
+
+```CMAKE_FIND_ROOT_PATH_MODE_PROGRAM```: Controls the behavior of ```CMAKE_FIND_ROOT_PATH```.
+
 **find_library**
+
+The ```find_library``` is used to locate a library file on the file system.
+
+```
+find_library(
+  <VAR>
+  name1 [name2 ...]
+  PATHS path1 [path2 ... ]
+  [PATH_SUFFIXES suffix1 [suffix2 ...]]
+  [DOC "cache documentation string"]
+  [NO_DEFAULT_PATH]
+  [NO_CMAKE_ENVIRONMENT_PATH]
+  [NO_CMAKE_PATH]
+  [NO_SYSTEM_ENVIRONMENT_PATH]
+  [NO_CMAKE_SYSTEM_PATH]
+  [CMAKE_FIND_ROOT_PATH_BOTH |
+   ONLY_CMAKE_FIND_ROOT_PATH |
+   NO_CMAKE_FIND_ROOT_PATH]
+  [REQUIRED]
+  [NO_CACHE]
+)
+```
+
+```<VAR>```: The variable that stores the result. If the library is found, this variable is set to the full path; otherwise, it’s set to NOTFOUND.
+
+```name1 [name2 ...]```: The names of the libraries to search for.
+
+```PATHS path1 [path2 ...]```: Additional paths to be considered during the search.
+
+```PATH_SUFFIXES suffix1 [suffix2 ...]```: Suffixes to append to each path during the search.
+
+```DOC "cache documentation string"```: Documentation string for the cache entry.
+
+```NO_DEFAULT_PATH```: Do not use default paths when searching.
+
+```NO_CMAKE_ENVIRONMENT_PATH```: Do not search paths from the ```CMAKE_PREFIX_PATH``` environment variable.
+
+```NO_CMAKE_PATH```: Skip the default CMake paths.
+
+```NO_SYSTEM_ENVIRONMENT_PATH```: Do not search paths from the LIB environment variable.
+
+```NO_CMAKE_SYSTEM_PATH```: Skip system paths.
+
+```CMAKE_FIND_ROOT_PATH_BOTH | ONLY_CMAKE_FIND_ROOT_PATH | NO_CMAKE_FIND_ROOT_PATH```: Control whether the ```CMAKE_FIND_ROOT_PATH``` is used.
+
+```REQUIRED```: If the library is not found, stop processing with an error.
+
+```NO_CACHE```: The result will not be stored in the cache.
+
+For example:
+
+```
+file(GLOB_RECURSE CURRENT_BIN_SUB_DIRS LIST_DIRECTORIES true ${CMAKE_CURRENT_BINARY_DIR}/*)
+
+find_library(JSONCPP_LIB_PATH
+    NAMES jsoncpp
+    PATHS ${CURRENT_BIN_SUB_DIRS}
+)
+
+message(STATUS "Found ${JSONCPP_LIB_PATH}")
+```
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/02_BuildSubDirs/build$ cmake ..
+-- Found /home/ncmv/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/02_BuildSubDirs/build/opensource/libjsoncpp.so
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+```
 
 **find_package**
 
