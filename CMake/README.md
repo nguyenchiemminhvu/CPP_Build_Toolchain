@@ -2956,7 +2956,63 @@ message(STATUS "RESULT: ${echo_result}")
 
 ## CMake Variables
 
+In this topic, I wanted to list out the common use CMake built-in variables, classified based on their scope and purposes just as mentioned in [CMake documentation page](https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html).
 
+### Variables that Provide Information
+
+These variables give information about the CMake environment and the project:
+
+```CMAKE_COMMAND```: Holds the full path to the CMake executable that is currently being run.
+
+```CMAKE_C_COMPILER```: Path to the C compiler.
+
+```CMAKE_CXX_COMPILER```: Path to the C++ compiler.
+
+```CMAKE_SOURCE_DIR```: Top-level directory of the source tree.
+
+```CMAKE_BINARY_DIR```: Top-level directory of the build tree.
+
+```CMAKE_CURRENT_SOURCE_DIR```: Current source directory being processed.
+
+```CMAKE_CURRENT_BINARY_DIR```: Current binary directory being processed.
+
+```CMAKE_CURRENT_LIST_DIR```: Holds the full directory path of the listfile (CMake script) currently being processed.
+
+```CMAKE_CURRENT_LIST_FILE```: Holds the full path to the listfile (CMake script) that is currently being processed.
+
+```CMAKE_FIND_PACKAGE_NAME```: Holds the name of the package currently being searched for by the ```find_package()``` command.
+
+### Variables that Change Behavior
+
+These variables affect how CMake processes and builds the project:
+
+```CMAKE_BUILD_TYPE```: Specifies the build type (e.g., Debug, Release).
+
+```BUILD_SHARED_LIBS```: Tell add_library() to default to SHARED libraries, instead of STATIC libraries, when called with no explicit library type.
+
+```CMAKE_VERBOSE_MAKEFILE```: If ON, makefiles show all commands during build.
+
+```CMAKE_COLOR_DIAGNOSTICS```: Controls whether compiler and linker diagnostics (such as warnings and errors) are displayed with color in the terminal.
+
+### Variables that Describe the System
+
+These variables provide information about the system and environment:
+
+```CMAKE_SYSTEM_NAME```: Name of the operating system.
+
+```CMAKE_HOST_SYSTEM_NAME```: Name of the host operating system.
+
+```CMAKE_SYSTEM_PROCESSOR```: Processor type (e.g., x86_64).
+
+```CMAKE_SYSROOT```: Specifies the sysroot to be used during the build process. A sysroot is a directory that serves as the root filesystem for cross-compilation. It typically contains the header files, libraries, and other resources needed for compiling code for a different target platform than the host.
+
+### Variables that Control the Build
+
+These variables are used to control various build aspects:
+
+```CMAKE_INSTALL_PREFIX```: Installation directory for the project. The default value is typically ```/usr/local``` on Unix-like systems.
+
+```CMAKE_CXX_FLAGS```: Flags for the C++ compiler.
 
 ## CMake Modules
 
