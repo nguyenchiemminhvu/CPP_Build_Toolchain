@@ -2623,7 +2623,33 @@ try_compile(
 For example:
 
 ```
+set(TEMP_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/test_lambda")
 
+file(WRITE 
+    "${TEMP_BINARY_DIR}/test.cpp"
+    "
+    #include <iostream>
+    int main()
+    {
+        auto f = [](){ std::cout << \"Hello World\" << std::endl; };
+        f();
+        return 0;
+    }
+    "
+)
+
+try_compile(
+    COMPILE_RESULT
+    ${TEMP_BINARY_DIR}
+    ${TEMP_BINARY_DIR}/test.cpp
+    CMAKE_FLAGS -DCMAKE_CXX_STANDARD=11
+)
+
+if(COMPILE_RESULT)
+    message(STATUS "C++11 Lambda feature is compiled successfully")
+else()
+    message(STATUS "C++11 Lambda feature is not available")
+endif()
 ```
 
 ### try_run
@@ -2689,7 +2715,41 @@ try_run(
 For example:
 
 ```
+set(TEMP_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/test_lambda")
 
+file(WRITE 
+    "${TEMP_BINARY_DIR}/test.cpp"
+    "
+    #include <iostream>
+    int main()
+    {
+        auto f = [](){ std::cout << \"Hello World\" << std::endl; };
+        f();
+        return 0;
+    }
+    "
+)
+
+try_run(
+    RUN_RESULT
+    COMPILE_RESULT
+    ${TEMP_BINARY_DIR}
+    ${TEMP_BINARY_DIR}/test.cpp
+    CMAKE_FLAGS -DCMAKE_CXX_STANDARD=11
+    RUN_OUTPUT_VARIABLE RUN_OUTPUT
+)
+
+if(COMPILE_RESULT)
+    message(STATUS "C++11 Lambda feature is compiled successfully")
+    if(RUN_RESULT EQUAL 0)
+        message(STATUS "C++11 Lambda feature is run successfully")
+        message(STATUS "${RUN_OUTPUT}")
+    else()
+        message(STATUS "${RUN_RESULT}")
+    endif()
+else()
+    message(STATUS "C++11 Lambda feature is not available")
+endif()
 ```
 
 ### Configuring Build Types
