@@ -111,7 +111,7 @@ CMake reads the ```CMakeLists.txt``` file and generates the [Makefile](https://g
 
 Now, the only thing we care for is the syntax of writing CMakeLists.txt file.
 
-# CMakeLists.txt Syntax And Commands
+# CMake Basic Syntax And Commands
 
 ## General Outline Of CMakeLists.txt
 
@@ -204,7 +204,7 @@ This is a basic structure and can be expanded based on the specific needs of you
 
 Don't be afraid at the first sight. Let's walk through each component of CMakeList.txt file.
 
-## Basic Syntax And Structure
+## Basic Syntax And Commands
 
 ### cmake_minimum_required
 
@@ -888,7 +888,11 @@ add_library(jsoncpp ${JSONCPP_SOURCES})
 target_include_directories(jsoncpp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/include)
 ```
 
-## Advance Syntax And Structure
+# CMake Concepts
+
+## CMake Build System
+
+## CMake Advance Syntax And Commands
 
 ### enable_testing and add_test
 
@@ -1315,6 +1319,80 @@ disable_feature(TIME_SYNC)
 disable_feature(DIAGNOSTICS)
 ```
 
+### list
+
+The ```list``` command is used to manimulate lists. Lists in CMake are semcolon-separated strings.
+
+**General syntax:**
+
+```
+list(SUBCOMMAND <list> [<args>...])
+```
+
+**Subcommands:**
+
+```
+list(LENGTH <list> <output variable>)
+```
+Gets the number of elements in a list and stores it in the specified output variable.
+
+```
+list(GET <list> <element index> [<element index> ...]
+     <output variable>)
+```
+Retrieves elements from a list at specified indices and stores them in the specified output variable(s).
+
+```
+list(APPEND <list> [<element> ...])
+```
+Appends elements to the end of a list.
+
+```
+list(FIND <list> <value> <output variable>)
+```
+Finds the index of the first occurrence of an element in a list and stores it in the specified output variable. If the element is not found, the output variable is set to -1.
+
+```
+list(INSERT <list> <element_index> <element> [<element> ...])
+```
+Inserts elements into a list at a specified position.
+
+```
+list(REMOVE_ITEM <list> <value> [<value> ...])
+```
+Removes all occurrences of specified elements from a list.
+
+```
+list(REMOVE_AT <list> <index> [<index> ...])
+```
+Removes elements from a list at specified indices.
+
+```
+list(REMOVE_DUPLICATES <list>)
+```
+Removes duplicate elements from a list.
+
+```
+list(REVERSE <list>)
+```
+Reverses the order of elements in a list.
+
+```
+list(SORT <list>)
+```
+Sorts the elements of a list in ascending order by default.
+
+For example:
+
+```
+set(LIST_LIBRARIES "jsoncpp" "xml" "database" "util" "math" "database")
+
+list(REMOVE_DUPLICATES LIST_LIBRARIES)
+list(REMOVE LIST_LIBRARIES "database")
+list(LENGTH LIST_LIBRARIES NUM_LIBS)
+list(GET LIST_LIBRARIES 0 FIRST_LIB)
+```
+
 ### file
 
 The ```file``` command is dedicated to file and path manipulation (read, write, copy, remove,...) requiring access to filesystem. Here are the different modes and their description:
@@ -1633,6 +1711,102 @@ The search process for the find_file command in CMake follows a specific order, 
 
 ```CMAKE_FIND_ROOT_PATH_MODE_PROGRAM```: Controls the behavior of ```CMAKE_FIND_ROOT_PATH```.
 
+**find_path**
+
+The ```find_path``` is used to locate a directory containing a named file.
+
+```
+find_path(<VAR> name1 [path1 path2 ...]
+          [PATHS path1 path2 ... | HINTS path1 path2 ...]
+          [REQUIRED]
+          [NO_DEFAULT_PATH]
+          [NO_CMAKE_ENVIRONMENT_PATH]
+          [NO_CMAKE_PATH]
+          [NO_SYSTEM_ENVIRONMENT_PATH]
+          [NO_CMAKE_SYSTEM_PATH]
+          [CMAKE_FIND_ROOT_PATH_BOTH | ONLY_CMAKE_FIND_ROOT_PATH | NO_CMAKE_FIND_ROOT_PATH]
+          [DOC "cache documentation string"]
+          [NO_PACKAGE_ROOT_PATH]
+          [NO_CMAKE_PACKAGE_REGISTRY]
+          [NO_CMAKE_BUILDS_PATH]
+          [NO_CMAKE_SYSTEM_PACKAGE_REGISTRY]
+          [NO_CMAKE_SYSTEM_BUILDS_PATH]
+          [NAMES_PER_DIR]
+          [NAMES name1 [name2 ...]]
+          [PATH_SUFFIXES suffix1 [suffix2 ...]]
+          [DOC "cache documentation string"]
+          [CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY | NEVER | BOTH]
+)
+```
+
+```<VAR>```: The variable that will store the path to the directory containing the specified file if found.
+
+```name1```: The name of the file to search for.
+
+```path1, path2, ...```: Optional paths to search in addition to the default paths.
+
+```PATHS```: Specifies additional paths to search.
+
+```HINTS```: Specifies additional paths to search, but with lower priority than PATHS.
+
+```REQUIRED```: If the path is not found, an error will be reported.
+
+```NO_DEFAULT_PATH```: Do not search in the default paths.
+
+```NO_CMAKE_ENVIRONMENT_PATH```: Do not search the paths specified in the CMAKE_PREFIX_PATH environment variable.
+
+```NO_CMAKE_PATH```: Do not search the paths specified in the CMAKE_PREFIX_PATH variable.
+
+```NO_SYSTEM_ENVIRONMENT_PATH```: Do not search the system environment paths.
+
+```NO_CMAKE_SYSTEM_PATH```: Do not search the system paths specified by CMake.
+
+```CMAKE_FIND_ROOT_PATH_BOTH```: Search both the root path and the non-root path.
+
+```ONLY_CMAKE_FIND_ROOT_PATH```: Search only the root path.
+
+```NO_CMAKE_FIND_ROOT_PATH```: Do not search the root path.
+
+```DOC```: Documentation string for the cache entry.
+
+```NO_PACKAGE_ROOT_PATH```: Do not search the package root path.
+
+```NO_CMAKE_PACKAGE_REGISTRY```: Do not search the CMake package registry.
+
+```NO_CMAKE_BUILDS_PATH```: Do not search the CMake builds path.
+
+```NO_CMAKE_SYSTEM_PACKAGE_REGISTRY```: Do not search the system package registry.
+
+```NO_CMAKE_SYSTEM_BUILDS_PATH```: Do not search the system builds path.
+
+```NAMES_PER_DIR```: Search for each name in each directory.
+
+```NAMES```: Specifies additional names to search for.
+
+```PATH_SUFFIXES```: Specifies suffixes to append to each search path.
+
+```CMAKE_FIND_ROOT_PATH_MODE_INCLUDE```: Specifies how to handle the root path mode for includes.
+
+For example:
+
+```
+file(GLOB_RECURSE HEADER_SUB_DIRS LIST_DIRECTORIES true /usr/include/* /usr/local/include/*)
+
+find_file(HEADER_PATH
+    iostream
+    PATHS ${HEADER_SUB_DIRS}
+    DOC "Path to header file iostream"
+)
+
+message(STATUS "${HEADER_PATH}")
+```
+```
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ cmake ..
+-- /usr/include/c++/7/iostream
+-- Configuring done
+-- Generating done
+```
+
 **find_library**
 
 The ```find_library``` is used to locate a library file on the file system.
@@ -1703,11 +1877,73 @@ ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/02_Bui
 -- Generating done (0.0s)
 ```
 
+**find_program**
+
+The ```find_program``` is used to locate an executable program on the system.
+
+```
+find_program(<VAR> name1 [path1 path2 ...]
+             [HINTS path1 [path2 ...]]
+             [PATHS path1 [path2 ...]]
+             [PATH_SUFFIXES suffix1 [suffix2 ...]]
+             [DOC "cache documentation string"]
+             [NO_DEFAULT_PATH]
+             [NO_CMAKE_ENVIRONMENT_PATH]
+             [NO_CMAKE_PATH]
+             [NO_SYSTEM_ENVIRONMENT_PATH]
+             [NO_CMAKE_SYSTEM_PATH]
+             [CMAKE_FIND_ROOT_PATH_BOTH |
+              ONLY_CMAKE_FIND_ROOT_PATH |
+              NO_CMAKE_FIND_ROOT_PATH])
+```
+
+```<VAR>```: The variable that will store the result of the search. If the program is found, this variable will contain the full path to the executable. If not found, it will be set to NOTFOUND.
+
+```name1```: The name of the program you are looking for. You can specify multiple names to search for alternative programs.
+
+```path1, path2, ...```: Optional paths where CMake should look for the program.
+
+```HINTS```: Additional paths to search before the standard system paths.
+
+```PATHS```: Additional paths to search after the standard system paths.
+
+```PATH_SUFFIXES```: Suffixes to append to each search path.
+
+```DOC```: A documentation string for the cache entry.
+
+```NO_DEFAULT_PATH```: Do not search in the default paths.
+
+```NO_CMAKE_ENVIRONMENT_PATH```: Do not search the paths specified in the CMAKE_PREFIX_PATH environment variable.
+
+```NO_CMAKE_PATH```: Do not search the paths specified in the CMAKE_PREFIX_PATH CMake variable.
+
+```NO_SYSTEM_ENVIRONMENT_PATH```: Do not search the system environment paths (e.g., PATH on Windows).
+
+```NO_CMAKE_SYSTEM_PATH```: Do not search the system paths specified by CMake.
+
+```CMAKE_FIND_ROOT_PATH_BOTH, ONLY_CMAKE_FIND_ROOT_PATH, NO_CMAKE_FIND_ROOT_PATH```: Control how the CMAKE_FIND_ROOT_PATH variable is used.
+
+For example:
+
+```
+find_program(GIT_EXE git
+    PATHS /usr/bin/ /usr/local/bin /opt/local/bin
+)
+
+if(GIT_EXE)
+    message(STATUS "Found ${GIT_EXE}")
+endif()
+```
+```
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ cmake ..
+-- Found /usr/bin/git
+-- Configuring done
+-- Generating done
+```
+
 **find_package**
 
-**find_path**
-
-**find_program**
+Find details in [CMake Package](#cmake-package) topic.
 
 ### add_custom_target
 
@@ -2022,6 +2258,73 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 make
 ```
 
+## CMake Variables
+
+## CMake Modules
+
+## CMake Package
+
+In CMake, a package is a collection of files that provide information about how to use a library or a set of related libraries. It is used to facilitate the discovery and integration of these libraries into a CMake-based build system. Typically, they include configuration files that describe the library's propertie, such as where to find, which libraries to link against, and any required compile definitions or options.
+
+There are 2 primary types of CMake package: ```Config-file Packages``` and ```Find-module Packages```.
+
+### Config-file Packages
+
+
+
+### Find-module Packages
+
+
+
+### Using CMake Packages
+
+The find_package command in CMake is used to locate and configure external libraries and packages.
+
+```
+find_package(<PackageName> [version] [REQUIRED] [COMPONENTS components...] [OPTIONAL_COMPONENTS components...] [EXACT] [QUIET] [MODULE] [CONFIG] [NO_MODULE] [NO_POLICY_SCOPE] [NO_CMAKE_PACKAGE_REGISTRY] [NO_CMAKE_BUILDS_PATH] [NO_SYSTEM_ENVIRONMENT_PATH] [NO_CMAKE_ENVIRONMENT_PATH] [NO_CMAKE_PATH] [NO_SYSTEM_PACKAGE_REGISTRY] [NO_CMAKE_SYSTEM_PATH] [NO_CMAKE_SYSTEM_PACKAGE_REGISTRY] [NO_CMAKE_FIND_ROOT_PATH])
+```
+
+```<PackageName>```: The name of the package you want to find. This is usually the name of the library or software package.
+
+```[version]```: The version of the package you are looking for. This is optional.
+
+```[REQUIRED]```: If specified, CMake will generate an error if the package is not found.
+
+```[COMPONENTS components...]```: Specifies which components of the package you are interested in. This is useful for packages that provide multiple libraries or modules.
+
+```[OPTIONAL_COMPONENTS components...]```: Specifies components that are optional.
+
+```[EXACT]```: Requires the exact version specified.
+
+```[QUIET]```: Suppresses messages if the package is not found.
+
+```[MODULE]```: Forces CMake to search for a ```Find<PackageName>.cmake``` module.
+
+```[CONFIG]```: Forces CMake to search for a ```<PackageName>Config.cmake``` file.
+
+```[NO_MODULE]```: Prevents CMake from searching for a ```Find<PackageName>.cmake``` module.
+
+```[NO_POLICY_SCOPE]```: Disables policy scope for the find operation.
+
+```[NO_CMAKE_PACKAGE_REGISTRY], [NO_CMAKE_BUILDS_PATH], [NO_SYSTEM_ENVIRONMENT_PATH], [NO_CMAKE_ENVIRONMENT_PATH], [NO_CMAKE_PATH], [NO_SYSTEM_PACKAGE_REGISTRY], [NO_CMAKE_SYSTEM_PATH], [NO_CMAKE_SYSTEM_PACKAGE_REGISTRY], [NO_CMAKE_FIND_ROOT_PATH]```: These options control where CMake searches for the package.
+
+For example:
+
+```
+add_executable(LocationService main.cpp)
+
+find_package(GnssParser 1.2 REQUIRED)
+
+if(GnssParser_FOUND)
+    include_directories(${GnssParser_INCLUDE_DIRS})
+    target_link_libraries(LocationService PRIVATE ${GnssParser_LIBRARIES})
+endif()
+```
+
+### Create CMake Packages
+
+## CMake Policies
+
 # Conclusion
 
 CMake is a versatile and powerful tool for managing the build process of software projects. By understanding its basic and advanced features, we can efficiently handle dependencies, organize your project, and troubleshoot common issues.
@@ -2047,3 +2350,5 @@ I encourage you to take up the challenge and try building the sample project bef
 [https://blog.feabhas.com/2021/07/cmake-part-2-release-and-debug-builds/](https://blog.feabhas.com/2021/07/cmake-part-2-release-and-debug-builds/)
 
 [https://blog.feabhas.com/2021/08/cmake-part-3-source-file-organisation/?fbclid=IwAR094ep-_EYNix0WLa60D2OlRrDGEAjFn3kK740mw4b98i2GfR9VsUY35is](https://blog.feabhas.com/2021/08/cmake-part-3-source-file-organisation/?fbclid=IwAR094ep-_EYNix0WLa60D2OlRrDGEAjFn3kK740mw4b98i2GfR9VsUY35is)
+
+[https://dev.to/bruxisma/how-to-find-packages-with-cmake-the-basics-ikk](https://dev.to/bruxisma/how-to-find-packages-with-cmake-the-basics-ikk)
