@@ -1303,6 +1303,91 @@ disable_feature(TIME_SYNC)
 disable_feature(DIAGNOSTICS)
 ```
 
+### string
+
+The ```string``` command is used to perform various operations on strings.
+
+**General syntax**
+
+```
+string(<SUBCOMMAND> <ARGUMENTS>)
+```
+
+**Common use subcommands**
+
+```
+string(REGEX MATCH <regular_expression>
+       <output variable> <input> [<input>...])
+```
+Matches a string against a regular expression and stores the first match in the output variable.
+
+```
+string(REGEX MATCHALL <regular_expression>
+       <output variable> <input> [<input>...])
+```
+Matches all occurrences of a regular expression in a string and stores them in the output variable as a list.
+
+```
+string(REGEX REPLACE <regular_expression>
+       <replace_expression> <output variable>
+       <input> [<input>...])
+```
+Replaces occurrences of a regular expression in a string with a replacement expression.
+
+```
+string(REPLACE <match_string>
+       <replace_string> <output variable>
+       <input> [<input>...])
+```
+Replaces occurrences of a substring in a string with another substring.
+
+```
+string(CONCAT <output variable> [<input>...])
+```
+Concatenates multiple strings into a single string.
+
+```
+string(COMPARE EQUAL <string1> <string2> <output variable>)
+```
+Compares two strings for equality.
+
+```
+string(LENGTH <string> <output variable>)
+```
+Gets the length of a string.
+
+```
+string(FIND <string> <substring> <output variable> [REVERSE])
+```
+Finds a substring within a string and returns the position.
+
+For example:
+
+```
+string(REGEX MATCH "Hello" MATCH_RESULT "Hello World")
+message(STATUS "Matched string: ${MATCH_RESULT}")
+```
+
+```
+string(REGEX MATCHALL "o" MATCH_RESULT "Hello World")
+message(STATUS "Matched string: ${MATCH_RESULT}")
+```
+
+```
+string(REPLACE "World" "CMake" REPLACE_RESULT "Hello World")
+message(STATUS "New string: ${REPLACE_RESULT}")
+```
+
+```
+string(REGEX REPLACE "W.*" "CMake" REPLACE_RESULT "Hello World")
+message(STATUS "New string: ${REPLACE_RESULT}")
+```
+
+```
+string(LENGTH "Hello CMake" LENGTH_RESULT)
+message(STATUS "${LENGTH_RESULT}")
+```
+
 ### list
 
 The ```list``` command is used to manimulate lists. Lists in CMake are semcolon-separated strings.
