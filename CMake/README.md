@@ -920,7 +920,17 @@ target_include_directories(jsoncpp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/i
 
 # CMake Concepts
 
-## CMake Build System
+## CMake Build System in general
+
+CMake build system manages a set of high-level logical targets. A build target could be an executable file, a library, or a custom target.
+
+Executable file is program that we can run/execute. Declare an executable target by ```add_executable``` command.
+
+Library is a collection of reusable code to be used be programs. Declare a library target by ```add_library``` command.
+
+Custom target is special task or script to be executed during build process. Declare a custom target by ```add_custom_target``` and ```add_custom_command``` commands.
+
+CMake build system defines how these targets are related to each other. This helps determine the order in which they should be built, ensure that everything is ready when needed. By managing the dependent relationship between targets, CMake also know which parts need to be rebuilt.
 
 ## CMake Advance Syntax And Commands
 
@@ -2946,7 +2956,11 @@ message(STATUS "RESULT: ${echo_result}")
 
 ## CMake Variables
 
+
+
 ## CMake Modules
+
+
 
 ## CMake Packages
 
@@ -3009,7 +3023,11 @@ endif()
 
 ### Create CMake Packages
 
+
+
 ## CMake Policies
+
+
 
 # Conclusion
 
