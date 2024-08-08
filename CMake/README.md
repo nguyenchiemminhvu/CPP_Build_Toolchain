@@ -656,9 +656,9 @@ The ```target_compile_options``` is used to specify additional compiler options 
 target_compile_options(<target> [BEFORE] <INTERFACE|PUBLIC|PRIVATE> [items1...])
 ```
 
-```<target>```: The name of the target to which you want to add compiler options.
+```<target>```: The name of the target to which we want to add compiler options.
 
-```BEFORE (optional)```: If specified, the options will be added before any options that are added by CMake or other commands. This can be useful if you need to ensure that your options take precedence.
+```BEFORE (optional)```: If specified, the options will be added before any options that are added by CMake or other commands. This can be useful if we need to ensure that your options take precedence.
 
 ```<INTERFACE|PUBLIC|PRIVATE>```: Specifies the scope of the options.
 
@@ -668,7 +668,7 @@ target_compile_options(<target> [BEFORE] <INTERFACE|PUBLIC|PRIVATE> [items1...])
 
 ```PRIVATE```: The options are used only by the target itself.
 
-```[items1...]```: The actual compiler options you want to add.
+```[items1...]```: The actual compiler options we want to add.
 
 For example:
 
@@ -686,9 +686,9 @@ The ```target_link_options``` command is used to specify linker flags that are n
 target_link_options(<target> [BEFORE] <INTERFACE|PUBLIC|PRIVATE> [items1...])
 ```
 
-```<target>```: The name of the target to which you want to add linker options.
+```<target>```: The name of the target to which we want to add linker options.
 
-```BEFORE (optional)```: If specified, the options will be added before any options that are added by CMake or other commands. This can be useful if you need to ensure that your options take precedence.
+```BEFORE (optional)```: If specified, the options will be added before any options that are added by CMake or other commands. This can be useful if we need to ensure that your options take precedence.
 
 ```<INTERFACE|PUBLIC|PRIVATE>```: Specifies the scope of the options.
 
@@ -698,7 +698,7 @@ target_link_options(<target> [BEFORE] <INTERFACE|PUBLIC|PRIVATE> [items1...])
 
 ```PRIVATE```: The options are used only by the target itself.
 
-```[items1...]```: The actual linker options you want to add.
+```[items1...]```: The actual linker options we want to add.
 
 For example:
 
@@ -717,7 +717,7 @@ The ```add_definitions``` command is used to add preprocessor definitions to the
 add_definitions(-D<definition> ...)
 ```
 
-```-D<definition>```: This specifies a preprocessor definition. The -D flag is followed by the definition you want to add. You can add multiple definitions by separating them with spaces.
+```-D<definition>```: This specifies a preprocessor definition. The -D flag is followed by the definition we want to add. We can add multiple definitions by separating them with spaces.
 
 For example:
 
@@ -733,7 +733,7 @@ In order to add definitions for just a specific target, use ```target_compile_de
 target_compile_definitions(<target> [<INTERFACE|PUBLIC|PRIVATE>] [items1...])
 ```
 
-```<target>```: The name of the target to which you want to add the preprocessor definitions.
+```<target>```: The name of the target to which we want to add the preprocessor definitions.
 
 ```<INTERFACE|PUBLIC|PRIVATE>```: Specifies the scope of the definitions.
 
@@ -755,6 +755,36 @@ add_executable(SampleProgram main.cpp)
 target_compile_definitions(SampleProgram PRIVATE DEBUG VERSION=2)
 ```
 
+### add_dependencies
+
+The ```add_dependencies``` command is used to add dependencies between top-level targets. This ensures that a target is built only after its dependencies have been built. It is useful when we have custom targets or when we need to enforce a specific build order.
+
+```
+add_dependencies(<target> [<dependency>...])
+```
+
+```<target>```: The name of the target that we want to add dependencies to.
+
+```<dependency>```: One or more names of targets that ```<target>``` depends on.
+
+For example:
+
+```
+add_custom_target(targetA
+    COMMAND ${CMAKE_COMMAND} -E echo "Building targetA"
+)
+
+add_custom_target(targetB
+    COMMAND ${CMAKE_COMMAND} -E echo "Building targetB"
+)
+
+add_custom_target(targetC
+    COMMAND ${CMAKE_COMMAND} -E echo "Building targetC"
+)
+
+add_dependencies(targetC targetA targetB)
+```
+
 ### add_subdirectory
 
 The ```add_subdirectory``` command is used to add sub-directories to the build, allow us to include another CMakeLists.txt file from a sub-directory, which can define additional targets, libraries, and other build-related settings. It is useful for organizing large projects into smaller components.
@@ -763,7 +793,7 @@ The ```add_subdirectory``` command is used to add sub-directories to the build, 
 add_subdirectory(source_dir [binary_dir] [EXCLUDE_FROM_ALL])
 ```
 
-```source_dir```: The relative or absolute path to the source directory containing the CMakeLists.txt file you want to include.
+```source_dir```: The relative or absolute path to the source directory containing the CMakeLists.txt file we want to include.
 
 ```binary_dir (optional)```: The directory where the build files for the subdirectory will be placed. If not specified, it defaults to the same directory as source_dir.
 
@@ -894,52 +924,6 @@ target_include_directories(jsoncpp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/i
 
 ## CMake Advance Syntax And Commands
 
-### enable_testing and add_test
-
-The ```enable_testing``` command is used to enable testing capabilities within a CMake project. It is essential for integrated testing frameworks like CTest, allows us the define and run tests as part of the build process. It is often used in conjuction with ```add_test``` command to create a complete test setup.
-
-```
-add_test(NAME <test_name> COMMAND <command> [args...])
-```
-
-```<test_name>```: The name assigned to the test. This name is used to reference the test in CTest and other CMake commands.
-
-```<command>```: The command to run the test. This typically includes the path to an executable or script, followed by any necessary arguments.
-
-For example:
-
-```
-cmake_minimum_required(VERSION 3.10)
-
-project(HelloWorld VERSION 1.0.0 DESCRIPTION "Print HelloWorld on Console" LANGUAGES C CXX)
-
-add_executable(HelloWorld main.cpp)
-
-enable_testing()
-add_test(NAME HelloWorldTest COMMAND HelloWorld --test)
-set_tests_properties(HelloWorldTest PROPERTIES TIMEOUT 10)
-```
-
-```
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld$ mkdir build
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld$ cd build/
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ cmake ..
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ make
-[ 50%] Building CXX object CMakeFiles/HelloWorld.dir/main.cpp.o
-[100%] Linking CXX executable HelloWorld
-[100%] Built target HelloWorld
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ ./HelloWorld 
-Hello World
-ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build$ ctest
-Test project /home/ncmv/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/01_HelloWorld/build
-    Start 1: HelloWorldTest
-1/1 Test #1: HelloWorldTest ...................   Passed    0.00 sec
-
-100% tests passed, 0 tests failed out of 1
-
-Total Test time (real) =   0.00 sec
-```
-
 ### include
 
 The ```include``` command is used to load and execute another CMake script file. It is useful for reusing common CMake code across multiple CMake projects or organizing CMake code into more manageable pieces.
@@ -948,7 +932,7 @@ The ```include``` command is used to load and execute another CMake script file.
 include(<file> [OPTIONAL] [RESULT_VARIABLE <var>] [NO_POLICY_SCOPE])
 ```
 
-```<file>```: The path to the CMake script file you want to include. This can be a relative or absolute path. If the path is relative, it is interpreted relative to the current source directory.
+```<file>```: The path to the CMake script file we want to include. This can be a relative or absolute path. If the path is relative, it is interpreted relative to the current source directory.
 
 ```OPTIONAL```: If this keyword is specified, CMake will not produce an error if the file does not exist. Without this keyword, CMake will generate an error if the file is not found.
 
@@ -1899,7 +1883,7 @@ find_program(<VAR> name1 [path1 path2 ...]
 
 ```<VAR>```: The variable that will store the result of the search. If the program is found, this variable will contain the full path to the executable. If not found, it will be set to NOTFOUND.
 
-```name1```: The name of the program you are looking for. You can specify multiple names to search for alternative programs.
+```name1```: The name of the program we are looking for. We can specify multiple names to search for alternative programs.
 
 ```path1, path2, ...```: Optional paths where CMake should look for the program.
 
@@ -1943,7 +1927,7 @@ worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/t
 
 **find_package**
 
-Find details in [CMake Package](#cmake-package) topic.
+Find details in [CMake Packages](#cmake-packages) concept.
 
 ### add_custom_target
 
@@ -1982,17 +1966,7 @@ add_custom_target(<name> [ALL] [command1 [args1...]] [command2 [args2...]] ...
 
 ```SOURCES```: Specifies source files associated with the target. This is mainly for IDE integration.
 
-By default, nothing depends on the custom target. Using ```add_dependencies``` command to create dependencies to or from other targets.
-
-The ```add_dependencies``` command is used to add dependencies between top-level targets. This ensures that a target is built only after its dependencies have been built. It is useful when we have custom targets or when we need to enforce a specific build order.
-
-```
-add_dependencies(<target> [<dependency>...])
-```
-
-```<target>```: The name of the target that you want to add dependencies to.
-
-```<dependency>```: One or more names of targets that ```<target>``` depends on.
+By default, nothing depends on the custom target.
 
 For example:
 
@@ -2063,7 +2037,7 @@ This defines a command to generate specified OUTPUT file(s).
 
 ```OUTPUT```: Specifies the files that will be generated by the custom command. These files are considered outputs of the build step and can be used as dependencies for other build steps.
 
-```COMMAND```: Specifies the command to be executed. You can provide multiple commands, each with its own set of arguments. The ARGS keyword is optional and can be used to specify arguments for the command.
+```COMMAND```: Specifies the command to be executed. It is possible can provide multiple commands, each with its own set of arguments. The ARGS keyword is optional and can be used to specify arguments for the command.
 
 ```MAIN_DEPENDENCY```: Specifies the main dependency file. This is useful for cases where the custom command generates an output file from a single input file.
 
@@ -2083,17 +2057,86 @@ This defines a command to generate specified OUTPUT file(s).
 
 ```VERBATIM```: Ensures that the command and its arguments are passed to the shell exactly as specified. This is important for commands that require precise argument formatting.
 
-```APPEND```: Appends the custom command to the existing commands for the specified output files. This allows you to add multiple custom commands for the same output.
+```APPEND```: Appends the custom command to the existing commands for the specified output files. This allows us to add multiple custom commands for the same output.
 
 ```USES_TERMINAL```: Indicates that the custom command uses a terminal for its execution. This is useful for commands that require user interaction or produce output that should be visible to the user.
 
 ```COMMAND_EXPAND_LISTS```: Expands lists in the command arguments. This is useful for commands that take a variable number of arguments.
 
+When the target that depends on these output files is built, CMake will automatically execute the custom command to generate the output files if they are out of date or missing.
+
 For example:
 
+**top-level CMakeLists.txt**
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleCommand)
+
+set(ENABLED_FEATURES
+    CHINA_SHIFT
+    DEAD_RECKONING
+    EMERGENCY_CALL
+    TIME_SYNC
+)
+
+string(REPLACE ";" "," ENABLED_FEATURES_STR "${ENABLED_FEATURES}")
+
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/generated.h
+    COMMAND ${CMAKE_COMMAND} -DENABLED_FEATURES_STR=${ENABLED_FEATURES_STR} -P ${CMAKE_CURRENT_SOURCE_DIR}/generate.cmake
+    BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/generated.h
+)
+
+add_custom_target(generate_features
+    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/generated.h
+)
+
+add_custom_target(all_targets ALL)
+add_dependencies(all_targets generate_features)
 ```
 
+**generate.cmake script**
 ```
+if(DEFINED ENABLED_FEATURES_STR)
+    string(REPLACE "," ";" ENABLED_FEATURES "${ENABLED_FEATURES_STR}")
+    string(CONCAT GENERATED_CONTENT "#ifndef GENERATED_H\n#define GENERATED_H\n\n")
+
+    foreach(FEATURE ${ENABLED_FEATURES})
+        string(APPEND GENERATED_CONTENT "#define ${FEATURE}\n\n")
+    endforeach()
+
+    string(APPEND GENERATED_CONTENT "#endif\n")
+
+    file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/generated.h" ${GENERATED_CONTENT})
+endif()
+```
+
+**Result:**
+```
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ cmake ..
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/worker/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build
+
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ make
+[100%] Built target generate_features
+[100%] Built target all_targets
+
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ cat generated.h
+#ifndef GENERATED_H
+#define GENERATED_H
+
+#define CHINA_SHIFT
+
+#define DEAD_RECKONING
+
+#define EMERGENCY_CALL
+
+#define TIME_SYNC
+
+#endif
+```
+
 
 **Adding custom commands to a target (executable or library). (Execute commands before or after building a target)**
 
@@ -2121,7 +2164,7 @@ This defines a new command that will be associated with building the specified `
 
 ```POST_BUILD```: Executes the command after the target has been built.
 
-```COMMAND command1 [ARGS] [args1...]```: Specifies the command to be executed and its arguments. You can include multiple ```COMMAND``` entries if you want to execute a sequence of commands. The ARGS keyword is optional and can be used to make the command arguments clearer but is not necessary.
+```COMMAND command1 [ARGS] [args1...]```: Specifies the command to be executed and its arguments. We can include multiple ```COMMAND``` entries if we want to execute a sequence of commands. The ARGS keyword is optional and can be used to make the command arguments clearer but is not necessary.
 
 ```BYPRODUCTS [files...]```: Lists any additional files that are produced by the custom command. These byproducts are not the main outputs but are still generated as a result of running the command. This helps CMake understand the side effects of the command.
 
@@ -2135,8 +2178,49 @@ This defines a new command that will be associated with building the specified `
 
 For example:
 
+**top-level CMakeLists.txt**
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleCommand)
+
+add_library(sample_lib SHARED util.cpp)
+
+set(LIB_VERSION "0.0.0")
+
+add_custom_command(
+    TARGET sample_lib
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:sample_lib> $<TARGET_FILE_DIR:sample_lib>/libsample_lib.so.${LIB_VERSION}
+    COMMAND ${CMAKE_COMMAND} -E create_symlink libsample_lib.so.${LIB_VERSION} $<TARGET_FILE_DIR:sample_lib>/libsample_lib.so
+    COMMAND ${CMAKE_COMMAND} -E echo "sample_lib build is finished"
+    VERBATIM
+)
 ```
 
+**Build result:**
+```
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ cmake ..
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/worker/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build
+
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ make
+Scanning dependencies of target sample_lib
+[ 50%] Building CXX object CMakeFiles/sample_lib.dir/util.cpp.o
+[100%] Linking CXX shared library libsample_lib.so
+sample_lib build is finished
+[100%] Built target sample_lib
+
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ ll
+total 48
+drwxr-xr-x 3 worker worker  4096 Aug  8 16:35 ./
+drwxrwxr-x 3 worker worker  4096 Aug  8 16:29 ../
+-rw-r--r-- 1 worker worker 12906 Aug  8 16:35 CMakeCache.txt
+drwxr-xr-x 5 worker worker  4096 Aug  8 16:35 CMakeFiles/
+-rw-r--r-- 1 worker worker  5042 Aug  8 16:35 Makefile
+-rw-r--r-- 1 worker worker  1600 Aug  8 16:35 cmake_install.cmake
+lrwxrwxrwx 1 worker worker    22 Aug  8 16:35 libsample_lib.so -> libsample_lib.so.0.0.0*
+-rwxr-xr-x 1 worker worker  7440 Aug  8 16:35 libsample_lib.so.0.0.0*
 ```
 
 ### install
@@ -2228,7 +2312,7 @@ Typical values of built-in build types include:
 
 ```Release```: high optimization level, no debug info, code or asserts. ```-O3 -DNDEBUG```
 
-```Debug```: No optimization, asserts enabled, [custom debug (output) code enabled], debug info included in executable (so you can step through the code with a debugger and have address to source-file:line-number translation). ```-O0 -g```
+```Debug```: No optimization, asserts enabled, [custom debug (output) code enabled], debug info included in executable (so we can step through the code with a debugger and have address to source-file:line-number translation). ```-O0 -g```
 
 ```RelWithDebInfo```: optimized, with debug info, but no debug (output) code or asserts. ```-O2 -g -DNDEBUG```
 
@@ -2258,11 +2342,82 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 make
 ```
 
+### execute_process
+
+The ```execute_process``` command is used to execute one or more child process during the configuration phase of CMake project.
+
+```
+execute_process(COMMAND <cmd1> [<args1>...]
+                [COMMAND <cmd2> [<args2>...] ...]
+                [WORKING_DIRECTORY <directory>]
+                [TIMEOUT <seconds>]
+                [RESULT_VARIABLE <variable>]
+                [RESULTS_VARIABLE <variable>]
+                [OUTPUT_VARIABLE <variable>]
+                [ERROR_VARIABLE <variable>]
+                [OUTPUT_QUIET]
+                [ERROR_QUIET]
+                [OUTPUT_STRIP_TRAILING_WHITESPACE]
+                [ERROR_STRIP_TRAILING_WHITESPACE]
+                [ENCODING <name>])
+```
+
+```COMMAND [...]```: Specifies the command to execute and its arguments. We can specify multiple commands to be executed in sequence.
+
+```WORKING_DIRECTORY``` : Sets the working directory for the command. If not specified, the current source directory is used.
+
+```TIMEOUT``` : Specifies a timeout for the command execution. If the command does not complete within the given time, it will be terminated.
+
+```RESULT_VARIABLE``` : Stores the result of the command execution (e.g., the return code) in the specified variable.
+
+```RESULTS_VARIABLE``` : Stores the results of all commands executed in sequence in the specified variable.
+
+```OUTPUT_VARIABLE``` : Captures the standard output of the command and stores it in the specified variable.
+
+```ERROR_VARIABLE``` : Captures the standard error output of the command and stores it in the specified variable.
+
+```OUTPUT_QUIET```: Suppresses the standard output of the command.
+
+```ERROR_QUIET```: Suppresses the standard error output of the command.
+
+```OUTPUT_STRIP_TRAILING_WHITESPACE```: Strips trailing whitespace from the captured standard output.
+
+```ERROR_STRIP_TRAILING_WHITESPACE```: Strips trailing whitespace from the captured standard error output.
+
+```ENCODING``` : Specifies the encoding of the output and error variables. This is useful for handling non-ASCII characters.
+
+For example:
+
+```
+message(STATUS "Generate a child process to check current local git status")
+
+execute_process(
+    COMMAND git status
+    OUTPUT_VARIABLE echo_output
+    RESULT_VARIABLE echo_result
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_STRIP_TRAILING_WHITESPACE
+)
+
+message(STATUS "OUTPUT: ${echo_output}")
+message(STATUS "RESULT: ${echo_result}")
+
+execute_process(
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/sample.cmake
+    OUTPUT_VARIABLE echo_output
+    RESULT_VARIABLE echo_result
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+message(STATUS "OUTPUT: ${echo_output}")
+message(STATUS "RESULT: ${echo_result}")
+```
+
 ## CMake Variables
 
 ## CMake Modules
 
-## CMake Package
+## CMake Packages
 
 In CMake, a package is a collection of files that provide information about how to use a library or a set of related libraries. It is used to facilitate the discovery and integration of these libraries into a CMake-based build system. Typically, they include configuration files that describe the library's propertie, such as where to find, which libraries to link against, and any required compile definitions or options.
 
@@ -2284,13 +2439,13 @@ The find_package command in CMake is used to locate and configure external libra
 find_package(<PackageName> [version] [REQUIRED] [COMPONENTS components...] [OPTIONAL_COMPONENTS components...] [EXACT] [QUIET] [MODULE] [CONFIG] [NO_MODULE] [NO_POLICY_SCOPE] [NO_CMAKE_PACKAGE_REGISTRY] [NO_CMAKE_BUILDS_PATH] [NO_SYSTEM_ENVIRONMENT_PATH] [NO_CMAKE_ENVIRONMENT_PATH] [NO_CMAKE_PATH] [NO_SYSTEM_PACKAGE_REGISTRY] [NO_CMAKE_SYSTEM_PATH] [NO_CMAKE_SYSTEM_PACKAGE_REGISTRY] [NO_CMAKE_FIND_ROOT_PATH])
 ```
 
-```<PackageName>```: The name of the package you want to find. This is usually the name of the library or software package.
+```<PackageName>```: The name of the package we want to find. This is usually the name of the library or software package.
 
-```[version]```: The version of the package you are looking for. This is optional.
+```[version]```: The version of the package we are looking for. This is optional.
 
 ```[REQUIRED]```: If specified, CMake will generate an error if the package is not found.
 
-```[COMPONENTS components...]```: Specifies which components of the package you are interested in. This is useful for packages that provide multiple libraries or modules.
+```[COMPONENTS components...]```: Specifies which components of the package we are interested in. This is useful for packages that provide multiple libraries or modules.
 
 ```[OPTIONAL_COMPONENTS components...]```: Specifies components that are optional.
 
