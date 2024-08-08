@@ -2215,10 +2215,6 @@ worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/t
 total 48
 drwxr-xr-x 3 worker worker  4096 Aug  8 16:35 ./
 drwxrwxr-x 3 worker worker  4096 Aug  8 16:29 ../
--rw-r--r-- 1 worker worker 12906 Aug  8 16:35 CMakeCache.txt
-drwxr-xr-x 5 worker worker  4096 Aug  8 16:35 CMakeFiles/
--rw-r--r-- 1 worker worker  5042 Aug  8 16:35 Makefile
--rw-r--r-- 1 worker worker  1600 Aug  8 16:35 cmake_install.cmake
 lrwxrwxrwx 1 worker worker    22 Aug  8 16:35 libsample_lib.so -> libsample_lib.so.0.0.0*
 -rwxr-xr-x 1 worker worker  7440 Aug  8 16:35 libsample_lib.so.0.0.0*
 ```
@@ -2510,9 +2506,191 @@ Refer to [CMake Packages](#cmake-packages) for more details.
 
 ### export
 
+The ```export``` command is used to create and manage export files that describe the build targets in a project during build process. These export files can then be used by other projects.
+
+**Export targets to a file**
+
+```
+export(TARGETS target1 target2 ... FILE <filename>)
+```
+
+```TARGETS```: Specifies the targets to be exported.
+
+```FILE```: Specifies the file to which the targets will be exported.
+
+**Export targets to a package**
+
+```
+export(EXPORT <export-name> FILE <filename> NAMESPACE <namespace> ...)
+```
+
+```EXPORT```: Specifies the name of the export set.
+
+```FILE```: Specifies the file to which the export set will be written.
+
+```NAMESPACE```: Specifies a namespace to be prepended to the target names when they are imported.
+
+**Export targets for installation**
+
+```
+install(EXPORT <export-name> DESTINATION <dir> FILE <filename> NAMESPACE <namespace> ...)
+```
+
+```EXPORT```: Specifies the name of the export set.
+
+```DESTINATION```: Specifies the directory where the export file will be installed.
+
+```FILE```: Specifies the name of the export file.
+
+```NAMESPACE```: Specifies a namespace to be prepended to the target names when they are imported.
+
+For example:
+
+**Export package SampleUtilTarget at CMake processing stage**
+```
+add_library(util SHARED util.cpp)
+
+export(TARGETS util FILE SampleUtilTargetConfig.cmake)
+
+install(
+    TARGETS util
+    EXPORT SampleUtilTarget
+    LIBRARY DESTINATION lib
+)
+
+install(
+    EXPORT SampleUtilTarget
+    FILE SampleUtilTargetConfig.cmake
+    DESTINATION lib/cmake/SampleUtilTarget
+)
+```
+```
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ cmake ..
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/worker/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build
+
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ ll
+drwxr-xr-x 3 worker worker  4096 Aug  8 19:03 ./
+drwxrwxr-x 3 worker worker  4096 Aug  8 18:50 ../
+-rw-r--r-- 1 worker worker  2051 Aug  8 19:03 SampleUtilTargetConfig.cmake
+
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ sudo make install
+[100%] Built target util
+Install the project...
+-- Install configuration: ""
+-- Up-to-date: /usr/local/lib/libutil.so
+-- Up-to-date: /usr/local/lib/cmake/SampleUtilTarget/SampleUtilTargetConfig.cmake
+-- Installing: /usr/local/lib/cmake/SampleUtilTarget/SampleUtilTargetConfig-noconfig.cmake
+```
+
 ### try_compile
 
+The ```try_compile``` command is used to test if a small piece of code can be compiled. It is useful for checking if certain features, functions, or libraries are available on the system.
+
+```
+try_compile(
+    <result_variable>
+    <binary_dir>
+    <source_dir|source_file>
+    [CMAKE_FLAGS <flags>...]
+    [COMPILE_DEFINITIONS <compile_definitions>...]
+    [LINK_LIBRARIES <libraries>...]
+    [OUTPUT_VARIABLE <output_variable>]
+    [COPY_FILE <copy_file>]
+    [COPY_FILE_ERROR <copy_file_error>]
+)
+```
+
+```result_variable```: The name of the variable that will store the result of the compilation test. It will be set to TRUE if the compilation succeeds and FALSE otherwise.
+
+```binary_dir```: The directory where the test project will be built. This should be a unique directory to avoid conflicts with other tests.
+
+```source_dir|source_file```: The source directory or file to be compiled. If a directory is specified, it should contain a CMakeLists.txt file. If a file is specified, it should be a single source file.
+
+```CMAKE_FLAGS```: Additional flags to pass to the CMake configuration step. This can include definitions, options, and other CMake variables.
+
+```COMPILE_DEFINITIONS```: Preprocessor definitions to be used during the compilation.
+
+```LINK_LIBRARIES```: Libraries to link against during the compilation.
+
+```OUTPUT_VARIABLE```: A variable to store the output of the compilation process.
+
+```COPY_FILE```: A file to copy if the compilation succeeds.
+
+```COPY_FILE_ERROR```: A variable to store any error that occurs while copying the file specified in ```COPY_FILE```.
+
+For example:
+
+```
+
+```
+
 ### try_run
+
+The ```try_run``` command is used to compile and run a small piece of code to test if certain features, functions, or libraries are available and working correctly on the system.
+
+```
+try_run(
+    <run_result_variable>
+    <compile_result_variable>
+    <binary_dir>
+    <source_dir|source_file>
+    [CMAKE_FLAGS <flags>...]
+    [COMPILE_DEFINITIONS <compile_definitions>...]
+    [LINK_LIBRARIES <libraries>...]
+    [OUTPUT_VARIABLE <output_variable>]
+    [COPY_FILE <copy_file>]
+    [COPY_FILE_ERROR <copy_file_error>]
+    [RUN_OUTPUT_VARIABLE <run_output_variable>]
+    [ARGS <args>...]
+    [WORKING_DIRECTORY <dir>]
+    [LINK_OPTIONS <options>...]
+    [LINK_DIRECTORIES <directories>...]
+    [LINK_OPTIONS_BEFORE <options>...]
+    [LINK_DIRECTORIES_BEFORE <directories>...]
+)
+```
+
+```run_result_variable```: The name of the variable that will store the result of running the compiled executable. It will be set to the return code of the executable.
+
+```compile_result_variable```: The name of the variable that will store the result of the compilation test. It will be set to TRUE if the compilation succeeds and FALSE otherwise.
+
+```binary_dir```: The directory where the test project will be built. This should be a unique directory to avoid conflicts with other tests.
+
+```source_dir|source_file```: The source directory or file to be compiled. If a directory is specified, it should contain a CMakeLists.txt file. If a file is specified, it should be a single source file.
+
+```CMAKE_FLAGS```: Additional flags to pass to the CMake configuration step. This can include definitions, options, and other CMake variables.
+
+```COMPILE_DEFINITIONS```: Preprocessor definitions to be used during the compilation.
+
+```LINK_LIBRARIES```: Libraries to link against during the compilation.
+
+```OUTPUT_VARIABLE```: A variable to store the output of the compilation process.
+
+```COPY_FILE```: A file to copy if the compilation succeeds.
+
+```COPY_FILE_ERROR```: A variable to store any error that occurs while copying the file specified in COPY_FILE.
+
+```RUN_OUTPUT_VARIABLE```: A variable to store the output of the executable when it is run.
+
+```ARGS```: Arguments to pass to the executable when it is run.
+
+```WORKING_DIRECTORY```: The working directory to use when running the executable.
+
+```LINK_OPTIONS```: Options to be used during the linking process.
+
+```LINK_DIRECTORIES```: Directories to search for libraries during the linking process.
+
+```LINK_OPTIONS_BEFORE```: Options to be used before the linking process.
+
+```LINK_DIRECTORIES_BEFORE```: Directories to search for libraries before the linking process.
+
+For example:
+
+```
+
+```
 
 ### Configuring Build Types
 
