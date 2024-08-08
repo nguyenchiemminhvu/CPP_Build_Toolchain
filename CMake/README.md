@@ -2994,6 +2994,8 @@ These variables affect how CMake processes and builds the project:
 
 ```CMAKE_COLOR_DIAGNOSTICS```: Controls whether compiler and linker diagnostics (such as warnings and errors) are displayed with color in the terminal.
 
+```CMAKE_MODULE_PATH```: specifies a list of directories where CMake will search for additional CMake modules and scripts.
+
 ### Variables that Describe the System
 
 These variables provide information about the system and environment:
