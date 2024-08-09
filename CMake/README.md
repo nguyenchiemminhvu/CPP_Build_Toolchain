@@ -2847,42 +2847,6 @@ else()
 endif()
 ```
 
-### Configuring Build Types
-
-Typical values of built-in build types include:
-
-```Release```: high optimization level, no debug info, code or asserts. ```-O3 -DNDEBUG```
-
-```Debug```: No optimization, asserts enabled, [custom debug (output) code enabled], debug info included in executable (so we can step through the code with a debugger and have address to source-file:line-number translation). ```-O0 -g```
-
-```RelWithDebInfo```: optimized, with debug info, but no debug (output) code or asserts. ```-O2 -g -DNDEBUG```
-
-```MinSizeRel```: same as Release but optimizing for size rather than speed. ```-Os -DNDEBUG```
-
-```
-set(CMAKE_BUILD_TYPE Debug)
-
-or
-
-set(CMAKE_BUILD_TYPE Release)
-```
-
-or
-
-```
-mkdir Debug
-cd Debug
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-make
-
-or
-
-mkdir Release
-cd Release
-cmake -DCMAKE_BUILD_TYPE=Release ..
-make
-```
-
 ### execute_process
 
 The ```execute_process``` command is used to execute one or more child process during the configuration phase of CMake project.
@@ -2954,6 +2918,42 @@ message(STATUS "OUTPUT: ${echo_output}")
 message(STATUS "RESULT: ${echo_result}")
 ```
 
+### Configuring Build Types
+
+Typical values of built-in build types include:
+
+```Release```: high optimization level, no debug info, code or asserts. ```-O3 -DNDEBUG```
+
+```Debug```: No optimization, asserts enabled, [custom debug (output) code enabled], debug info included in executable (so we can step through the code with a debugger and have address to source-file:line-number translation). ```-O0 -g```
+
+```RelWithDebInfo```: optimized, with debug info, but no debug (output) code or asserts. ```-O2 -g -DNDEBUG```
+
+```MinSizeRel```: same as Release but optimizing for size rather than speed. ```-Os -DNDEBUG```
+
+```
+set(CMAKE_BUILD_TYPE Debug)
+
+or
+
+set(CMAKE_BUILD_TYPE Release)
+```
+
+or
+
+```
+mkdir Debug
+cd Debug
+cmake -DCMAKE_BUILD_TYPE=Debug ..
+make
+
+or
+
+mkdir Release
+cd Release
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make
+```
+
 ## CMake Variables
 
 In this topic, I wanted to list out the common use CMake built-in variables, classified based on their scope and purposes just as mentioned in [CMake documentation page](https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html).
@@ -2994,7 +2994,7 @@ These variables affect how CMake processes and builds the project:
 
 ```CMAKE_COLOR_DIAGNOSTICS```: Controls whether compiler and linker diagnostics (such as warnings and errors) are displayed with color in the terminal.
 
-```CMAKE_MODULE_PATH```: specifies a list of directories where CMake will search for additional CMake modules and scripts.
+```CMAKE_MODULE_PATH```: specifies a list of directories where CMake will search for additional CMake modules and scripts. Refer to [CMake Modules](#cmake-modules) for more details.
 
 ### Variables that Describe the System
 
