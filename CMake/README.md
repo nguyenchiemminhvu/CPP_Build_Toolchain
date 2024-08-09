@@ -3018,7 +3018,137 @@ These variables are used to control various build aspects:
 
 ## CMake Modules
 
+### What is a CMake module?
 
+A CMake module is typically a file that contains CMake scipts which can be included and used in CMakeLists.txt files. It stores the encapsulate reusable code such as finding libraries, setting up build configurations, or defining custom commands and macros. Modules in CMake are usually stored in files with ```.cmake``` extension.
+
+### How CMake manage modules?
+
+CMake manages modules through a set of predefined directories where it looks for module files.
+
+A CMake module can be located by using the full path to the module file, or let CMake find the module by itself. The search order could typically be:
+
+- CMake module path specified by the CMAKE_MODULE_PATH variable.
+- CMake installation directory
+- Current source and binary directories.
+
+### Commonly used prebuilt CMake modules
+
+CMake modules can be categorized into several types based on their functionality and purpose.
+
+**Find modules** are used to locate header files, or libraries that belongs to a package. Each module comes with documentation describing the package it finds and the variables in which it provides results.
+
+For example: FindOpenGL.cmake, FindPython.cmake, FindZLIB.cmake, FindCURL.cmake, FindGTest.cmake, ...
+
+**Utility modules** provide general-purpose helper functions, macros, and commands that can be reused across different projects. Some of them have prefix ```Test``` or ```Check``` testing the system to provide information about target platform and compiler. Some of them try to compile code in order to determine if feature is available...
+
+For example: CheckLibraryExists.cmake, CheckSymbolExists.cmake, GNUInstallDirs.cmake, CMakeParseArguments.cmake, ...
+
+```
+cmake --help-module <ModuleName>
+```
+
+### How to use prebuilt CMake modules?
+
+To use a prebuilt CMake module, we can use  ```include``` command.
+
+For example:
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleModule)
+
+include(CheckSymbolExists)
+include(CheckCXXSymbolExists)
+
+set(CMAKE_REQUIRED_LIBRARIES "pthread")
+set(CMAKE_REQUIRED_INCLUDES "iostream")
+
+check_symbol_exists(fopen "stdio.h" HAVE_FOPEN)
+message(STATUS "${HAVE_FOPEN}")
+
+check_symbol_exists(pthread_create "pthread.h" HAVE_PTHREAD_CREATE)
+message(STATUS "${HAVE_PTHREAD_CREATE}")
+
+check_cxx_symbol_exists("std::cout" "iostream" HAVE_COUT)
+message(STATUS "${HAVE_COUT}")
+```
+
+### How to build a custom CMake module?
+
+The example below shows you how to build your own CMake module.
+
+Firstly, create and organize a project structure, create a ```.cmake``` file.
+
+```
+project/
+├── CMakeLists.txt
+├── cmake/
+│   └── MyCustomModule.cmake
+└── src/
+```
+
+Define a custom function or macro in ```.cmake``` file.
+
+```
+function(LOGI msg)
+    message(STATUS "${msg}")
+endfunction()
+
+function(LOGE msg)
+    message(FATAL_ERROR "${msg}")
+endfunction()
+```
+
+Now it is able to use custom module in the current CMake project.
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleModule)
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
+include(MyCustomModule)
+
+LOGI("Information message")
+```
+
+Set up the installation to the custom module.
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleModule)
+
+install(
+    FILES ${CMAKE_SOURCE_DIR}/cmake/MyCustomModule.cmake
+    DESTINATION share/cmake/custom_modules
+)
+```
+```
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ sudo make install
+Install the project...
+-- Install configuration: ""
+-- Installing: /usr/local/share/cmake/custom_modules/MyCustomModule.cmake
+```
+
+Use it in other CMake project.
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SampleModule)
+
+list(APPEND CMAKE_MODULE_PATH "/usr/local/share/cmake/custom_modules")
+
+include(MyCustomModule)
+
+LOGI("Information message")
+```
+```
+worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ cmake ..
+-- Information message
+-- Configuring done
+-- Generating done
+```
 
 ## CMake Packages
 
