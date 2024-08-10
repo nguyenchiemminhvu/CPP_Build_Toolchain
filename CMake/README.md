@@ -3016,6 +3016,87 @@ These variables are used to control various build aspects:
 
 ```CMAKE_CXX_FLAGS```: Flags for the C++ compiler.
 
+## CMake Generator Expressions
+
+When working with CMake, the build process is often broken down into distinct stages:
+
+```Configuration Stage```: This is where CMake processes the CMakeLists.txt files, resolving variables, checking for dependencies, determining the build environment, and setting up the project structure. In this Configuration Stage, a CMake Generator is selected after CMake determines what native build system should be used so that the running system/platform could understand. Typical CMake Generators: Unix Makefiles, Ninja, Visual Studio (VS) Generators...
+
+```Build Stage```: Finally, the generated build files are used to compile the project, link libraries, and produce the final executable, library, or other build artifacts.
+
+But there is another minor stage present during CMake build process.
+
+```Generation Stage```: After configuration (and before Build Stage), CMake enters the generation stage. Here, it generates the platform-specific build files, such as Makefiles, Visual Studio project files, or Ninja build files.
+
+```
+# cmake ..
+-- Configuring done (0.0s)
+-- Generating done (0.0s) <-- The generation stage is done here
+```
+
+In the Generation Stage, CMake evaluates the Generator Expressions to produce information specific to each build configuration.
+
+The Generator Expressions are enclosed in ```$<...>``` and enable us to write flexible rules. They are evaluated in the contexts such as ```target_include_directories```, ```target_link_libraries```, ```target_compile_definitions```, ```install```, ...
+
+Generator Expression syntax:
+
+```
+$<expression1:expression2>
+```
+
+```expression1```: The condition or context.
+
+```expression2```: The result if the condition is true.
+
+It is possible to include more generator expressions inside the brackets.
+
+The common use-cases of generator expressions:
+
+**Conditional expression**
+
+A conditional expression in CMake generator expressions follows the form:
+
+```
+$<condition:value-if-true>
+```
+
+Here, ```condition``` is evaluated, and if it is true, the generator expression returns value-if-true.
+
+Common Conditional Generator Expressions:
+
+```$<CONFIG:Debug>```: Evaluates to true if the current build configuration is Debug.
+
+```$<STREQUAL:a,b>```: Evaluates to true if strings a and b are equal.
+
+```$<BOOL:condition>```: Evaluates to true if condition is true.
+
+```$<IF:condition,true_string,false_string>```: Evaluates to ```true_string``` if ```condition``` is true. Otherwise, evaluates to ```false_string```.
+
+```$<TARGET_EXISTS:target>```: Checks if a target named target exists.
+
+For example:
+
+```
+target_compile_definitions(SampleApp PRIVATE $<$<CONFIG:Debug>:DEBUG_MODE>)
+```
+
+**Output Related expression**
+
+For example:
+
+```
+add_library(SampleLib ...)
+target_include_directories(SampleLib
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
+```
+
+The ```BUILD_INTERFACE``` expression is used to provide the include directory at build time.
+
+Otherwise, at installation stage, the value of ```INSTALL_INTERFACE``` is used to specify where the executable looks for header files at runtime.
+
 ## CMake Modules
 
 ### What is a CMake module?
@@ -3396,7 +3477,79 @@ install(
 
 **Create Config.cmake.in file**
 
-GnssUtilConfig.cmake.in
+A ```Config.cmake.in``` file is a template that is processed by CMake's ```configure_file``` command to generate the final ```<PackageName>Config.cmake``` file. This template can include variables that are replaced during the configuration process.
+
+```
+configure_file(
+    <input> <output>
+    [NO_SOURCE_PERMISSIONS | USE_SOURCE_PERMISSIONS | FILE_PERMISSIONS <permissions>...]
+    [COPYONLY]
+    [ESCAPE_QUOTES]
+    [@ONLY]
+    [NEWLINE_STYLE [UNIX|DOS|WIN32|LF|CRLF]]
+)
+```
+
+```<input>```: Path to the input file containing the template with placeholders. This is the file that will be processed by CMake.
+
+```<output>```: Path to the output file where the processed content will be written. This is the final file that will be generated.
+
+```NO_SOURCE_PERMISSIONS (optional)```: If specified, the output file will not inherit any permissions from the input file. Instead, it will have default permissions set by the system or by other settings in your CMake configuration.
+
+```USE_SOURCE_PERMISSIONS (optional)```: If specified, the output file will inherit the permissions from the input file. This means that the file permissions of the output file will be the same as those of the input file.
+
+```FILE_PERMISSIONS <permissions>... (optional)```: Specifies the permissions for the output file. Permissions are provided as a list of flags. Possible flags include: ```READ_ONLY```, ```READ_WRITE```, ```EXECUTE```, ```OWNER_READ```, ```OWNER_WRITE```, ```OWNER_EXECUTE```, ```GROUP_READ```, ```GROUP_WRITE```, ```GROUP_EXECUTE```, ```WORLD_READ```, ```WORLD_WRITE```, ```WORLD_EXECUTE```. Can combine these flags to set the desired permissions.
+
+```COPYONLY (optional)```: If specified, CMake will copy the file as-is without processing it. This is useful if you want to copy a file directly to the output directory without any modifications.
+
+```ESCAPE_QUOTES (optional)```: If specified, CMake will escape any quotes in the input file. This is useful if your template includes quotes that should be preserved in the output file.
+
+```@ONLY (optional)```: If specified, only variables surrounded by @ will be replaced in the template. This prevents unintended replacements if the template file contains other $-based syntax. It ensures that only placeholders with the @ symbol are replaced.
+
+```NEWLINE_STYLE [UNIX|DOS|WIN32|LF|CRLF] (optional)```: Controls the newline style in the output file.
+
+Here is the basic structure of a Config.cmake.in file:
+
+```
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+set(PACKAGE_VERSION_MAJOR @PACKAGE_VERSION_MAJOR@)
+set(PACKAGE_VERSION_MINOR @PACKAGE_VERSION_MINOR@)
+set(PACKAGE_VERSION_PATCH @PACKAGE_VERSION_PATCH@)
+set(PACKAGE_VERSION @PACKAGE_VERSION@)
+set(PACKAGE_TARGET_NAME @PACKAGE_TARGET_NAME@)
+
+find_dependency(SomeDependency REQUIRED)
+
+include_directories(${PACKAGE_INCLUDE_DIRS})
+link_directories(${PACKAGE_LIBRARY_DIRS})
+
+include("${CMAKE_CURRENT_LIST_DIR}/@PACKAGE_TARGET_NAME@ConfigVersion.cmake")
+
+export(TARGETS ${PACKAGE_TARGET_NAME}
+       FILE ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE_TARGET_NAME}Targets.cmake)
+
+set(PACKAGE_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/include")
+set(PACKAGE_LIBRARY_DIRS "${CMAKE_CURRENT_BINARY_DIR}/lib")
+```
+
+```@PACKAGE_INIT@```: Placeholder for package initialization code, which might set up CMake module paths and other configurations.
+
+```Version Information```: Define variables for version information (```PACKAGE_VERSION_MAJOR```, ```PACKAGE_VERSION_MINOR```, ```PACKAGE_VERSION_PATCH```, and ```PACKAGE_VERSION```).
+
+```Package Target Name```: Define the name of the package's target (```PACKAGE_TARGET_NAME```).
+
+```Dependencies```: Use ```find_dependency``` to locate any dependencies required by the package.
+
+```Include Directories and Libraries```: Set the paths for include directories and library directories.
+
+```Config Version File```: Include the ConfigVersion.cmake file, which is typically used to check compatibility of the package version.
+
+```Export Targets```: Export the package targets and their associated files to help other projects find and use them.
+
+For example: GnssUtilConfig.cmake.in
 
 ```
 @PACKAGE_INIT@
