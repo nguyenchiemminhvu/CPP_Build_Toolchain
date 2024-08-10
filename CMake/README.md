@@ -3312,7 +3312,248 @@ endif()
 
 ### Create And Use Config Packages
 
+**Create a library**
 
+```
+// gnss_util.h
+extern double DEG_TO_MILLIARCSECONDS;
+double degToMs(double deg);
+
+// gnss_util.cpp
+double DEG_TO_MILLIARCSECONDS = 3600000.0;
+double degToMs(double deg)
+{
+    return deg * DEG_TO_MILLIARCSECONDS;
+}
+```
+
+```
+# CMakeLists.txt
+cmake_minimum_required(VERSION 3.10)
+project(SamplePackage)
+
+add_library(GnssUtil SHARED src/gnss_util.cpp)
+
+target_include_directories(GnssUtil
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include/GnssUtil>
+)
+
+install(
+    TARGETS GnssUtil
+    EXPORT GnssUtilTarget
+    LIBRARY DESTINATION lib
+    INCLUDES DESTINATION include/GnssUtil
+)
+
+install(
+    EXPORT GnssUtilTarget
+    FILE GnssUtilTarget.cmake
+    NAMESPACE GnssUtil::
+    DESTINATION lib/cmake/GnssUtil
+)
+
+install(
+    DIRECTORY ${CMAKE_SOURCE_DIR}/include/
+    DESTINATION include/GnssUtil
+    FILES_MATCHING PATTERN "*.h"
+)
+```
+
+**Utilize CMakePackageConfigHelpers module**
+
+```
+include(CMakePackageConfigHelpers)
+```
+
+**Create ConfigVersion.cmake file**
+
+```
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/GnssUtilConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+```
+
+**Generate Config.cmake file**
+
+```
+configure_file(GnssUtilConfig.cmake.in GnssUtilConfig.cmake @ONLY)
+```
+
+**Set up Config.cmake installation**
+
+```
+install(
+    FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/GnssUtilConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/GnssUtilConfigVersion.cmake"
+    DESTINATION lib/cmake/GnssUtil
+)
+```
+
+**Create Config.cmake.in file**
+
+GnssUtilConfig.cmake.in
+
+```
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+include("${CMAKE_CURRENT_LIST_DIR}/GnssUtilTarget.cmake")
+
+set(GnssUtil_FOUND TRUE) 
+set(GnssUtil_INCLUDE_DIRS "/usr/local/include/GnssUtil")
+set(GnssUtil_LIBRARY_DIRS "/usr/local/lib")
+```
+
+**Full Library CMakeLists.txt file**
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SamplePackage)
+
+add_library(GnssUtil SHARED src/gnss_util.cpp)
+
+target_include_directories(GnssUtil
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include/GnssUtil>
+)
+
+install(
+    TARGETS GnssUtil
+    EXPORT GnssUtilTarget
+    LIBRARY DESTINATION lib
+    INCLUDES DESTINATION include/GnssUtil
+)
+
+install(
+    EXPORT GnssUtilTarget
+    FILE GnssUtilTarget.cmake
+    NAMESPACE GnssUtil::
+    DESTINATION lib/cmake/GnssUtil
+)
+
+install(
+    DIRECTORY ${CMAKE_SOURCE_DIR}/include/
+    DESTINATION include/GnssUtil
+    FILES_MATCHING PATTERN "*.h"
+)
+
+include(CMakePackageConfigHelpers)
+
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/GnssUtilConfigVersion.cmake"
+    VERSION 1.0
+    COMPATIBILITY AnyNewerVersion
+)
+
+configure_file(GnssUtilConfig.cmake.in GnssUtilConfig.cmake @ONLY)
+
+install(
+    FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/GnssUtilConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/GnssUtilConfigVersion.cmake"
+    DESTINATION lib/cmake/GnssUtil
+)
+```
+
+**Build and Install**
+
+```
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+```
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ cmake ..
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/ncmv/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ make
+[ 50%] Building CXX object CMakeFiles/GnssUtil.dir/src/gnss_util.cpp.o
+[100%] Linking CXX shared library libGnssUtil.so
+[100%] Built target GnssUtil
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ sudo make install
+[100%] Built target GnssUtil
+Install the project...
+-- Install configuration: ""
+-- Installing: /usr/local/lib/libGnssUtil.so
+-- Installing: /usr/local/lib/cmake/GnssUtil/GnssUtilTarget.cmake
+-- Installing: /usr/local/lib/cmake/GnssUtil/GnssUtilTarget-noconfig.cmake
+-- Up-to-date: /usr/local/include/GnssUtil
+-- Up-to-date: /usr/local/include/GnssUtil/gnss_util.h
+-- Installing: /usr/local/lib/cmake/GnssUtil/GnssUtilConfig.cmake
+-- Installing: /usr/local/lib/cmake/GnssUtil/GnssUtilConfigVersion.cmake
+```
+
+**Create an executable**
+
+main.cpp
+
+```
+#include "gnss_util.h"
+#include <iostream>
+
+int main()
+{
+    std::cout << degToMs(10.0) << std::endl;
+    return 0;
+}
+```
+
+CMakeLists.txt
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SamplePackage)
+
+add_executable(GnssParser src/main.cpp)
+```
+
+Without using the headers and library of GnssUtil package, build can not be done.
+
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ make
+[ 50%] Building CXX object CMakeFiles/GnssParser.dir/src/main.cpp.o
+/home/ncmv/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/src/main.cpp:1:10: fatal error: gnss_util.h: No such file or directory
+    1 | #include "gnss_util.h"
+      |          ^~~~~~~~~~~~~
+compilation terminated.
+```
+
+**Use the sample package**
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SamplePackage)
+
+find_package(GnssUtil REQUIRED)
+
+add_executable(GnssParser src/main.cpp)
+
+target_include_directories(GnssParser
+    PRIVATE
+        ${GnssUtil_INCLUDE_DIRS}
+)
+
+target_link_libraries(GnssParser
+    PRIVATE
+        GnssUtil::GnssUtil
+)
+```
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ make
+[ 50%] Building CXX object CMakeFiles/GnssParser.dir/src/main.cpp.o
+[100%] Linking CXX executable GnssParser
+[100%] Built target GnssParser
+```
 
 ### Create And Use Find Packages
 
