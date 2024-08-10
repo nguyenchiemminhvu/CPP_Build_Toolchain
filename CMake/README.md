@@ -3557,11 +3557,75 @@ ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/b
 
 ### Create And Use Find Packages
 
+**Create a FindGnssUtil.cmake file**
 
+```
+find_path(GnssUtil_INCLUDE_DIR NAMES gnss_util.h
+    PATHS /usr/local/include/GnssUtil
+)
 
-## CMake Policies
+find_library(GnssUtil_LIBRARY NAMES GnssUtil
+    PATHS /usr/local/lib
+)
 
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(GnssUtil REQUIRED_VARS GnssUtil_LIBRARY GnssUtil_INCLUDE_DIR)
 
+if(GnssUtil_FOUND)
+    set(GnssUtil_INCLUDE_DIRS ${GnssUtil_INCLUDE_DIR})
+    set(GnssUtil_LIBRARIES ${GnssUtil_LIBRARY})
+else()
+    set(GnssUtil_INCLUDE_DIRS "")
+    set(GnssUtil_LIBRARIES "")
+endif()
+
+message(STATUS "Found MyLib: ${GnssUtil_LIBRARIES}")
+```
+
+**Place the FindGnssUtil.cmake file**
+
+```
+mkdir -p /usr/local/lib/cmake/GnssUtil
+mv FindGnssUtil.cmake /usr/local/lib/cmake/GnssUtil
+```
+
+**Set up a sample project**
+
+```
+cmake_minimum_required(VERSION 3.10)
+project(SamplePackage)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/local/lib/cmake/GnssUtil/")
+
+find_package(GnssUtil REQUIRED)
+
+add_executable(GnssParser src/main.cpp)
+
+target_include_directories(GnssParser PRIVATE ${GnssUtil_INCLUDE_DIRS})
+target_link_libraries(GnssParser PRIVATE ${GnssUtil_LIBRARIES})
+```
+
+**Build sample project**
+
+```
+mkdir build
+cd build
+cmake ..
+make
+```
+```
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ cmake ..
+-- Found GnssUtil: /usr/local/lib/libGnssUtil.so  
+-- Found MyLib: /usr/local/lib/libGnssUtil.so
+-- TRUE
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/ncmv/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build
+ncmv@localhost:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/temp/build$ make
+[ 50%] Building CXX object CMakeFiles/GnssParser.dir/src/main.cpp.o
+[100%] Linking CXX executable GnssParser
+[100%] Built target GnssParser
+```
 
 # Conclusion
 
