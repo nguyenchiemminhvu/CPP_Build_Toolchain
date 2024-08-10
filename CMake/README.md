@@ -3152,55 +3152,156 @@ worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain/CMake/SampleProjects/t
 
 ## CMake Packages
 
-In CMake, a package is a collection of files that provide information about how to use a library or a set of related libraries. It is used to facilitate the discovery and integration of these libraries into a CMake-based build system. Typically, they include configuration files that describe the library's propertie, such as where to find, which libraries to link against, and any required compile definitions or options.
+CMake packages are a way to encapsulate a library or a set of related libraries into a distributable unit. They contain the necessary information to locate and use the library in other CMake projects. This includes paths to header files, libraries, and any required compile options or definitions.
 
 There are 2 primary types of CMake package: ```Config-file Packages``` and ```Find-module Packages```.
 
 ### Config-file Packages
 
+```<PackageName>Config.cmake```: This file is provided by the package itself and includes commands that configure the package for use in the importing project. It usually sets up variables, paths, and other necessary configuration.
 
+Config package can include a version file ```<PackageName>ConfigVersion.cmake``` that let users know the specific version of the package.
+
+**Usage:**
+
+When a library is installed, it can place the ```<PackageName>Config.cmake``` file and optional ```<PackageName>ConfigVersion.cmake``` file in the standard location. These files are then used by the ```find_package``` command to locate the library.
+
+The standard location for installing Config packages is typically ```lib/cmake/<PackageName>```.
+
+For example: If a library named ```GnssUtil``` is installed with an installation prefix ```/usr/local```, the config package is typically installed in ```/usr/local/lib/cmake/GnssUtil/```.
+
+The installation path can be customized by using ```CMAKE_INSTALL_PREFIX``` variable.
+
+```
+set(CMAKE_INSTALL_PREFIX "/home/ncmv/")
+install(TARGETS ExampleProgram DESTINATION bin)
+```
+
+or via cmake command argument
+
+```
+cmake .. --prefix /home/ncmv
+```
 
 ### Find-module Packages
 
+```Find<PackageName>.cmake```: This is the CMake script files that are typically written by the user or community to locate and set up third-party libraries that do not provide their own Config package.
 
+Some built-in Find packages available in CMake itself:
+- FindBoost.cmake: Finds the Boost libraries.
+- FindPython.cmake: Locates Python interpreter, libraries, and includes.
+- FindZLIB.cmake: Finds the Zlib compression library.
+- FindOpenGL.cmake: Locates OpenGL libraries.
+- FindOpenSSL.cmake: Finds OpenSSL libraries.
+- FindThreads.cmake: Detects threading libraries.
 
-### Using CMake Packages
+**Usage:**
+
+CMake locate the CMake scripts ```Find<PackageName>.cmake``` by using command ```find_package```, it find the package at the searching module paths defined by variable ```CMAKE_MODULE_PATH```.
+
+### find_package
 
 The find_package command in CMake is used to locate and configure external libraries and packages.
 
+**Simple form:**
+
 ```
-find_package(<PackageName> [version] [REQUIRED] [COMPONENTS components...] [OPTIONAL_COMPONENTS components...] [EXACT] [QUIET] [MODULE] [CONFIG] [NO_MODULE] [NO_POLICY_SCOPE] [NO_CMAKE_PACKAGE_REGISTRY] [NO_CMAKE_BUILDS_PATH] [NO_SYSTEM_ENVIRONMENT_PATH] [NO_CMAKE_ENVIRONMENT_PATH] [NO_CMAKE_PATH] [NO_SYSTEM_PACKAGE_REGISTRY] [NO_CMAKE_SYSTEM_PATH] [NO_CMAKE_SYSTEM_PACKAGE_REGISTRY] [NO_CMAKE_FIND_ROOT_PATH])
+find_package(<PackageName> [<version>] [REQUIRED] [COMPONENTS <components>...])
 ```
 
-```<PackageName>```: The name of the package we want to find. This is usually the name of the library or software package.
+```<PackageName>```: The name of the package we want to find. It typically corresponds to a CMake package or an external library.
 
-```[version]```: The version of the package we are looking for. This is optional.
+```<version> (optional)```: Specifies the version of the package we want to find. If not provided, any version will be acceptable.
 
-```[REQUIRED]```: If specified, CMake will generate an error if the package is not found.
+```REQUIRED```: If this is specified, CMake will generate an error if the package cannot be found.
 
-```[COMPONENTS components...]```: Specifies which components of the package we are interested in. This is useful for packages that provide multiple libraries or modules.
+```COMPONENTS```: Allows us to specify which components of the package we want to find. For example, a library might have separate components for different modules, and we can choose which ones we need.
 
-```[OPTIONAL_COMPONENTS components...]```: Specifies components that are optional.
+**Full signature:**
 
-```[EXACT]```: Requires the exact version specified.
+```
+find_package(<PackageName> [version] [EXACT] [QUIET]
+             [REQUIRED] [[COMPONENTS] [components...]]
+             [OPTIONAL_COMPONENTS components...]
+             [CONFIG|NO_MODULE]
+             [GLOBAL]
+             [NO_POLICY_SCOPE]
+             [BYPASS_PROVIDER]
+             [NAMES name1 [name2 ...]]
+             [CONFIGS config1 [config2 ...]]
+             [HINTS path1 [path2 ... ]]
+             [PATHS path1 [path2 ... ]]
+             [REGISTRY_VIEW  (64|32|64_32|32_64|HOST|TARGET|BOTH)]
+             [PATH_SUFFIXES suffix1 [suffix2 ...]]
+             [NO_DEFAULT_PATH]
+             [NO_PACKAGE_ROOT_PATH]
+             [NO_CMAKE_PATH]
+             [NO_CMAKE_ENVIRONMENT_PATH]
+             [NO_SYSTEM_ENVIRONMENT_PATH]
+             [NO_CMAKE_PACKAGE_REGISTRY]
+             [NO_CMAKE_BUILDS_PATH] # Deprecated; does nothing.
+             [NO_CMAKE_SYSTEM_PATH]
+             [NO_CMAKE_INSTALL_PREFIX]
+             [NO_CMAKE_SYSTEM_PACKAGE_REGISTRY]
+             [CMAKE_FIND_ROOT_PATH_BOTH |
+              ONLY_CMAKE_FIND_ROOT_PATH |
+              NO_CMAKE_FIND_ROOT_PATH])
+```
 
-```[QUIET]```: Suppresses messages if the package is not found.
+```EXACT```: Ensures that the exact version specified is found. If not specified, newer versions are also acceptable.
 
-```[MODULE]```: Forces CMake to search for a ```Find<PackageName>.cmake``` module.
+```QUIET```: Suppresses the messages about the package search and errors if the package is not found.
 
-```[CONFIG]```: Forces CMake to search for a ```<PackageName>Config.cmake``` file.
+```OPTIONAL_COMPONENTS```: Similar to COMPONENTS, but these are not required. If they are not found, the configuration will still succeed.
 
-```[NO_MODULE]```: Prevents CMake from searching for a ```Find<PackageName>.cmake``` module.
+```CONFIG | NO_MODULE```: If CONFIG is specified, CMake will look for a package configuration file (like ```PackageNameConfig.cmake```). If NO_MODULE is specified, CMake won't search for the package using module mode.
 
-```[NO_POLICY_SCOPE]```: Disables policy scope for the find operation.
+```GLOBAL```: When using the CONFIG option, this makes the package configuration globally available, so it can be used in other parts of the CMake project.
 
-```[NO_CMAKE_PACKAGE_REGISTRY], [NO_CMAKE_BUILDS_PATH], [NO_SYSTEM_ENVIRONMENT_PATH], [NO_CMAKE_ENVIRONMENT_PATH], [NO_CMAKE_PATH], [NO_SYSTEM_PACKAGE_REGISTRY], [NO_CMAKE_SYSTEM_PATH], [NO_CMAKE_SYSTEM_PACKAGE_REGISTRY], [NO_CMAKE_FIND_ROOT_PATH]```: These options control where CMake searches for the package.
+```NO_POLICY_SCOPE```: When searching for the package, prevents CMake from applying any policy scope settings from the found package.
+
+```BYPASS_PROVIDER```: Instructs CMake to bypass any custom providers (like package managers) when searching for the package.
+
+```NAMES```: Allows you to specify alternative names for the package. CMake will try these names in order until it finds a match.
+
+```CONFIGS```: A list of configuration files (e.g., PackageNameConfig.cmake) to search for.
+
+```HINTS```: Additional paths that CMake should search when looking for the package. These paths are searched first before the default search paths.
+
+```PATHS```: Specific paths that CMake should search for the package. These are searched after the HINTS paths.
+
+```REGISTRY_VIEW```: On Windows, this specifies which registry view to use (e.g., 64-bit, 32-bit).
+
+```PATH_SUFFIXES```: Subdirectories to append to each directory that is searched. Useful if your package is located in a specific subdirectory within a known path.
+
+```NO_DEFAULT_PATH```: Prevents CMake from searching in the default paths.
+
+```NO_PACKAGE_ROOT_PATH```: Prevents CMake from searching the root paths for the package.
+
+```NO_CMAKE_PATH```: Disables searching in paths specified by the CMAKE_PREFIX_PATH variable.
+
+```NO_CMAKE_ENVIRONMENT_PATH```: Disables searching in paths specified by environment variables like CMAKE_PREFIX_PATH.
+
+```NO_SYSTEM_ENVIRONMENT_PATH```: Disables searching in system environment paths like PATH or LD_LIBRARY_PATH.
+
+```NO_CMAKE_PACKAGE_REGISTRY```: Prevents CMake from using its internal package registry to find the package.
+
+```NO_CMAKE_BUILDS_PATH (Deprecated)```: This option is deprecated and does nothing in newer versions of CMake.
+
+```NO_CMAKE_SYSTEM_PATH```: Prevents CMake from searching in system paths like /usr/local.
+
+```NO_CMAKE_INSTALL_PREFIX```: Disables searching in the paths where CMake is installed.
+
+```NO_CMAKE_SYSTEM_PACKAGE_REGISTRY```: Prevents CMake from using the system package registry (like pkg-config or vcpkg).
+
+```CMAKE_FIND_ROOT_PATH_BOTH | ONLY_CMAKE_FIND_ROOT_PATH | NO_CMAKE_FIND_ROOT_PATH```: Controls how CMake handles the ```CMAKE_FIND_ROOT_PATH``` during the search. This is particularly useful for cross-compiling.
 
 For example:
 
 ```
 add_executable(LocationService main.cpp)
 
+# Look for FindGnssParser.cmake
 find_package(GnssParser 1.2 REQUIRED)
 
 if(GnssParser_FOUND)
@@ -3209,7 +3310,11 @@ if(GnssParser_FOUND)
 endif()
 ```
 
-### Create CMake Packages
+### Create And Use Config Packages
+
+
+
+### Create And Use Find Packages
 
 
 
