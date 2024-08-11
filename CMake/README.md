@@ -3097,6 +3097,28 @@ The ```BUILD_INTERFACE``` expression is used to provide the include directory at
 
 Otherwise, at installation stage, the value of ```INSTALL_INTERFACE``` is used to specify where the executable looks for header files at runtime.
 
+## CMake namespaces
+
+A namespace is a prefix added to the target name.
+
+Using namespace for CMake targets (libraries and executables) is a good practice to avoid name collisions, especially when working with multiple projects or dependencies. Namespaces help in distinguishing between targets that may have the same name but belong to different projects or modules.
+
+A namespace is defined at the time we create an alias for a target using ```add_library``` or ```add_executable``` commands with ```ALIAS``` keyword.
+
+For example:
+
+```
+add_library(LocationService::GnssParser ALIAS GnssParser)
+```
+
+Here, ```LocationService``` is the namespace, and ```GnssParser``` is the target name.
+
+Once the namespace is defined, it is possible to refer to the target using its fully qualified name.
+
+```
+target_link_libraries(LocationApp PRIVATE LocationService::GnssParser)
+```
+
 ## CMake Modules
 
 ### What is a CMake module?
@@ -3268,7 +3290,7 @@ cmake .. --prefix /home/ncmv
 
 ```Find<PackageName>.cmake```: This is the CMake script files that are typically written by the user or community to locate and set up third-party libraries that do not provide their own Config package.
 
-Some built-in Find packages available in CMake itself:
+Some useful built-in Find packages available in CMake itself:
 - FindBoost.cmake: Finds the Boost libraries.
 - FindPython.cmake: Locates Python interpreter, libraries, and includes.
 - FindZLIB.cmake: Finds the Zlib compression library.
@@ -3734,6 +3756,33 @@ endif()
 
 message(STATUS "Found MyLib: ${GnssUtil_LIBRARIES}")
 ```
+
+The ```find_package_handle_standard_args``` command of ```FindPackageHandleStandardArgs``` module simplifies the process of handling the results of a ```find_package``` call, especially when writing Find packages. It helps us ensure that the required package or component is found, set the standard variables, and output error message if the package is not found.
+
+```
+find_package_handle_standard_args(<PackageName>
+  [REQUIRED_VARS <required-var>...]
+  [VERSION_VAR <version-var>]
+  [HANDLE_VERSION_RANGE]
+  [HANDLE_COMPONENTS]
+  [CONFIG_MODE]
+  [NAME_MISMATCHED]
+  [REASON_FAILURE_MESSAGE <reason-failure-message>]
+  [FAIL_MESSAGE <custom-failure-message>]
+  )
+```
+
+```<PackageName>```: The name of the package you're trying to find (e.g., Foo, Bar).
+
+```REQUIRED_VARS```: A list of variables that must be defined and non-empty for the package to be considered found.
+
+```VERSION_VAR (optional)```: Specifies the variable that contains the version number of the package.
+
+```HANDLE_COMPONENTS (optional)```: If this is specified, the function will also handle components (i.e., submodules or features of the package) specified by the user in the find_package call.
+
+```CONFIG_MODE (optional)```: Indicates that the package is being found using a package configuration file rather than a Find module.
+
+```FAIL_MESSAGE <message> (optional)```: If provided, this custom messag`e will be displayed when the package is not found, instead of the default error message.
 
 **Place the FindGnssUtil.cmake file**
 
