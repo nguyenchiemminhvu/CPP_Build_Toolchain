@@ -4,22 +4,9 @@
 
 CMake is a cross-platform tool designed to manage the build process of software projects. It uses simple configuration files called CMakeLists.txt to generate native build scripts for various platforms, such as Makefiles for Unix or project files for Visual Studio.
 
-In this article, we'll talk about using CMake on Unix-like systems. Before exploring more about CMake, let's make sure we have a complete understanding of [GNU Make](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make).
+In this article, we'll talk about using CMake on Unix-like systems. Before exploring more about CMake, let's make sure we have a complete understanding of [GNU Make](https://github.com/nguyenchiemminhvu/CPP_Build_Toolchain/tree/master/GNU_Make) build system.
 
-CMake is a scripting language written in C++ programming language. It includes several components, each serving a specific purpose in the build and testing workflow: cmake, ctest and cpack.
-
-```
-worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain$ which cmake
-/usr/bin/cmake
-worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain$ which ctest
-/usr/bin/ctest
-worker@7e4a84e41875:~/study_workspace/CPP_Build_Toolchain$ which cpack
-/usr/bin/cpack
-```
-
-**CMake** is the core component of the CMake package that generating compiler-independent build instruction.
-**CTest** is a testing tool that comes with CMake. It is used to automate the execution of tests for a project.
-**CPack** is a packaging tool that comes with CMake. It is used to create installers and packages for software projects.
+CMake is not the actual tool that compiles the code (like GNU Make or Ninja), but a build system generator. Its role is to process the given project's description and create the configuration files to compile and build that project.
 
 ## Benefits Of Using CMake
 
@@ -55,7 +42,7 @@ Verify the installation by running:
 
 ```
 worker@7e4a84e41875:~/study_workspace$ cmake --version
-cmake version 3.10.2
+cmake version 3.28.3
 
 CMake suite maintained and supported by Kitware (kitware.com/cmake).
 ```
@@ -185,13 +172,6 @@ add_custom_command(
 ```
 install(TARGETS MyExecutable DESTINATION bin)
 install(FILES ${PROJECT_SOURCE_DIR}/include/my_header.h DESTINATION include)
-```
-
-**Testing**: Enable and define tests.
-
-```
-enable_testing()
-add_test(NAME MyTest COMMAND MyExecutable)
 ```
 
 **Options and Configurations**: Define options and configurations.
