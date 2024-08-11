@@ -2996,6 +2996,96 @@ These variables are used to control various build aspects:
 
 ```CMAKE_CXX_FLAGS```: Flags for the C++ compiler.
 
+## CMake Properties
+
+CMake properties are key-value pairs that influence the behavior of CMake during the build process. They act just like [Variables](#cmake-variables) but there are some differences:
+
+|              | Variables                                             | Properties                                                |
+|:-------------|:------------------------------------------------------|:----------------------------------------------------------|
+| **Scope**    | Global, directory, and function                       | Global, directory, target, and source file                |
+| **Usage**    | Store values, configurations, and settings            | Define attributes or configurations of CMake entities     |
+| **Persistence** | Variables do not persist beyond the configuration session unless cached | Properties persist with the entity throughout the build process |
+| **Flexibility** | Highly flexible, can be used for any purpose       | More structured, tied to specific CMake entities          |
+
+### set_target_properties and get_target_property
+
+The ```set_target_properties``` command is used to set properties for one or more targets.
+
+```
+set_target_properties(target1 target2 ...
+                      PROPERTIES prop1 value1
+                                 prop2 value2 ...)
+```
+
+```target1, target2, ...```: The names of the targets on which you want to set properties.
+
+```PROPERTIES```: Keyword indicating that the following are property-value pairs.
+
+```prop1, prop2, ...```: The properties you want to set.
+
+```value1, value2, ...```: The values for the respective properties.
+
+The ```get_target_property``` command is used to retrieve properties of a specified target.
+
+```
+get_target_property(<variable> <target> <property>)
+```
+
+```<variable>```: The name of the variable where the property value will be stored.
+
+```<target>```: The name of the target from which you want to retrieve the property.
+
+```<property>```: The specific property you want to obtain from the target.
+
+For example:
+
+```
+add_executable(MainApp main.cpp)
+
+set_target_properties(MainApp PROPERTIES
+    CXX_STANDARD 17
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    OUTPUT_NAME "Main Application"
+)
+
+get_target_properties(STANDARD MainApp CXX_STANDARD)
+message(STATUS "CPP standard to build MainApp: ${STANDARD}")
+```
+
+### Common Properties on Directories
+
+```COMPILE_DEFINITIONS```: Adds compile definitions for targets in the directory.
+
+```INCLUDE_DIRECTORIES```: Specifies include directories for targets in the directory.
+
+```LINK_DIRECTORIES```: Specifies library directories for targets in the directory.
+
+```SOURCE_DIR```: Read-only directory property reports absolute path to the source directory on which it is read.
+
+```BINARY_DIR```: Read-only directory property reports absolute path to the binary directory corresponding to the source on which it is read.
+
+### Common Properties on Targets
+
+```INCLUDE_DIRECTORIES```: Specifies include directories for the target.
+
+```LINK_LIBRARIES```: Specifies libraries to link with the target.
+
+```COMPILE_DEFINITIONS```: Adds compile definitions for the target.
+
+```COMPILE_OPTIONS```: Adds compile options for the target.
+
+```LINK_OPTIONS```: Adds link options for the target.
+
+```SOURCES```: Specifies the source files for the target.
+
+```PUBLIC_HEADER```: Lists public headers for the target.
+
+```PRIVATE_HEADER```: Lists private headers for the target.
+
+```OBJECTS```: Lists object files to be included in the target.
+
+```OUTPUT_NAME```: Sets the output name for the target.
+
 ## CMake Generator Expressions
 
 When working with CMake, the build process is often broken down into distinct stages:
