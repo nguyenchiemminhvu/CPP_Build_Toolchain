@@ -1,3 +1,19 @@
+- [Introduction](#introduction)
+- [Compiling a C/C++ program](#compiling-a-cc-program)
+  - [Compiling multiple source files](#compiling-multiple-source-files)
+  - [Using more compilation options](#using-more-compilation-options)
+    - [Adding search paths](#adding-search-paths)
+    - [Adding environment variables](#adding-environment-variables)
+    - [Using preprocessors](#using-preprocessors)
+    - [Compiling for debugging](#compiling-for-debugging)
+    - [Compiling with optimization](#compiling-with-optimization)
+    - [Other common use options](#other-common-use-options)
+- [Compiling a C/C++ library](#compiling-a-cc-library)
+  - [Compiling static library and link to C/C++ program](#compiling-static-library-and-link-to-cc-program)
+  - [Compiling shared object (dynamic library) and link to C/C++ program](#compiling-shared-object-dynamic-library-and-link-to-cc-program)
+- [Conclusion](#conclusion)
+
+
 # Introduction
 
 The GNU Compiler Collection, also known as GCC, is a collection of compilers for various programming languages, including C, C++, Objective-C, Fortran, Ada, Go, and D. The GNU Compiler Collection (GCC) was first released in 1987 as part of the GNU Project, which was initiated by Richard Stallman in 1983. The goal of the GNU Project was to create a free Unix-like operating system composed entirely of free software.
